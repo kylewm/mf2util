@@ -19,7 +19,6 @@ Timezones are specified as fixed offsets from UTC.
 import mf2py import mf2datetime
 
 parsed = mf2py.Parser(url='http://kylewm.com/note/2014/05/07/2')
-publishedstr =
-parsed.to_dict()['items'][0]['properties']['published'][0] published =
-mf2datetime.parse(published)  # --> datetime.datetime
+publishedstr = parsed.to_dict()['items'][0]['properties']['published'][0]
+published = mf2datetime.parse(published)  # --> datetime.datetime
 ```
