@@ -24,7 +24,7 @@ def parse(s):
     date_re = "(?P<year>\d{4,})-(?P<month>\d{1,2})-(?P<day>\d{1,2})"
     time_re = "(?P<hour>\d{1,2}):(?P<minute>\d{2})(:(?P<second>\d{2}))?"
     tz_re = "(?P<tzz>Z)|(?P<tzsign>[+-])(?P<tzhour>\d{1,2}):?(?P<tzminute>\d{2})"
-    dt_re = "{}((T| ){} ?({})?)?$".format(date_re, time_re, tz_re)
+    dt_re = "%s((T| )%s ?(%s)?)?$" % (date_re, time_re, tz_re)
 
     m = re.match(dt_re, s)
     if not m:
@@ -58,7 +58,7 @@ def parse(s):
             if tzsign == '-':
                 offset = -offset
             dt = dt.replace(tzinfo=FixedOffset(
-                offset, '{}{}:{}'.format(tzsign, tzhour, tzminute)))
+                offset, '%s%s:%s' % (tzsign, tzhour, tzminute)))
 
     return dt
 
