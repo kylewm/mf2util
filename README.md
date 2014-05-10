@@ -1,5 +1,7 @@
 # mf2datetime
 
+[![Build Status](https://travis-ci.org/kylewm/mf2datetime.svg?branch=master)](https://travis-ci.org/kylewm/mf2datetime)
+
 A microformats2 datetime parser for Python. This can be used as a
 microformats-specific alternative to larger, more general libraries
 like python-dateutil.
