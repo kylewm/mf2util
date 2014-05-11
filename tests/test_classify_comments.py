@@ -117,8 +117,9 @@ def test_multimodal():
         ],
     })
 
-    assert mf2util.classify_comment(
-        blob, ('http://mydoma.in/short', 'http://mydomain.com/my-post'))\
+    assert sorted(
+        mf2util.classify_comment(
+            blob, ('http://mydoma.in/short', 'http://mydomain.com/my-post')))\
         == ['like', 'repost']
 
 
