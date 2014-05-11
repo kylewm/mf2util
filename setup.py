@@ -30,7 +30,7 @@ setup(name='mf2util',
       classifiers=[
           'Development Status :: 3 - Alpha',
           'Intended Audience :: Developers',
-          'License :: OSI Approved :: BSD License'
+          'License :: OSI Approved :: BSD License',
           'Natural Language :: English',
           'Programming Language :: Python',
           'Programming Language :: Python :: 3',
