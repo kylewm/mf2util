@@ -22,58 +22,56 @@ def test_p_author_string():
             }
         ]
     }
-    name, url, photo = mf2util.find_author(blob)
-    assert 'John Doe' == name
-    assert url is None
-    assert photo is None
+    assert mf2util.find_author(blob) == {'name': 'John Doe'}
 
 
 def test_p_author():
-    name, url, photo = load_test('h-entry_with_p-author')
-    assert 'John Doe' == name
-    assert 'http://example.com/johndoe/' == url
-    assert 'http://www.gravatar.com/avatar/fd876f8cd6a58277fc664d47ea10ad19.jpg?s=80&d=mm' == photo
+    assert load_test('h-entry_with_p-author') == {
+        'name': 'John Doe',
+        'url': 'http://example.com/johndoe/',
+        'photo': 'http://www.gravatar.com/avatar/fd876f8cd6a58277fc664d47ea10ad19.jpg?s=80&d=mm'
+    }
 
 
 def test_no_h_card():
-    name, url, photo = load_test('no_h-card')
-    assert name is None
-    assert url is None
-    assert photo is None
+    assert not load_test('no_h-card')
 
 
 def test_h_card_rel_me():
     testname = 'h-card_with_u-url_that_is_also_rel-me'
-    name, url, photo = load_test(testname)
-    assert 'John Doe' == name
-    assert '%s.html' % testname == url
-    assert 'http://www.gravatar.com/avatar/fd876f8cd6a58277fc664d47ea10ad19.jpg?s=80&d=mm' == photo
+    assert load_test(testname) == {
+        'name': 'John Doe',
+        'url': '%s.html' % testname,
+        'photo': 'http://www.gravatar.com/avatar/fd876f8cd6a58277fc664d47ea10ad19.jpg?s=80&d=mm'
+    }
 
 
 def test_h_card_self():
     testname = 'h-card_with_u-url_equal_to_u-uid_equal_to_self'
-    name, url, photo = load_test(testname)
-    assert 'John Doe' == name
-    assert '%s.html' % testname == url
-    assert 'http://www.gravatar.com/avatar/fd876f8cd6a58277fc664d47ea10ad19.jpg?s=80&d=mm' == photo
+    assert load_test(testname) == {
+        'name': 'John Doe',
+        'url': '%s.html' % testname,
+        'photo': 'http://www.gravatar.com/avatar/fd876f8cd6a58277fc664d47ea10ad19.jpg?s=80&d=mm'
+    }
 
 
 def test_h_card_rel_author():
-    name, url, photo = load_test('h-entry_with_rel-author_pointing_to_h-card_with_u-url_equal_to_u-uid_equal_to_self')
-    assert 'John Doe' == name
-    assert 'h-card_with_u-url_equal_to_u-uid_equal_to_self.html' == url
-    assert None == photo
+    assert load_test('h-entry_with_rel-author_pointing_to_h-card_with_u-url_equal_to_u-uid_equal_to_self') == {
+        'name': 'John Doe',
+        'url': 'h-card_with_u-url_equal_to_u-uid_equal_to_self.html'
+    }
 
 
 def test_rel_author_to_rel_author():
-    name, url, photo = load_test('h-entry_with_rel-author_and_h-card_with_u-url_pointing_to_rel-author_href')
-    assert 'John Doe' == name
-    assert 'no_h-card.html' == url
-    assert 'http://www.gravatar.com/avatar/fd876f8cd6a58277fc664d47ea10ad19.jpg?s=80&d=mm' == photo
+    assert load_test('h-entry_with_rel-author_and_h-card_with_u-url_pointing_to_rel-author_href') == {
+        'name': 'John Doe',
+        'url': 'no_h-card.html',
+        'photo': 'http://www.gravatar.com/avatar/fd876f8cd6a58277fc664d47ea10ad19.jpg?s=80&d=mm'
+    }
 
 
 def test_rel_author_to_rel_me():
-    name, url, photo = load_test('h-entry_with_rel-author_pointing_to_h-card_with_u-url_that_is_also_rel-me')
-    assert 'John Doe' == name
-    assert 'h-card_with_u-url_that_is_also_rel-me.html' == url
-    assert None == photo
+    assert load_test('h-entry_with_rel-author_pointing_to_h-card_with_u-url_that_is_also_rel-me') == {
+        'name': 'John Doe',
+        'url': 'h-card_with_u-url_that_is_also_rel-me.html'
+    }

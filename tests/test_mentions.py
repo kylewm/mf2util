@@ -38,17 +38,17 @@ TEST_BLOB = {
 
 def test_no_reference():
     blob = copy.deepcopy(TEST_BLOB)
-    assert mf2util.find_mentions(blob, ('http://example.com',)) == []
+    assert mf2util.classify_mentions(blob, ('http://example.com',)) == []
 
     # add some irrelevant references
     blob['items'][1]['in-reply-to'] = [
         "http://werd.io/2014/homebrew-website-club-4",
         "https://www.facebook.com/events/1430990723825351/"
     ]
-    assert mf2util.find_mentions(blob, ('http://example.com',)) == []
+    assert mf2util.classify_mentions(blob, ('http://example.com',)) == []
 
     # no target url
-    assert mf2util.find_mentions(blob, ()) == []
+    assert mf2util.classify_mentions(blob, ()) == []
 
 
 def test_likes():
@@ -61,9 +61,9 @@ def test_likes():
         'like-of': ['http://mydomain.com/my-post'],
     })
 
-    assert mf2util.find_mentions(
+    assert mf2util.classify_mentions(
         blob, ('http://mydoma.in/short', 'http://mydomain.com/my-post')) \
-        == [('http://mydomain.com/my-post', 'like')]
+        == ['like']
 
 
 def test_reposts():
@@ -76,9 +76,9 @@ def test_reposts():
         'like-of': ['http://someoneelse.com/post'],
     })
 
-    assert mf2util.find_mentions(
+    assert mf2util.classify_mentions(
         blob, ('http://mydoma.in/short', 'http://mydomain.com/my-post')) \
-        == [('http://mydomain.com/my-post', 'repost')]
+        == ['repost']
 
 
 def test_multireply():
@@ -95,9 +95,8 @@ def test_multireply():
         ],
     })
 
-    assert mf2util.find_mentions(
-        blob, ('http://mydomain.com/my-post')) \
-        == [('http://mydomain.com/my-post', 'reply')]
+    assert mf2util.classify_mentions(blob, ('http://mydomain.com/my-post')) \
+        == ['reply']
 
 
 def test_multimodal():
@@ -118,11 +117,9 @@ def test_multimodal():
         ],
     })
 
-    assert mf2util.find_mentions(
-        blob, ('http://mydoma.in/short', 'http://mydomain.com/my-post')) == [
-            ('http://mydoma.in/short', 'like'),
-            ('http://mydomain.com/my-post', 'repost'),
-        ]
+    assert mf2util.classify_mentions(
+        blob, ('http://mydoma.in/short', 'http://mydomain.com/my-post'))\
+        == ['like', 'repost']
 
 
 def test_h_cite():
@@ -139,5 +136,5 @@ def test_h_cite():
         }],
     })
 
-    assert mf2util.find_mentions(blob, ('http://mydomain.com/my-post',)) \
-        == [('http://mydomain.com/my-post', 'reply')]
+    assert mf2util.classify_mentions(blob, ('http://mydomain.com/my-post',))\
+        == ['reply']

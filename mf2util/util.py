@@ -6,7 +6,7 @@ about the classes (specifically h-entry and h-event) to extract
 certain interesting properties."""
 
 from collections import deque
-
+from . import dt
 
 H_CLASSES = ['h-entry', 'h-event']
 
@@ -20,7 +20,6 @@ def find_first_entry(parsed):
 
     Return:
      an mf2py item that is one of H_CLASSES, or None
-
     """
     queue = deque(item for item in parsed['items'])
     while queue:
@@ -30,7 +29,26 @@ def find_first_entry(parsed):
         queue.extend(item.get('children', []))
 
 
-def find_mentions(parsed, target_urls):
+def find_datetimes(parsed):
+    """
+    Find published, updated, start, and end dates.
+
+    Args:
+     parsed: a mf2py parsed dict
+
+    Return:
+     a dictionary from property type to datetime or date
+    """
+    hentry = find_first_entry(parsed)
+    result = {}
+
+    if hentry:
+        for prop in ('published', 'updated', 'start', 'end'):
+            date_strs = hentry['properties'].get(prop, [])
+            result[prop] = dt.parse(' '.join(date_strs))
+
+
+def classify_mentions(parsed, target_urls):
     """Find and categorize mentions that reference any of a collection of
     target URLs. Looks for references of type reply, like, and repost.
 
@@ -40,38 +58,40 @@ def find_mentions(parsed, target_urls):
                   this can include alternate or shortened URLs.
 
     Return:
-     a list of tuples, (target URL, reference type)
+     a collection of applicable mention types ('like', 'reply', 'repost')
     """
 
     def process_references(objs, reftype):
-        refs = []
+        types = set()
         for obj in objs:
             if isinstance(obj, dict):
-                refs += [(url, reftype) for url
-                         in obj.get('properties', {}).get('url', [])
-                         if url in target_urls]
-            elif obj in target_urls:
-                refs.append((obj, reftype))
+                if any(url in target_urls for url
+                       in obj.get('properties', {}).get('url', [])):
+                    types.add(reftype)
 
-        return refs
+            elif obj in target_urls:
+                types.add(reftype)
+
+        return types
 
     hentry = find_first_entry(parsed)
-    references = []
+    references = set()
 
     if hentry:
+        # TODO handle rel=in-reply-to
         for prop in ('in-reply-to', 'reply-to', 'reply'):
-            references += process_references(
+            references |= process_references(
                 hentry['properties'].get(prop, []), 'reply')
 
         for prop in ('like-of', 'like'):
-            references += process_references(
+            references |= process_references(
                 hentry['properties'].get(prop, []), 'like')
 
         for prop in ('repost-of', 'repost'):
-            references += process_references(
+            references |= process_references(
                 hentry['properties'].get(prop, []), 'repost')
 
-    return references
+    return list(references)
 
 
 def find_author(parsed, source_url=None):
@@ -84,23 +104,29 @@ def find_author(parsed, source_url=None):
      source_url: the source of the parsed document (optional)
 
     Return:
-     a tuple containing the author's name, photo, and url
+     a dict containing the author's name, photo, and url
     """
 
     def parse_author(obj):
+        result = {}
         if isinstance(obj, dict):
             names = obj['properties'].get('name')
             photos = obj['properties'].get('photo')
             urls = obj['properties'].get('url')
-            return (names and names[0],
-                    urls and urls[0],
-                    photos and photos[0])
+            if names:
+                result['name'] = names[0]
+            if photos:
+                result['photo'] = photos[0]
+            if urls:
+                result['url'] = urls[0]
         else:
-            return obj, None, None
+            result['name'] = obj
+
+        return result
 
     hentry = find_first_entry(parsed)
     if not hentry:
-        return None, None, None
+        return None
 
     for obj in hentry['properties'].get('author', []):
         return parse_author(obj)
@@ -135,6 +161,3 @@ def find_author(parsed, source_url=None):
     # just return the first h-card
     if hcards:
         return parse_author(hcards[0])
-
-    # we're out of options
-    return None, None, None

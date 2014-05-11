@@ -1,20 +1,19 @@
-"""The definition for microformats2 dt-* properties are fairly
-lenient.  This module will convert a mf2 date string into either a
-datetime.date or datetime.datetime object. Datetimes will be naive
-unless a timezone is specified.
-"""
-
 import re
 from datetime import tzinfo, timedelta, datetime, date
 
 
 def parse(s):
-    """
+    """The definition for microformats2 dt-* properties are fairly
+    lenient.  This method converts an mf2 date string into either a
+    datetime.date or datetime.datetime object. Datetimes will be naive
+    unless a timezone is specified.
+
     Args:
       s: a mf2 string representation of a date or datetime
 
     Return:
       datetime.date or datetime.datetime or None if the parser fails
+
     """
 
     if not s:
