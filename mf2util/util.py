@@ -48,8 +48,8 @@ def find_datetimes(parsed):
             result[prop] = dt.parse(' '.join(date_strs))
 
 
-def classify_mentions(parsed, target_urls):
-    """Find and categorize mentions that reference any of a collection of
+def classify_comment(parsed, target_urls):
+    """Find and categorize comments that reference any of a collection of
     target URLs. Looks for references of type reply, like, and repost.
 
     Args:
@@ -58,40 +58,36 @@ def classify_mentions(parsed, target_urls):
                   this can include alternate or shortened URLs.
 
     Return:
-     a collection of applicable mention types ('like', 'reply', 'repost')
+     a list of applicable comment types ['like', 'reply', 'repost']
     """
+    result = set()
 
     def process_references(objs, reftype):
-        types = set()
         for obj in objs:
             if isinstance(obj, dict):
                 if any(url in target_urls for url
                        in obj.get('properties', {}).get('url', [])):
-                    types.add(reftype)
+                    result.add(reftype)
 
             elif obj in target_urls:
-                types.add(reftype)
-
-        return types
+                result.add(reftype)
 
     hentry = find_first_entry(parsed)
-    references = set()
-
     if hentry:
         # TODO handle rel=in-reply-to
         for prop in ('in-reply-to', 'reply-to', 'reply'):
-            references |= process_references(
+            process_references(
                 hentry['properties'].get(prop, []), 'reply')
 
         for prop in ('like-of', 'like'):
-            references |= process_references(
+            process_references(
                 hentry['properties'].get(prop, []), 'like')
 
         for prop in ('repost-of', 'repost'):
-            references |= process_references(
+            process_references(
                 hentry['properties'].get(prop, []), 'repost')
 
-    return list(references)
+    return list(result)
 
 
 def find_author(parsed, source_url=None):

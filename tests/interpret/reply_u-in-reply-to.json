@@ -1,0 +1,190 @@
+{
+ "items": [
+  {
+   "children": [
+    {
+     "value": "\n\nI'm Ryan Barrett.\nI live, work, and play in\n San FranciscoCalifornia.\nI code, write, and post pictures here.\n\n\n\n\npublic@ryanb.org\npublic PGP key\n\n\n\n  \n    \n      Home\n    \n  \n  \n    \n      Search\n    \n  \n  \n    \n      Archives\n    \n  \n  \n    \n      Twitter\n    \n  \n  \n    \n      Facebook\n    \n  \n  \n    \n      Google+\n    \n  \n  \n    \n      GitHub\n    \n  \n  \n    \n      RSS Feed\n    \n  \n\n",
+     "properties": {
+      "name": [
+       "Ryan Barrett"
+      ],
+      "photo": [
+       "https://snarfed.org/ryan_profile_square_thumb.jpg"
+      ],
+      "url": [
+       "https://snarfed.org/"
+      ],
+      "key": [
+       "https://snarfed.org/pubkey.txt"
+      ],
+      "region": [
+       "California"
+      ],
+      "locality": [
+       "San Francisco"
+      ],
+      "email": [
+       "mailto:public@ryanb.org"
+      ]
+     },
+     "type": [
+      "h-card"
+     ]
+    }
+   ],
+   "properties": {
+    "name": [
+     "Re: Display likes in a facepile",
+     "Re: Display likes in a facepile"
+    ],
+    "published": [
+     "2014-03-09T22:48:22-07:00"
+    ],
+    "author": [
+     {
+      "value": " Ryan Barrett",
+      "properties": {
+       "name": [
+        "Ryan Barrett"
+       ],
+       "photo": [
+        "https://secure.gravatar.com/avatar/947b5f3f323da0ef785b6f02d9c265d6?s=96&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D96&r=G"
+       ],
+       "url": [
+        "http://snarfed.org/"
+       ]
+      },
+      "type": [
+       "h-card"
+      ]
+     }
+    ],
+    "in-reply-to": [
+     "https://willnorris.com/2014/03/display-likes-in-a-facepile"
+    ],
+    "url": [
+     "https://snarfed.org/2014-03-09_re-display-likes-in-a-facepile"
+    ],
+    "content": [
+     {
+      "html": "\n\t\t\t<div class=\"e-content\"><p>oh man, so cool! thanks for doing this. can\u2019t wait to try it myself!</p>\n\n<p><a class=\"u-in-reply-to\" href=\"https://willnorris.com/2014/03/display-likes-in-a-facepile\"></a></p>\n</div>\t\t\t\t\t",
+      "value": "\n\t\t\toh man, so cool! thanks for doing this. can\u2019t wait to try it myself!\n\n\n\t\t\t\t\t"
+     },
+     {
+      "html": "<p>oh man, so cool! thanks for doing this. can\u2019t wait to try it myself!</p>\n\n<p><a class=\"u-in-reply-to\" href=\"https://willnorris.com/2014/03/display-likes-in-a-facepile\"></a></p>\n",
+      "value": "oh man, so cool! thanks for doing this. can\u2019t wait to try it myself!\n\n\n"
+     }
+    ]
+   },
+   "type": [
+    "h-entry",
+    "h-as-article"
+   ]
+  }
+ ],
+ "rels": {
+  "nofollow": [
+   "https://snarfed.org/2014-03-09_re-display-likes-in-a-facepile#respond"
+  ],
+  "generator": [
+   "http://wordpress.org/"
+  ],
+  "prev": [
+   "https://snarfed.org/2014-03-09_re-oh-in-duboce-park-theyre-entering-the-medical-tricorder-s"
+  ],
+  "stylesheet": [
+   "https://snarfed.org/w/wp-content/plugins/nextgen-gallery/products/photocrati_nextgen/modules/nextgen_gallery_display/static/nextgen_gallery_related_images.css?ver=3.9.1",
+   "https://snarfed.org/w/wp-content/plugins/jetpack/modules/subscriptions/subscriptions.css?ver=3.9.1",
+   "https://snarfed.org/w/wp-content/plugins/jetpack/modules/widgets/widgets.css?ver=20121003",
+   "https://snarfed.org/w/wp-content/plugins/jetpack/modules/carousel/jetpack-carousel.css?ver=20120629",
+   "https://snarfed.org/w/wp-content/plugins/jetpack/modules/tiled-gallery/tiled-gallery/tiled-gallery.css?ver=2012-09-21",
+   "https://snarfed.org/w/wp-includes/js/mediaelement/mediaelementplayer.min.css?ver=2.13.0",
+   "https://snarfed.org/w/wp-includes/js/mediaelement/wp-mediaelement.css?ver=3.9.1",
+   "https://snarfed.org/w/wp-content/themes/snarfed-ryu/style.css?ver=3.9.1",
+   "https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic",
+   "https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900,400italic,700italic,900italic&subset=latin,latin-ext"
+  ],
+  "canonical": [
+   "https://snarfed.org/2014-03-09_re-display-likes-in-a-facepile"
+  ],
+  "tag": [
+   "https://snarfed.org/category/indieweb"
+  ],
+  "webmention": [
+   "https://snarfed.org/w/?webmention=endpoint"
+  ],
+  "shortcut": [
+   "https://snarfed.org/ryan_profile_square_thumb.jpg"
+  ],
+  "openid2.local_id": [
+   "http://www.google.com/profiles/heaven"
+  ],
+  "pingback": [
+   "https://snarfed.org/w/xmlrpc.php"
+  ],
+  "http://webmention.org/": [
+   "https://snarfed.org/w/?webmention=endpoint"
+  ],
+  "apple-touch-icon-precomposed": [
+   "https://snarfed.org/ryan_profile_square_thumb.jpg"
+  ],
+  "shortlink": [
+   "http://wp.me/p3EDAq-2ak"
+  ],
+  "author": [
+   "http://snarfed.org/"
+  ],
+  "publisher": [
+   "https://plus.google.com/103651231634018158746"
+  ],
+  "key": [
+   "https://snarfed.org/pubkey.txt"
+  ],
+  "designer": [
+   "http://theme.wordpress.com/"
+  ],
+  "icon": [
+   "https://snarfed.org/ryan_profile_square_thumb.jpg"
+  ],
+  "bookmark": [
+   "https://snarfed.org/2014-03-09_re-display-likes-in-a-facepile"
+  ],
+  "category": [
+   "https://snarfed.org/category/indieweb"
+  ],
+  "home": [
+   "https://snarfed.org/",
+   "https://snarfed.org/"
+  ],
+  "me": [
+   "mailto:public@ryanb.org",
+   "https://twitter.com/schnarfed",
+   "https://www.facebook.com/snarfed.org",
+   "https://plus.google.com/+RyanBarrett",
+   "https://github.com/snarfed"
+  ],
+  "openid2.provider": [
+   "https://www.google.com/accounts/o8/ud?source=profiles"
+  ],
+  "profile": [
+   "http://gmpg.org/xfn/11"
+  ],
+  "next": [
+   "https://snarfed.org/2014-03-10_re-joining-the-indie-web-my-motivation"
+  ]
+ },
+ "alternates": [
+  {
+   "url": "https://snarfed.org/feed",
+   "type": "application/rss+xml"
+  },
+  {
+   "url": "https://snarfed.org/comments/feed",
+   "type": "application/rss+xml"
+  },
+  {
+   "url": "https://snarfed.org/2014-03-09_re-display-likes-in-a-facepile/feed",
+   "type": "application/rss+xml"
+  }
+ ]
+}

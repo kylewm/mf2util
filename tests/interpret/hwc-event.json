@@ -1,0 +1,131 @@
+{
+ "alternates": [
+  {
+   "type": "application/rss+xml",
+   "url": "http://werd.io/2014/homebrew-website-club-4?_t=rss",
+   "rel": "feed"
+  },
+  {
+   "type": "application/rss+xml",
+   "url": "http://werd.io/content/all?_t=rss",
+   "rel": "feed"
+  }
+ ],
+ "items": [
+  {
+   "type": [
+    "h-card"
+   ],
+   "properties": {
+    "photo": [
+     "http://werd.io/file/52be39babed7deb701668dd8"
+    ],
+    "name": [
+     "Ben Werdm\u00fcller"
+    ],
+    "url": [
+     "http://werd.io/profile/benwerd",
+     "http://werd.io/profile/benwerd"
+    ]
+   }
+  },
+  {
+   "type": [
+    "h-event"
+   ],
+   "properties": {
+    "published": [
+     "2014-05-05T16:34:30+00:00"
+    ],
+    "end": [
+     "2014-05-07T19:30:00+00:00"
+    ],
+    "start": [
+     "2014-05-07T18:30:00+00:00"
+    ],
+    "content": [
+     {
+      "value": "\n            \n    \n        Homebrew Website Club\n    \n    \n        \n             Discuss progress; meet up; make new friends.         \n        \n            Location: Mozilla SF, 1st floor, 2 Harrison st. (at Embarcadero), San Francisco, CA \n        \n                    \n                Time: May 7th, 6:30pm\n            \n                            \n                Ends: May 7th, 7:30pm\n            \n            \n\n    \nAre you building your own website? Indie reader? Personal publishing web app? Or some other digital magic-cloud proxy? If so, come on by and join a gathering of people with like-minded interests. Bring your friends that want to start a personal web site. Exchange information, swap ideas, talk shop, help work on a project ...\n\nSee the Homebrew Website Club Newsletter Volume 1 Issue 1 for a description of the first meeting.\n\nOriginally posted on indiewebcamp.com. There's also a companion event at Mozilla Portland.\n\nHere's the Facebook event, if you prefer.\n        ",
+      "html": "\n            <div>\n    <h2 class=\"p-name\">\n        <a class=\"u-url\" href=\"http://werd.io/2014/homebrew-website-club-4\">Homebrew Website Club</a>\n    </h2>\n    <div class=\"well\">\n        <p class=\"p-summary\">\n             Discuss progress; meet up; make new friends.         </p>\n        <p>\n            Location: <span class=\"p-location\">Mozilla SF, 1st floor, 2 Harrison st. (at Embarcadero), San Francisco, CA </span>\n        </p>\n                    <p>\n                Time: <time class=\"dt-start\" datetime=\"2014-05-07T18:30:00+00:00\">May 7th, 6:30pm</time>\n            </p>\n                            <p>\n                Ends: <time class=\"dt-end\" datetime=\"2014-05-07T19:30:00+00:00\">May 7th, 7:30pm</time>\n            </p>\n            </div>\n\n    \n<p>Are you building your own website? Indie reader? Personal publishing web app? Or some other digital magic-cloud proxy? If so, come on by and join a gathering of people with like-minded interests. Bring your friends that want to start a personal web site. Exchange information, swap ideas, talk shop, help work on a project ...</p>\n\n<p><a href=\"http://tantek.com/2013/332/b1/homebrew-website-club-newsletter\">See the Homebrew Website Club Newsletter Volume 1 Issue 1 for a description of the first meeting.</a></p>\n\n<p><a href=\"http://indiewebcamp.com/events/2014-05-07-homebrew-website-club\">Originally posted on indiewebcamp.com</a>. There's also a companion event at Mozilla Portland.</p>\n\n<p><a class=\"u-syndication\" href=\"https://www.facebook.com/events/1430990723825351/\" rel=\"syndication\">Here's the Facebook event, if you prefer</a>.</p>\n</div>        "
+     }
+    ],
+    "location": [
+     "Mozilla SF, 1st floor, 2 Harrison st. (at Embarcadero), San Francisco, CA "
+    ],
+    "author": [
+     {
+      "value": "\n                \n                Ben Werdm\u00fcller\n                \n            ",
+      "type": [
+       "h-card"
+      ],
+      "properties": {
+       "photo": [
+        "http://werd.io/file/52be39babed7deb701668dd8"
+       ],
+       "logo": [
+        "http://werd.io/file/52be39babed7deb701668dd8"
+       ],
+       "name": [
+        "Ben Werdm\u00fcller"
+       ],
+       "url": [
+        "http://werd.io/profile/benwerd",
+        "http://werd.io/profile/benwerd"
+       ]
+      }
+     }
+    ],
+    "name": [
+     "\n        Homebrew Website Club\n    "
+    ],
+    "syndication": [
+     "https://www.facebook.com/events/1430990723825351/"
+    ],
+    "summary": [
+     "\n             Discuss progress; meet up; make new friends.         "
+    ],
+    "url": [
+     "http://werd.io/2014/homebrew-website-club-4",
+     "http://werd.io/2014/homebrew-website-club-4"
+    ]
+   }
+  }
+ ],
+ "rels": {
+  "http://webmention.org/": [
+   "http://werd.io/webmention/"
+  ],
+  "icon": [
+   "http://werd.io/file/52be39babed7deb701668dd8"
+  ],
+  "syndication": [
+   "https://www.facebook.com/events/1430990723825351/"
+  ],
+  "stylesheet": [
+   "http://werd.io/external/bootstrap/assets/css/bootstrap.css",
+   "http://werd.io/external/font-awesome/css/font-awesome.min.css",
+   "http://werd.io/external/bootstrap/assets/css/bootstrap-responsive.css",
+   "http://werd.io/css/default.css",
+   "http://werd.io/IdnoPlugins/Checkin/external/leaflet/leaflet.css",
+   "http://werd.io/styles/site/"
+  ],
+  "webmention": [
+   "http://werd.io/webmention/"
+  ],
+  "feed": [
+   "http://werd.io/content/all"
+  ],
+  "shortcut": [
+   "http://werd.io/file/52be39babed7deb701668dd8"
+  ],
+  "author": [
+   "http://werd.io/humans.txt"
+  ],
+  "apple-touch-icon-precomposed": [
+   "http://werd.io/file/52be39babed7deb701668dd8"
+  ],
+  "permalink": [
+   "http://werd.io/2014/homebrew-website-club-4"
+  ]
+ }
+}

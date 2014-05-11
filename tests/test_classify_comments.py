@@ -38,17 +38,17 @@ TEST_BLOB = {
 
 def test_no_reference():
     blob = copy.deepcopy(TEST_BLOB)
-    assert mf2util.classify_mentions(blob, ('http://example.com',)) == []
+    assert mf2util.classify_comment(blob, ('http://example.com',)) == []
 
     # add some irrelevant references
     blob['items'][1]['in-reply-to'] = [
         "http://werd.io/2014/homebrew-website-club-4",
         "https://www.facebook.com/events/1430990723825351/"
     ]
-    assert mf2util.classify_mentions(blob, ('http://example.com',)) == []
+    assert mf2util.classify_comment(blob, ('http://example.com',)) == []
 
     # no target url
-    assert mf2util.classify_mentions(blob, ()) == []
+    assert mf2util.classify_comment(blob, ()) == []
 
 
 def test_likes():
@@ -61,7 +61,7 @@ def test_likes():
         'like-of': ['http://mydomain.com/my-post'],
     })
 
-    assert mf2util.classify_mentions(
+    assert mf2util.classify_comment(
         blob, ('http://mydoma.in/short', 'http://mydomain.com/my-post')) \
         == ['like']
 
@@ -76,7 +76,7 @@ def test_reposts():
         'like-of': ['http://someoneelse.com/post'],
     })
 
-    assert mf2util.classify_mentions(
+    assert mf2util.classify_comment(
         blob, ('http://mydoma.in/short', 'http://mydomain.com/my-post')) \
         == ['repost']
 
@@ -95,7 +95,7 @@ def test_multireply():
         ],
     })
 
-    assert mf2util.classify_mentions(blob, ('http://mydomain.com/my-post')) \
+    assert mf2util.classify_comment(blob, ('http://mydomain.com/my-post')) \
         == ['reply']
 
 
@@ -117,7 +117,7 @@ def test_multimodal():
         ],
     })
 
-    assert mf2util.classify_mentions(
+    assert mf2util.classify_comment(
         blob, ('http://mydoma.in/short', 'http://mydomain.com/my-post'))\
         == ['like', 'repost']
 
@@ -136,5 +136,5 @@ def test_h_cite():
         }],
     })
 
-    assert mf2util.classify_mentions(blob, ('http://mydomain.com/my-post',))\
+    assert mf2util.classify_comment(blob, ('http://mydomain.com/my-post',))\
         == ['reply']

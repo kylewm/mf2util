@@ -1,0 +1,177 @@
+{
+ "items": [
+  {
+   "properties": {
+    "published": [
+     "2014-05-10T14:48:33-07:00"
+    ],
+    "author": [
+     {
+      "properties": {
+       "photo": [
+        "https://aaronparecki.com/images/aaronpk.png"
+       ],
+       "logo": [
+        "https://aaronparecki.com/images/aaronpk.png"
+       ],
+       "url": [
+        "http://aaronparecki.com/"
+       ],
+       "name": [
+        "Aaron Parecki"
+       ]
+      },
+      "value": "\n      \n      aaronparecki.com\n      Aaron Parecki\n      Aaron Parecki\n    ",
+      "type": [
+       "h-card"
+      ]
+     }
+    ],
+    "name": [
+     "@thedatahive We're working on it ;-) http://indiewebcamp.com/generations"
+    ],
+    "url": [
+     "http://aaronparecki.com/replies/2014/05/10/1/indieweb"
+    ],
+    "shortlink": [
+     "http://aaron.pk/r4W01"
+    ],
+    "category": [
+     "indieweb "
+    ],
+    "syndication": [
+     "https://twitter.com/aaronpk/status/465247041078034432"
+    ],
+    "location": [
+     {
+      "properties": {
+       "latitude": [
+        "45.512284"
+       ],
+       "name": [
+        "Portland, Oregon, USA"
+       ],
+       "longitude": [
+        "-122.612955"
+       ]
+      },
+      "value": " Portland, Oregon, USA",
+      "type": [
+       "h-card"
+      ]
+     }
+    ],
+    "content": [
+     {
+      "value": "@thedatahive We're working on it ;-) http://indiewebcamp.com/generations",
+      "html": "<a href=\"http://twitter.com/thedatahive\">@thedatahive</a> We're working on it ;-) <a href=\"http://indiewebcamp.com/generations\"><span class=\"protocol\">http://</span>indiewebcamp.com/generations</a>"
+     }
+    ],
+    "in-reply-to": [
+     {
+      "properties": {
+       "author": [
+        {
+         "properties": {
+          "photo": [
+           "/images/nouns/user.svg"
+          ],
+          "logo": [
+           "/images/nouns/user.svg"
+          ],
+          "url": [
+           "http://datahiveconsulting.com/author/lynne/"
+          ],
+          "name": [
+           "Lynne Baer"
+          ]
+         },
+         "value": "\n      \n                \n      \n              datahiveconsulting.com/author/lynne\n        Lynne Baer\n          ",
+         "type": [
+          "h-card"
+         ]
+        }
+       ],
+       "name": [
+        "Last week, a friend asked me what I thought of IndieWebify.Me, a movement intended to allow people to publish on the web without relying on the tools and storage of the giant corporations that currently control the majority of the social web. I\u2019m the kind of person who gladly supports her local independent bookstores and farmers\u2019 markets and food purveyors, links to IndieBound.org instead of Amazon to buy books, and admires the ideals of Open Source Software. So, I\u2019m biased towards an ..."
+       ],
+       "url": [
+        "http://datahiveconsulting.com/2014/04/10/indiewebify-me-and-the-knowledge-gap/"
+       ],
+       "content": [
+        {
+         "value": "Last week, a friend asked me what I thought of IndieWebify.Me, a movement intended to allow people to publish on the web without relying on the tools and storage of the giant corporations that currently control the majority of the social web. I\u2019m the kind of person who gladly supports her local independent bookstores and farmers\u2019 markets and food purveyors, links to IndieBound.org instead of Amazon to buy books, and admires the ideals of Open Source Software. So, I\u2019m biased towards an ...",
+         "html": "Last week, a friend asked me what I thought of IndieWebify.Me, a movement intended to allow people to publish on the web without relying on the tools and storage of the giant corporations that currently control the majority of the social web. I\u2019m the kind of person who gladly supports her local independent bookstores and farmers\u2019 markets and food purveyors, links to IndieBound.org instead of Amazon to buy books, and admires the ideals of Open Source Software. So, I\u2019m biased towards an ..."
+        }
+       ]
+      },
+      "value": "    \n      \n                \n      \n              datahiveconsulting.com/author/lynne\n        Lynne Baer\n          \nLast week, a friend asked me what I thought of IndieWebify.Me, a movement intended to allow people to publish on the web without relying on the tools and storage of the giant corporations that currently control the majority of the social web. I\u2019m the kind of person who gladly supports her local independent bookstores and farmers\u2019 markets and food purveyors, links to IndieBound.org instead of Amazon to buy books, and admires the ideals of Open Source Software. So, I\u2019m biased towards an ...permalink",
+      "type": [
+       "h-cite"
+      ]
+     }
+    ]
+   },
+   "type": [
+    "h-entry"
+   ]
+  }
+ ],
+ "rels": {
+  "pingback": [
+   "http://webmention.io/webmention?forward=http%3A%2F%2Faaronparecki.com%2Fwebmention.php"
+  ],
+  "icon": [
+   "/favicon.ico",
+   "/images/aaronpk-256.jpg"
+  ],
+  "search": [
+   "/opensearch.xml"
+  ],
+  "authorization_endpoint": [
+   "https://indieauth.com/auth"
+  ],
+  "apple-touch-icon-precomposed": [
+   "/images/aaronpk-256.jpg"
+  ],
+  "openid.server": [
+   "https://indieauth.com/openid"
+  ],
+  "author": [
+   "http://aaronparecki.com/",
+   "https://plus.google.com/117847912875913905493"
+  ],
+  "token_endpoint": [
+   "https://tokens.oauth.net/token"
+  ],
+  "prev": [
+   "/replies/2014/05/09/1/"
+  ],
+  "micropub": [
+   "https://aaronparecki.com/api/post"
+  ],
+  "webmention": [
+   "https://aaronparecki.com/webmention.php"
+  ],
+  "stylesheet": [
+   "/bootstrap-2.2.2/css/bootstrap.min.css",
+   "/bootstrap-2.2.2/css/bootstrap-responsive.min.css",
+   "/css/style.css?body=1",
+   "/css/font-awesome/css/font-awesome.min.css",
+   "/css/aaronpk.css"
+  ],
+  "openid.delegate": [
+   "https://aaronparecki.com/"
+  ],
+  "shortcut": [
+   "/favicon.ico",
+   "/images/aaronpk-256.jpg"
+  ],
+  "license": [
+   "http://creativecommons.org/licenses/by/3.0/"
+  ],
+  "tag": [
+   "/tag/indieweb"
+  ]
+ }
+}

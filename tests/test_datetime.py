@@ -38,12 +38,11 @@ def test_parse_datetimes_no_tz():
         mf2util.parse_dt('2014-04-23T30:90')
 
 
-
 def test_parse_datetimes():
     def assert_with_tz(dt, naive, offset):
         """return a tuple with naive datetime, and an timedelta tz offset"""
         assert naive == dt.replace(tzinfo=None)
-        assert offset == dt.tzinfo.utcoffset(dt)
+        assert offset == dt.utcoffset()
 
     # waterpigs.co.uk -- utc time
     assert_with_tz(mf2util.parse_dt('2014-05-10T10:48:28+00:00'),
