@@ -100,7 +100,7 @@ def test_multireply():
         == [('http://mydomain.com/my-post', 'reply')]
 
 
-def test_multimode():
+def test_multimodal():
     """a mention can have more than one classification, make sure we find
     all of them. also tests some of the alternate/historical classnames"""
     blob = copy.deepcopy(TEST_BLOB)

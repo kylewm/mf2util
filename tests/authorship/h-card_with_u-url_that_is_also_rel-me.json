@@ -1,0 +1,30 @@
+{
+ "items": [
+  {
+   "properties": {
+    "url": [
+     "h-card_with_u-url_that_is_also_rel-me.html"
+    ],
+    "photo": [
+     "http://www.gravatar.com/avatar/fd876f8cd6a58277fc664d47ea10ad19.jpg?s=80&d=mm"
+    ],
+    "name": [
+     "John Doe"
+    ]
+   },
+   "type": [
+    "h-card"
+   ]
+  },
+  {
+   "type": ["h-entry"],
+   "properties": {},
+   "name": ""
+  }
+ ],
+ "rels": {
+  "me": [
+   "h-card_with_u-url_that_is_also_rel-me.html"
+  ]
+ }
+}

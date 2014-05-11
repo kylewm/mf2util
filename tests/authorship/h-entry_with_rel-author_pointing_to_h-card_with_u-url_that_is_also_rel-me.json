@@ -1,0 +1,41 @@
+{
+ "items": [
+  {
+   "properties": {
+    "url": [
+     "h-card_with_u-url_that_is_also_rel-me.html"
+    ],
+    "name": [
+     "John Doe"
+    ]
+   },
+   "type": [
+    "h-card"
+   ]
+  },
+  {
+   "properties": {
+    "summary": [
+     "Hello World!"
+    ],
+    "content": [
+     {
+      "value": "Hello World!",
+      "html": "Hello World!"
+     }
+    ],
+    "name": [
+     "Hello World!"
+    ]
+   },
+   "type": [
+    "h-entry"
+   ]
+  }
+ ],
+ "rels": {
+  "author": [
+   "h-card_with_u-url_that_is_also_rel-me.html"
+  ]
+ }
+}

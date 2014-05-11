@@ -1,0 +1,44 @@
+{
+ "items": [
+  {
+   "properties": {
+    "url": [
+     "no_h-card.html"
+    ],
+    "photo": [
+     "http://www.gravatar.com/avatar/fd876f8cd6a58277fc664d47ea10ad19.jpg?s=80&d=mm"
+    ],
+    "name": [
+     "John Doe"
+    ]
+   },
+   "type": [
+    "h-card"
+   ]
+  },
+  {
+   "properties": {
+    "summary": [
+     "Hello World!"
+    ],
+    "content": [
+     {
+      "value": "Hello World!",
+      "html": "Hello World!"
+     }
+    ],
+    "name": [
+     "Hello World!"
+    ]
+   },
+   "type": [
+    "h-entry"
+   ]
+  }
+ ],
+ "rels": {
+  "author": [
+   "no_h-card.html"
+  ]
+ }
+}
