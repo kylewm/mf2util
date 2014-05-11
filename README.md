@@ -21,9 +21,9 @@ License: [Simplified BSD](http://opensource.org/licenses/BSD-2-Clause)
 I've done my best to create appropriate unit tests for this library,
 but it is very much alpha software at this point.
 
-To install, your best bet for installation is:
+Install via pip
 
-    pip install -e git+https://github.com/kylewm/mf2util
+    pip install mf2util
 
 or add as a submodule to your own project.
 
