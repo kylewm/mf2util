@@ -1,6 +1,6 @@
 # Microformats2 Utilities
 
-[![Build Status](https://travis-ci.org/kylewm/mf2datetime.svg?branch=master)](https://travis-ci.org/kylewm/mf2datetime)
+[![Build Status](https://travis-ci.org/kylewm/mf2util.svg?branch=master)](https://travis-ci.org/kylewm/mf2util)
 
 ## Datetimes
 
