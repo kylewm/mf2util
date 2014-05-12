@@ -15,11 +15,8 @@ def find_first_entry(parsed):
     """Find the first interesting h-* (current h-entry or h-event) object
     in BFS-order
 
-    Args:
-     parsed: a mf2py parsed dict
-
-    Return:
-     an mf2py item that is one of H_CLASSES, or None
+    :param dict parsed: a mf2py parsed dict
+    :return: an mf2py item that is one of H_CLASSES, or None
     """
     queue = deque(item for item in parsed['items'])
     while queue:
@@ -30,14 +27,10 @@ def find_first_entry(parsed):
 
 
 def find_datetimes(parsed):
-    """
-    Find published, updated, start, and end dates.
+    """Find published, updated, start, and end dates.
 
-    Args:
-     parsed: a mf2py parsed dict
-
-    Return:
-     a dictionary from property type to datetime or date
+    :param dict parsed: a mf2py parsed dict
+    :return: a dictionary from property type to datetime or date
     """
     hentry = find_first_entry(parsed)
     result = {}
@@ -52,13 +45,10 @@ def classify_comment(parsed, target_urls):
     """Find and categorize comments that reference any of a collection of
     target URLs. Looks for references of type reply, like, and repost.
 
-    Args:
-     parsed: a mf2py parsed dict
-     target_urls: a collection of urls that represent the target post.
-                  this can include alternate or shortened URLs.
-
-    Return:
-     a list of applicable comment types ['like', 'reply', 'repost']
+    :param dict parsed: a mf2py parsed dict
+    :param list target_urls: a collection of urls that represent the
+      target post. this can include alternate or shortened URLs.
+    :return: a list of applicable comment types ['like', 'reply', 'repost']
     """
     result = set()
 
@@ -95,12 +85,9 @@ def find_author(parsed, source_url=None):
     https://indiewebcamp.com/authorship to determine and h-entry's
     author.
 
-    Args:
-     parsed: an mf2py parsed dict
-     source_url: the source of the parsed document (optional)
-
-    Return:
-     a dict containing the author's name, photo, and url
+    :param dict parsed: an mf2py parsed dict.
+    :param str source_url: the source of the parsed document.
+    :return: a dict containing the author's name, photo, and url
     """
 
     def parse_author(obj):

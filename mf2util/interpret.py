@@ -1,32 +1,29 @@
 """Interpret a parsed JSON document, for the purpose of displaying
 received comments and/or reply contexts. Currently supports h-entry and
-h-event.
-"""
+h-event."""
 
 from . import util
 from . import dt
 
 
 def interpret_event(parsed, source_url, hevent=None):
-    """Given a document containing an h-event, return a dictionary,
-    {
-     'type': 'event',
-     'url': the permalink url of the document (may be different than source_url),
-     'start': datetime or date,
-     'end': datetime or date,
-     'name': plain-text event name,
-     'content': body of event description (contains HTML)
-    }
+    """Given a document containing an h-event, return a dictionary::
 
-    Args:
-     parsed: a dict, the result of parsing a document containing mf2 markup
-     source_url: the URL of the parsed document, not currently used
-     hevent: a dict (optional), the item in the above document representing
-             the h-event. if provided, we can avoid a redundant call to
-             find_first_entry
+        {
+         'type': 'event',
+         'url': the permalink url of the document (may be different than source_url),
+         'start': datetime or date,
+         'end': datetime or date,
+         'name': plain-text event name,
+         'content': body of event description (contains HTML)
+        }
 
-    Return:
-     a dict with some or all of the described properties
+    :param dict parsed: the result of parsing a document containing mf2 markup
+    :param str source_url: the URL of the parsed document, not currently used
+    :param dict hevent: (optional) the item in the above document representing
+      the h-event. if provided, we can avoid a redundant call to
+      find_first_entry
+    :return: a dict with some or all of the described properties
     """
     # find the h-event if it wasn't provided
     if not hevent:
@@ -58,31 +55,29 @@ def interpret_event(parsed, source_url, hevent=None):
 
 
 def interpret_entry(parsed, source_url, hentry=None):
-    """Given a document containing an h-entry, return a dictionary,
-    {
-     'type': 'entry',
-     'url': the permalink url of the document (may be different than source_url),
-     'published': datetime or date,
-     'updated': datetime or date,
-     'name': plain-text event name,
-     'content': body of event description (contains HTML),
-     'author': {
-      'name': author name,
-      'url': author url,
-      'photo': author photo
-     }
-    }
+    """Given a document containing an h-entry, return a dictionary::
 
-    Args:
-     parsed: a dict, the result of parsing a document containing mf2 markup
-     source_url: the URL of the parsed document, used by the authorship
-                  algorithm
-     hevent: a dict (optional), the item in the above document representing
-             the h-entry. if provided, we can avoid a redundant call to
-             find_first_entry
+        {
+         'type': 'entry',
+         'url': the permalink url of the document (may be different than source_url),
+         'published': datetime or date,
+         'updated': datetime or date,
+         'name': plain-text event name,
+         'content': body of event description (contains HTML),
+         'author': {
+          'name': author name,
+          'url': author url,
+          'photo': author photo
+         }
+        }
 
-    Return:
-     a dict with some or all of the described properties
+    :param dict parsed: the result of parsing a document containing mf2 markup
+    :param str source_url: the URL of the parsed document, used by the
+      authorship algorithm
+    :param dict hevent: (optional): the item in the above document
+      representing the h-entry. if provided, we can avoid a redundant
+      call to find_first_entry
+    :return: a dict with some or all of the described properties
     """
 
     # find the h-entry if it wasn't provided
@@ -122,15 +117,14 @@ def interpret_entry(parsed, source_url, hentry=None):
 
 def interpret(parsed, source_url):
     """Interpret an document of unknown type. Finds the first interesting
-    h-* element, and delegates to interpret_entry if it is an h-entry or
-    interpret_event if it is an h-event
+    h-* element, and delegates to :func:`interpret_entry` if it is an h-entry
+    or :func:`interpret_event` if it is an h-event
 
-    Args:
-     parsed: a dict, the result of parsing a mf2 document
-     source_url: the URL of the source document (used for authorship discovery)
 
-    Return:
-     a dict as described by interpret_entry or interpret_event, or None
+    :param dict parsed: the result of parsing a mf2 document
+    :param str source_url: the URL of the source document (used for authorship
+        discovery)
+    :return: a dict as described by interpret_entry or interpret_event, or None
     """
     item = util.find_first_entry(parsed)
     if item:
@@ -143,20 +137,20 @@ def interpret(parsed, source_url):
 def interpret_comment(parsed, source_url, target_urls):
     """Interpret received webmentions, and classify as like, reply, or
     repost (or a combination thereof). Returns a dict as described
-    in interpret_entry, with the additional fields
-     'comment_type': a list of strings, zero or more of
-                     'like', 'reply', or 'repost'
-     'rsvp': a string containing the rsvp response (optional)
+    in :func:`interpret_entry`, with the additional fields::
 
-    Args:
-     parsed: a dict, a parsed mf2 parsed document
-     source_url: the URL of the source document
-     target_urls: a collection containing the URL of the target document, and
-                  any alternate URLs (e.g., shortened links) that should be
-                  considered equivalent when looking for references
+        {
+         'comment_type': a list of strings, zero or more of
+                         'like', 'reply', or 'repost'
+         'rsvp': a string containing the rsvp response (optional)
+        }
 
-    Return:
-     a dict as described above, or None
+    :param dict parsed: a parsed mf2 parsed document
+    :param str source_url: the URL of the source document
+    :param list target_urls: a collection containing the URL of the target\
+      document, and any alternate URLs (e.g., shortened links) that should\
+      be considered equivalent when looking for references
+    :return: a dict as described above, or None
     """
     item = util.find_first_entry(parsed)
     if item and 'h-entry' in item['type']:

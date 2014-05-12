@@ -8,12 +8,9 @@ def parse(s):
     datetime.date or datetime.datetime object. Datetimes will be naive
     unless a timezone is specified.
 
-    Args:
-      s: a mf2 string representation of a date or datetime
-
-    Return:
-      datetime.date or datetime.datetime or None if the parser fails
-
+    :param str s: a mf2 string representation of a date or datetime
+    :return: datetime.date or datetime.datetime
+    :raises ValueError: if the string is not recognizable
     """
 
     if not s:

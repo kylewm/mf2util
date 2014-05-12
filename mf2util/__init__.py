@@ -1,8 +1,15 @@
-"""Utilities for interpreting the JSON result of parsing (e.g., with
-mf2py) a microformats document
-"""
+"""Utilities for interpreting mf2 data.
+
+Microformats2 is a general way to mark up any HTML document with
+classes and propeties. This module uses domain-specific assumptions
+about the classes (specifically h-entry and h-event) to extract
+certain interesting properties."""
 
 from .dt import parse as parse_dt
 from .util import find_first_entry, classify_comment, find_author
 from .interpret import interpret, interpret_event, interpret_entry,\
     interpret_comment
+
+__all__ = ['interpret', 'interpret_comment', 'interpret_event',
+           'interpret_entry', 'parse_dt', 'find_first_entry',
+           'classify_comment', 'find_author']
