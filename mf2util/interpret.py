@@ -45,9 +45,11 @@ def interpret_event(parsed, source_url, hevent=None):
         result['name'] = name_prop[0].strip()
 
     for prop in ('start', 'end'):
-        date = dt.parse(' '.join(hevent['properties'].get(prop, [])))
-        if date:
-            result[prop] = date
+        date_strs = hevent['properties'].get(prop)
+        if date_strs:
+            date = dt.parse(date_strs[0])
+            if date:
+                result[prop] = date
 
     # TODO parse event location
 
@@ -108,9 +110,11 @@ def interpret_entry(parsed, source_url, hentry=None):
             result['name'] = title
 
     for prop in ('published', 'updated'):
-        date = dt.parse(' '.join(hentry['properties'].get(prop, [])))
-        if date:
-            result[prop] = date
+        date_strs = hentry['properties'].get(prop)
+        if date_strs:
+            date = dt.parse(date_strs[0])
+            if date:
+                result[prop] = date
 
     return result
 

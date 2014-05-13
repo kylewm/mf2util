@@ -82,3 +82,17 @@ def test_article_naive_datetime():
     assert '<h2>Action labels not app names</h2>' in result['content']
     assert result['published'] == datetime(2014, 4, 30, 12, 11)
     assert result['updated'] == datetime(2014, 4, 30, 12, 11)
+
+
+def test_article_two_published_dates():
+    """Test for a case that was throwing exceptions. Could not interpret
+    datetime on posts with two dt-published dates because I was
+    concatenating them. Should just take the first instead.
+    """
+    parsed = load_test('article_two_published_dates')
+    result = mf2util.interpret(
+        parsed, 'article.html')
+    assert result['type'] == 'entry'
+    assert result['name'] == 'Test Article with Two Published Dates'
+    assert result['published'].replace(tzinfo=None) == datetime(2014, 4, 30, 12, 11, 00)
+    assert result['published'].utcoffset() == timedelta(hours=-8)
