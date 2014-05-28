@@ -70,7 +70,11 @@ def interpret_entry(parsed, source_url, hentry=None):
           'name': author name,
           'url': author url,
           'photo': author photo
-         }
+         },
+         'syndication': [
+           'syndication url',
+           ...
+         ]
         }
 
     :param dict parsed: the result of parsing a document containing mf2 markup
@@ -115,6 +119,9 @@ def interpret_entry(parsed, source_url, hentry=None):
             date = dt.parse(date_strs[0])
             if date:
                 result[prop] = date
+
+    result['syndication'] = parsed['rels'].get('syndication', []) +\
+        hentry['properties'].get('syndication', [])
 
     return result
 

@@ -39,6 +39,7 @@ def test_reply_h_cite():
         == datetime(2014, 5, 10, 14, 48, 33)
     assert result['published'].utcoffset() == timedelta(hours=-7)
     assert result['comment_type'] == ['reply']
+    assert result['syndication'] == ['https://twitter.com/aaronpk/status/465247041078034432']
 
 
 def test_u_in_reply_to():
