@@ -181,9 +181,9 @@ def convert_relative_paths_to_absolute(source_url, html):
     if source_url:
         for tagname, attributes in URL_ATTRIBUTES.items():
             for attribute in attributes:
-                html = re.sub(
+                pattern = re.compile(
                     '<%s[^>]*?%s\s*=\s*[\'"](.*?)[\'"]' % (tagname, attribute),
-                    do_convert, html,
                     flags=re.DOTALL | re.MULTILINE | re.IGNORECASE)
+                html = pattern.sub(do_convert, html)
 
     return html
