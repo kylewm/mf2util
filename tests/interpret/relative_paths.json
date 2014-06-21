@@ -1,0 +1,14 @@
+{
+    "rels": {},
+    "alternates": [],
+    "items": [{
+        "type": ["h-entry"],
+        "properties": {
+            "name": ["Example title"],
+            "content": [{
+                "value": "This is an example document",
+                "html": "This is an <img alt=\"alt text\" title=\"the title\" src=\"/static/img.jpg\"/> example document with <a href=\"relative_paths.html\">relative paths</a>."
+            }]
+        }
+    }]
+}

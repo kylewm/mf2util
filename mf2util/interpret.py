@@ -38,7 +38,8 @@ def interpret_event(parsed, source_url, hevent=None):
 
     content_prop = hevent['properties'].get('content')
     if content_prop:
-        result['content'] = content_prop[0]['html'].strip()
+        result['content'] = util.convert_relative_paths_to_absolute(
+            source_url, content_prop[0]['html'].strip())
 
     name_prop = hevent['properties'].get('name')
     if name_prop:
@@ -104,7 +105,8 @@ def interpret_entry(parsed, source_url, hentry=None):
     content_prop = hentry['properties'].get('content')
     content_value = None
     if content_prop:
-        result['content'] = content_prop[0]['html'].strip()
+        result['content'] = util.convert_relative_paths_to_absolute(
+            source_url, content_prop[0]['html'].strip())
         content_value = content_prop[0]['value'].strip()
 
     name_prop = hentry['properties'].get('name')
@@ -130,7 +132,6 @@ def interpret(parsed, source_url):
     """Interpret an document of unknown type. Finds the first interesting
     h-* element, and delegates to :func:`interpret_entry` if it is an h-entry
     or :func:`interpret_event` if it is an h-event
-
 
     :param dict parsed: the result of parsing a mf2 document
     :param str source_url: the URL of the source document (used for authorship

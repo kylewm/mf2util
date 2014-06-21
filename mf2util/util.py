@@ -5,10 +5,24 @@ classes and propeties. This module uses domain-specific assumptions
 about the classes (specifically h-entry and h-event) to extract
 certain interesting properties."""
 
+from __future__ import unicode_literals
 from collections import deque
 from . import dt
+import re
+
+# 2/3 compatibility
+try:
+    from urllib.parse import urljoin
+except ImportError:
+    from urlparse import urljoin
 
 H_CLASSES = ['h-entry', 'h-event']
+
+URL_ATTRIBUTES = {
+    'a': ['href'],
+    'link': ['href'],
+    'img': ['src'],
+}
 
 
 def find_first_entry(parsed):
@@ -16,7 +30,7 @@ def find_first_entry(parsed):
     in BFS-order
 
     :param dict parsed: a mf2py parsed dict
-    :return: an mf2py item that is one of H_CLASSES, or None
+    :return: an mf2py item that is one of `H_CLASSES`, or None
     """
     queue = deque(item for item in parsed['items'])
     while queue:
@@ -144,3 +158,32 @@ def find_author(parsed, source_url=None):
     # just return the first h-card
     if hcards:
         return parse_author(hcards[0])
+
+
+def convert_relative_paths_to_absolute(source_url, html):
+    """Attempt to convert relative paths in foreign content
+    to absolute based on the source url of the document. Useful for
+    displaying images or links in reply contexts and comments.
+
+    Gets list of tags/attributes from `URL_ATTRIBUTES`. Note that this
+    function uses a regular expression to avoid adding a library
+    dependency on a proper parser.
+
+    :param str source_url: the source of the parsed document.
+    :param str html: the text of the source document
+    :return: the document with relative urls replaced with absolute ones
+    """
+    def do_convert(match):
+        return (match.string[match.start(0):match.start(1)] +
+                urljoin(source_url, match.group(1)) +
+                match.string[match.end(1):match.end(0)])
+
+    if source_url:
+        for tagname, attributes in URL_ATTRIBUTES.items():
+            for attribute in attributes:
+                html = re.sub(
+                    '<%s[^>]*?%s\s*=\s*[\'"](.*?)[\'"]' % (tagname, attribute),
+                    do_convert, html,
+                    flags=re.DOTALL | re.MULTILINE | re.IGNORECASE)
+
+    return html
