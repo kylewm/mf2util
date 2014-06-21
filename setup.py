@@ -18,7 +18,7 @@ class PyTest(Command):
 
 
 setup(name='mf2util',
-      version='0.1.0',
+      version='0.1.1',
       description='Python Microformats2 utilities',
       long_description='Companion package for mf2py microformats2 parser. Provides utility functions to interpret post permalinks for display as comments or reply-context',
       author='Kyle Mahan',
