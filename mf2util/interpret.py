@@ -4,6 +4,7 @@ h-event."""
 
 from . import util
 from . import dt
+import logger
 
 
 def interpret_event(parsed, source_url, hevent=None):
@@ -38,16 +39,22 @@ def interpret_event(parsed, source_url, hevent=None):
 
     content_prop = hevent['properties'].get('content')
     if content_prop:
-        result['content'] = content_prop[0]['html'].strip()
+        result['content'] = util.convert_relative_paths_to_absolute(
+            source_url, content_prop[0]['html'].strip())
 
     name_prop = hevent['properties'].get('name')
     if name_prop:
         result['name'] = name_prop[0].strip()
 
     for prop in ('start', 'end'):
-        date = dt.parse(' '.join(hevent['properties'].get(prop, [])))
-        if date:
-            result[prop] = date
+        date_strs = hevent['properties'].get(prop)
+        if date_strs:
+            try:
+                date = dt.parse(date_strs[0])
+                if date:
+                    result[prop] = date
+            except ValueError:
+                logger.warn('Failed to parse datetime %s', date_strs[0])
 
     # TODO parse event location
 
@@ -108,14 +115,18 @@ def interpret_entry(parsed, source_url, hentry=None):
             result['name'] = title
 
     for prop in ('published', 'updated'):
-        date_str = ' '.join(hentry['properties'].get(prop, []))
-        result[prop + '-str'] = date_str
+        date_strs = hentry['properties'].get(prop)
+        if date_strs:
+            result[prop + '-str'] = date_strs[0]
+            try:
+                date = dt.parse(date_strs[0])
+                if date:
+                    result[prop] = date
+            except ValueError:
+                logger.warn('Failed to parse datetime %s', date_strs[0])
 
-        try:
-            date = dt.parse(date_str)
-            result[prop] = date
-        except ValueError:
-            pass
+    result['syndication'] = parsed['rels'].get('syndication', []) +\
+        hentry['properties'].get('syndication', [])
 
     return result
 

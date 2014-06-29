@@ -39,6 +39,7 @@ def test_reply_h_cite():
         == datetime(2014, 5, 10, 14, 48, 33)
     assert result['published'].utcoffset() == timedelta(hours=-7)
     assert result['comment_type'] == ['reply']
+    assert result['syndication'] == ['https://twitter.com/aaronpk/status/465247041078034432']
 
 
 def test_u_in_reply_to():
@@ -82,3 +83,24 @@ def test_article_naive_datetime():
     assert '<h2>Action labels not app names</h2>' in result['content']
     assert result['published'] == datetime(2014, 4, 30, 12, 11)
     assert result['updated'] == datetime(2014, 4, 30, 12, 11)
+
+
+def test_article_two_published_dates():
+    """Test for a case that was throwing exceptions. Could not interpret
+    datetime on posts with two dt-published dates because I was
+    concatenating them. Should just take the first instead.
+    """
+    parsed = load_test('article_two_published_dates')
+    result = mf2util.interpret(
+        parsed, 'article.html')
+    assert result['type'] == 'entry'
+    assert result['name'] == 'Test Article with Two Published Dates'
+    assert result['published'].replace(tzinfo=None) == datetime(2014, 4, 30, 12, 11, 00)
+    assert result['published'].utcoffset() == timedelta(hours=-8)
+
+
+def test_convert_relative_paths():
+    parsed = load_test('relative_paths')
+    result = mf2util.interpret(
+        parsed, 'http://example.com')
+    assert result['content'] == 'This is an <img alt="alt text" title="the title" src="http://example.com/static/img.jpg"/> example document with <a href="http://example.com/relative_paths.html">relative paths</a>.'

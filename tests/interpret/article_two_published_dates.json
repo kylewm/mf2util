@@ -1,0 +1,47 @@
+{
+ "items": [
+  {
+   "properties": {
+    "name": [
+     "Test Article with Two Published Dates"
+    ],
+    "published": [
+     "2014-04-30T12:11:00-0800",
+     "2014-04-30T12:11:00-0800"
+    ],
+    "content": [
+     {
+      "html": "",
+      "value": ""
+     }
+    ],
+    "author": [
+     {
+      "value": "",
+      "properties": {
+       "name": [
+        "Aaron Parecki"
+       ],
+       "url": [
+        "http://aaronparecki.com/"
+       ]
+      },
+      "type": [
+       "h-card"
+      ]
+     }
+    ]
+   },
+   "type": [
+    "h-entry",
+    "h-as-article"
+   ]
+  }
+ ],
+ "rels": {
+ },
+ "alternates": [
+  {
+  }
+ ]
+}
