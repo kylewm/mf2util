@@ -4,7 +4,7 @@ h-event."""
 
 from . import util
 from . import dt
-import logger
+import logging
 
 
 def interpret_event(parsed, source_url, hevent=None):
@@ -49,12 +49,13 @@ def interpret_event(parsed, source_url, hevent=None):
     for prop in ('start', 'end'):
         date_strs = hevent['properties'].get(prop)
         if date_strs:
+            result[prop + '-str'] = date_strs[0]
             try:
                 date = dt.parse(date_strs[0])
                 if date:
                     result[prop] = date
             except ValueError:
-                logger.warn('Failed to parse datetime %s', date_strs[0])
+                logging.warn('Failed to parse datetime %s', date_strs[0])
 
     # TODO parse event location
 
@@ -123,7 +124,7 @@ def interpret_entry(parsed, source_url, hentry=None):
                 if date:
                     result[prop] = date
             except ValueError:
-                logger.warn('Failed to parse datetime %s', date_strs[0])
+                logging.warn('Failed to parse datetime %s', date_strs[0])
 
     result['syndication'] = parsed['rels'].get('syndication', []) +\
         hentry['properties'].get('syndication', [])
