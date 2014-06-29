@@ -108,9 +108,14 @@ def interpret_entry(parsed, source_url, hentry=None):
             result['name'] = title
 
     for prop in ('published', 'updated'):
-        date = dt.parse(' '.join(hentry['properties'].get(prop, [])))
-        if date:
+        date_str = ' '.join(hentry['properties'].get(prop, []))
+        result[prop + '-str'] = date_str
+
+        try:
+            date = dt.parse(date_str)
             result[prop] = date
+        except ValueError:
+            pass
 
     return result
 
