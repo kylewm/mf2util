@@ -106,7 +106,8 @@ def interpret_entry(parsed, source_url, hentry=None):
     content_prop = hentry['properties'].get('content')
     content_value = None
     if content_prop:
-        result['content'] = content_prop[0]['html'].strip()
+        result['content'] = util.convert_relative_paths_to_absolute(
+            source_url, content_prop[0]['html'].strip())
         content_value = content_prop[0]['value'].strip()
 
     name_prop = hentry['properties'].get('name')
