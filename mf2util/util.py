@@ -16,8 +16,6 @@ try:
 except ImportError:
     from urlparse import urljoin
 
-H_CLASSES = ['h-entry', 'h-event']
-
 URL_ATTRIBUTES = {
     'a': ['href'],
     'link': ['href'],
@@ -25,17 +23,17 @@ URL_ATTRIBUTES = {
 }
 
 
-def find_first_entry(parsed):
-    """Find the first interesting h-* (current h-entry or h-event) object
-    in BFS-order
+def find_first_entry(parsed, types):
+    """Find the first interesting h-* object in BFS-order
 
     :param dict parsed: a mf2py parsed dict
-    :return: an mf2py item that is one of `H_CLASSES`, or None
+    :param list types: target types, e.g. ['h-entry', 'h-event']
+    :return: an mf2py item that is one of `types`, or None
     """
     queue = deque(item for item in parsed['items'])
     while queue:
         item = queue.popleft()
-        if any(h_class in item['type'] for h_class in H_CLASSES):
+        if any(h_class in item['type'] for h_class in types):
             return item
         queue.extend(item.get('children', []))
 
@@ -76,7 +74,7 @@ def classify_comment(parsed, target_urls):
             elif obj in target_urls:
                 result.add(reftype)
 
-    hentry = find_first_entry(parsed)
+    hentry = find_first_entry(parsed, ['h-entry'])
     if hentry:
         # TODO handle rel=in-reply-to
         for prop in ('in-reply-to', 'reply-to', 'reply'):
@@ -121,7 +119,7 @@ def find_author(parsed, source_url=None):
 
         return result
 
-    hentry = find_first_entry(parsed)
+    hentry = find_first_entry(parsed, ['h-entry'])
     if not hentry:
         return None
 

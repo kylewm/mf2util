@@ -8,8 +8,8 @@ certain interesting properties."""
 from .dt import parse as parse_dt
 from .util import find_first_entry, classify_comment, find_author
 from .interpret import interpret, interpret_event, interpret_entry,\
-    interpret_comment
+    interpret_comment, interpret_feed
 
 __all__ = ['interpret', 'interpret_comment', 'interpret_event',
-           'interpret_entry', 'parse_dt', 'find_first_entry',
-           'classify_comment', 'find_author']
+           'interpret_entry', 'interpret_feed', 'parse_dt',
+           'find_first_entry', 'classify_comment', 'find_author']
