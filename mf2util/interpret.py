@@ -117,7 +117,7 @@ def interpret_entry(parsed, source_url, hentry=None):
     name_prop = hentry['properties'].get('name')
     if name_prop:
         title = name_prop[0].strip()
-        if title != content_value:
+        if util.is_name_a_title(title, content_value):
             result['name'] = title
 
     for prop in ('published', 'updated'):

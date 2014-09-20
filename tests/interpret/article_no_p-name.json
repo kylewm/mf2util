@@ -1,0 +1,156 @@
+{
+  "alternates": [
+    {
+      "rel": "feed",
+      "type": "application/rss+xml",
+      "url": "http://werd.io/2014/egg-brooklyn?_t=rss"
+    },
+    {
+      "rel": "feed",
+      "type": "application/rss+xml",
+      "url": "http://werd.io/content/all?_t=rss"
+    }
+  ],
+  "items": [
+    {
+      "children": [
+        {
+          "properties": {
+            "name": [
+              ""
+            ],
+            "photo": [
+              "http://werd.io/gfx/users/default-00.png"
+            ],
+            "url": [
+              "\n"
+            ]
+          },
+          "type": [
+            "h-card"
+          ],
+          "value": "\n\n\n"
+        }
+      ],
+      "properties": {
+        "author": [
+          {
+            "properties": {
+              "name": [
+                "Ben Werdm\u00fcller"
+              ],
+              "photo": [
+                "http://werd.io/file/538d0a4cbed7de5111a1ad31/thumb.jpg"
+              ],
+              "url": [
+                "http://werd.io/profile/benwerd",
+                "http://werd.io/profile/benwerd",
+                "http://werd.io/profile/benwerd"
+              ]
+            },
+            "type": [
+              "h-card"
+            ],
+            "value": "\n\nBen Werdm\u00fcller\n\n\n"
+          }
+        ],
+        "content": [
+          {
+            "html": "\n<h2 class=\"p-photo\"><a href=\"http://werd.io/2014/egg-brooklyn\">Egg, Brooklyn</a></h2>\n<p style=\"text-align: center\">\n<a href=\"http://werd.io/file/541c3accbed7ded9797e59b2/IMG_20140919_101510.jpg\"><img class=\"u-photo\" src=\"http://werd.io/file/541c3accbed7ded9797e59bb/thumb.jpg\"/></a>\n</p>\n<p>Give me crayons and I will draw a rocketship. Fact.</p>\n",
+            "value": "\nEgg, Brooklyn\n\n\n\nGive me crayons and I will draw a rocketship. Fact.\n"
+          }
+        ],
+        "name": [
+          "Ben Werdm\u00fcller\n\n\n\n\u00a0\n\n\n\n\n2014-09-19T14:16:45+00:00\n\n\n\n\nEgg, Brooklyn\n\n\n\nGive me crayons and I will draw a rocketship. Fact.\n\n\n\n\n\n\n\n 1 star\n 1 comment\n\n\n\n\n\n\n\n\n\n\n\n\n\nsorry to break it to you, that is a squid.\nKyle Mahan,\n                    Sep 20 2014\n                    on kylewm.com\n\n\n\n\n\n\n\n\n\n\nDavid Walker\n                        liked this post\n                    \nSep 20 2014 on facebook.com\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n \n\n\n\n\n\n\n\n            $(document).ready(function () {\n\n                $('#extrafield').html('<input type=\"hidden\" name=\"validator\" value=\"http://werd.io/2014/egg-brooklyn\">');\n\n            })\n        \n\n\n\n                    Also on:\n                    flickr facebook"
+        ],
+        "photo": [
+          "Egg, Brooklyn",
+          "http://werd.io/file/541c3accbed7ded9797e59bb/thumb.jpg"
+        ],
+        "published": [
+          "2014-09-19T14:16:45+0000"
+        ],
+        "syndication": [
+          "https://www.flickr.com/photos/benwerd/15264900606/",
+          "https://facebook.com/10100928029673259"
+        ],
+        "url": [
+          "http://werd.io/2014/egg-brooklyn"
+        ]
+      },
+      "type": [
+        "h-entry"
+      ]
+    }
+  ],
+  "rels": {
+    "apple-touch-icon": [
+      "http://werd.io/gfx/logos/apple-icon-57x57.png",
+      "http://werd.io/gfx/logos/apple-icon-72x72.png",
+      "http://werd.io/gfx/logos/apple-icon-114x114.png",
+      "http://werd.io/gfx/logos/apple-icon-144x144.png",
+      "http://werd.io/file/538d0a4cbed7de5111a1ad31/thumb.jpg"
+    ],
+    "apple-touch-icon-precomposed": [
+      "http://werd.io/file/538d0a4cbed7de5111a1ad31/thumb.jpg"
+    ],
+    "author": [
+      "http://werd.io/humans.txt"
+    ],
+    "authorization_endpoint": [
+      "https://indieauth.com/auth"
+    ],
+    "feed": [
+      "http://werd.io/content/all"
+    ],
+    "http://webmention.org/": [
+      "http://werd.io/webmention/"
+    ],
+    "hub": [
+      "http://benwerd.superfeedr.com/"
+    ],
+    "icon": [
+      "http://werd.io/file/538d0a4cbed7de5111a1ad31/thumb.jpg"
+    ],
+    "micropub": [
+      "http://werd.io/micropub/endpoint"
+    ],
+    "openid.delegate": [
+      "http://werd.io/"
+    ],
+    "openid.server": [
+      "https://indieauth.com/openid"
+    ],
+    "permalink": [
+      "http://werd.io/2014/egg-brooklyn"
+    ],
+    "schema.DC": [
+      "http://purl.org/dc/elements/1.1/"
+    ],
+    "shortcut": [
+      "http://werd.io/file/538d0a4cbed7de5111a1ad31/thumb.jpg"
+    ],
+    "stylesheet": [
+      "http://werd.io/external/bootstrap/assets/css/bootstrap.css",
+      "http://werd.io/external/font-awesome/css/font-awesome.min.css",
+      "http://werd.io/external/bootstrap/assets/css/bootstrap-responsive.css",
+      "http://werd.io/css/default.css",
+      "http://cdn.leafletjs.com/leaflet-0.5/leaflet.css",
+      "http://werd.io/styles/site/",
+      "http://werd.io/Themes/Cherwell/css/default.css",
+      "http://werd.io/external/mediaelement/build/mediaelementplayer.css",
+      "http://werd.io/external/summernote/dist/summernote.css",
+      "http://werd.io/external/mention/recommended-styles.css"
+    ],
+    "syndication": [
+      "https://www.flickr.com/photos/benwerd/15264900606/",
+      "https://facebook.com/10100928029673259"
+    ],
+    "token_endpoint": [
+      "http://werd.io/indieauth/token"
+    ],
+    "webmention": [
+      "http://werd.io/webmention/"
+    ]
+  }
+}
