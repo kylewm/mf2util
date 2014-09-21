@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 from collections import deque
 from . import dt
 import re
+import unicodedata
 
 # 2/3 compatibility
 try:
@@ -208,10 +209,13 @@ def is_name_a_title(name, content):
     :param str content: the plain-text version of an e-content property
     :return: True if the name likely represents a separate, explicit title
     """
+    def normalize(s):
+        s = unicodedata.normalize('NFKD', s)
+        s = s.lower()
+        s = re.sub('[^a-z0-9]', '', s)
+        return s
     if not content:
         return True
     if not name:
         return False
-    name = re.sub('[^a-z0-9]', '', name.lower())
-    content = re.sub('[^a-z0-9]', '', content.lower())
-    return content not in name
+    return normalize(content) not in normalize(name)

@@ -138,7 +138,15 @@ def interpret_entry(parsed, source_url, hentry=None):
 
 
 def interpret_feed(parsed, source_url, hfeed=None):
-    """
+    """Interpret a source page as an h-feed or as an top-level collection
+    of h-entries.
+
+    :param dict parsed: the result of parsing a mf2 document
+    :param str source_url: the URL of the source document (used for authorship
+        discovery)
+    :param dict item: (optional) the item to be parsed. If provided,
+        this will be used instead of the first element on the page.
+    :return: a dict containing only one entry, 'feed' with a list of entries.
     """
     # find the first feed if it wasn't provided
     if not hfeed:
