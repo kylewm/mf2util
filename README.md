@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/kylewm/mf2util.svg?branch=master)](https://travis-ci.org/kylewm/mf2util)
 [![Coverage Status](https://coveralls.io/repos/kylewm/mf2util/badge.png?branch=master)](https://coveralls.io/r/kylewm/mf2util?branch=master)
+[![Documentation Status](https://readthedocs.org/projects/mf2util/badge/?version=latest)](https://readthedocs.org/projects/mf2util/?badge=latest)
 
 Microformats2 provides an extremely flexible way to mark up HTML
 documents, so that human-centric data is machine-discoverable. This
