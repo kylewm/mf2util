@@ -7,6 +7,6 @@ install:
   - pip install pytest
   - pip install coveralls
 script:
-  coverage run --source=mf2util setup.py test
+  coverage run --source=mf2util runtests.py
 after_success:
   coveralls
