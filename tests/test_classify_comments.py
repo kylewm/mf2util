@@ -51,6 +51,19 @@ def test_no_reference():
     assert mf2util.classify_comment(blob, ()) == []
 
 
+def test_rsvps():
+    blob = copy.deepcopy(TEST_BLOB)
+
+    blob['items'][1]['properties'].update({
+        'in-reply-to': ['http://mydomain.com/my-post'],
+        'rsvp': ['yes'],
+    })
+
+    assert mf2util.classify_comment(
+        blob, ('http://mydoma.in/short', 'http://mydomain.com/my-post')) \
+        == ['rsvp']
+
+
 def test_likes():
     """make sure we find likes"""
     blob = copy.deepcopy(TEST_BLOB)

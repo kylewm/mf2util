@@ -81,7 +81,8 @@ def classify_comment(parsed, target_urls):
         # TODO handle rel=in-reply-to
         for prop in ('in-reply-to', 'reply-to', 'reply'):
             process_references(
-                hentry['properties'].get(prop, []), 'reply')
+                hentry['properties'].get(prop, []),
+                'rsvp' if 'rsvp' in hentry['properties'] else 'reply')
 
         for prop in ('like-of', 'like'):
             process_references(
@@ -118,7 +119,6 @@ def find_author(parsed, source_url=None):
                 result['url'] = urls[0]
         else:
             result['name'] = obj
-
         return result
 
     hentry = find_first_entry(parsed)
