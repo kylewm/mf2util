@@ -70,7 +70,7 @@ def test_reply_rsvp():
     assert result['published'].replace(tzinfo=None)\
         == datetime(2014, 5, 5, 10, 10, 53)
     assert result['published'].utcoffset() == timedelta(hours=-7)
-    assert result['comment_type'] == ['reply']
+    assert result['comment_type'] == ['rsvp']
     assert result['rsvp'] == 'yes'
 
 
