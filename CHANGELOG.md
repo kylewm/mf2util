@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 0.1.3 - 2014-12-14
+### Changed
+- RSVP replies are now classified as type 'rsvp' instead of 'reply'
+
 ## 0.1.2 - 2014-09-20
 ### Added
 - Utility methods for interpreting h-feeds that contain one or more
