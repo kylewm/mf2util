@@ -216,6 +216,6 @@ def interpret_comment(parsed, source_url, target_urls):
 
             rsvp = item['properties'].get('rsvp')
             if rsvp:
-                result['rsvp'] = rsvp[0]
+                result['rsvp'] = rsvp[0].lower()
 
         return result
