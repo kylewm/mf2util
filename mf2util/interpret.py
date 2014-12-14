@@ -28,8 +28,8 @@ def interpret_event(parsed, source_url, hevent=None):
     """
     # find the h-event if it wasn't provided
     if not hevent:
-        hevent = util.find_first_entry(parsed)
-        if not hevent or 'h-event' not in hevent['type']:
+        hevent = util.find_first_entry(parsed, ['h-event'])
+        if not hevent:
             return {}
 
     result = {'type': 'event'}
@@ -70,8 +70,8 @@ def interpret_entry(parsed, source_url, hentry=None):
          'url': the permalink url of the document (may be different than source_url),
          'published': datetime or date,
          'updated': datetime or date,
-         'name': plain-text event name,
-         'content': body of event description (contains HTML),
+         'name': title of the entry,
+         'content': body of entry (contains HTML),
          'author': {
           'name': author name,
           'url': author url,
@@ -86,7 +86,7 @@ def interpret_entry(parsed, source_url, hentry=None):
     :param dict parsed: the result of parsing a document containing mf2 markup
     :param str source_url: the URL of the parsed document, used by the
       authorship algorithm
-    :param dict hevent: (optional): the item in the above document
+    :param dict hentry: (optional) the item in the above document
       representing the h-entry. if provided, we can avoid a redundant
       call to find_first_entry
     :return: a dict with some or all of the described properties
@@ -94,8 +94,8 @@ def interpret_entry(parsed, source_url, hentry=None):
 
     # find the h-entry if it wasn't provided
     if not hentry:
-        hentry = util.find_first_entry(parsed)
-        if not hentry or 'h-entry' not in hentry['type']:
+        hentry = util.find_first_entry(parsed, ['h-entry'])
+        if not hentry:
             return {}
 
     result = {'type': 'entry'}
@@ -117,7 +117,7 @@ def interpret_entry(parsed, source_url, hentry=None):
     name_prop = hentry['properties'].get('name')
     if name_prop:
         title = name_prop[0].strip()
-        if title != content_value:
+        if util.is_name_a_title(title, content_value):
             result['name'] = title
 
     for prop in ('published', 'updated'):
@@ -137,21 +137,55 @@ def interpret_entry(parsed, source_url, hentry=None):
     return result
 
 
-def interpret(parsed, source_url):
-    """Interpret an document of unknown type. Finds the first interesting
-    h-* element, and delegates to :func:`interpret_entry` if it is an h-entry
-    or :func:`interpret_event` if it is an h-event
+def interpret_feed(parsed, source_url, hfeed=None):
+    """Interpret a source page as an h-feed or as an top-level collection
+    of h-entries.
 
     :param dict parsed: the result of parsing a mf2 document
     :param str source_url: the URL of the source document (used for authorship
         discovery)
+    :param dict item: (optional) the item to be parsed. If provided,
+        this will be used instead of the first element on the page.
+    :return: a dict containing only one entry, 'feed' with a list of entries.
+    """
+    # find the first feed if it wasn't provided
+    if not hfeed:
+        hfeed = util.find_first_entry(parsed, ['h-feed'])
+
+    if hfeed:
+        children = hfeed.get('children', [])
+    # just use the top level 'items' as the feed children
+    else:
+        children = parsed.get('items', [])
+
+    entries = []
+    for child in children:
+        entry = interpret(parsed, source_url, item=child)
+        if entry:
+            entries.append(entry)
+
+    return {'feed': entries}
+
+
+def interpret(parsed, source_url, item=None):
+    """Interpret a permalink of unknown type. Finds the first interesting
+    h-* element, and delegates to :func:`interpret_entry` if it is an
+    h-entry or :func:`interpret_event` for an h-event
+
+    :param dict parsed: the result of parsing a mf2 document
+    :param str source_url: the URL of the source document (used for authorship
+        discovery)
+    :param dict item: (optional) the item to be parsed. If provided,
+        this will be used instead of the first element on the page.
     :return: a dict as described by interpret_entry or interpret_event, or None
     """
-    item = util.find_first_entry(parsed)
+    if not item:
+        item = util.find_first_entry(parsed, ['h-entry', 'h-event'])
+
     if item:
         if 'h-event' in item['type']:
             return interpret_event(parsed, source_url, hevent=item)
-        else:
+        elif 'h-entry' in item['type']:
             return interpret_entry(parsed, source_url, hentry=item)
 
 
@@ -173,8 +207,8 @@ def interpret_comment(parsed, source_url, target_urls):
       be considered equivalent when looking for references
     :return: a dict as described above, or None
     """
-    item = util.find_first_entry(parsed)
-    if item and 'h-entry' in item['type']:
+    item = util.find_first_entry(parsed, ['h-entry'])
+    if item:
         result = interpret_entry(parsed, source_url, item)
         if result:
             result['comment_type'] = util.classify_comment(

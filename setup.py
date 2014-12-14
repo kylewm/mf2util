@@ -12,15 +12,18 @@ class PyTest(Command):
         pass
 
     def run(self):
-        import sys, subprocess
+        import sys
+        import subprocess
         errno = subprocess.call([sys.executable, 'runtests.py'])
         raise SystemExit(errno)
 
 
 setup(name='mf2util',
-      version='0.1.1',
+      version='0.1.2',
       description='Python Microformats2 utilities',
-      long_description='Companion package for mf2py microformats2 parser. Provides utility functions to interpret post permalinks for display as comments or reply-context',
+      long_description='Companion package for mf2py microformats2 parser. '
+      'Provides utility functions to interpret post permalinks for display '
+      'as comments or reply-context',
       author='Kyle Mahan',
       author_email='kyle@kylewm.com',
       url='http://indiewebcamp.com/mf2util',

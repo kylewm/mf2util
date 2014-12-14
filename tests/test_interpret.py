@@ -104,3 +104,11 @@ def test_convert_relative_paths():
     result = mf2util.interpret(
         parsed, 'http://example.com')
     assert result['content'] == 'This is an <img alt="alt text" title="the title" src="http://example.com/static/img.jpg"/> example document with <a href="http://example.com/relative_paths.html">relative paths</a>.'
+
+
+def test_no_p_name():
+    parsed = load_test('article_no_p-name')
+    result = mf2util.interpret(
+        parsed, 'http://example.com')
+    assert 'Give me crayons and I will draw a rocketship.' in result['content']
+    assert 'name' not in result
