@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 0.1.4 - 2015-01-27
+### Changed
+- Authorship algorithm was incorrectly using the first h-entry on a page,
+  even when parsing an h-feed that has many.
+
 ## 0.1.3 - 2014-12-14
 ### Changed
 - RSVP replies are now classified as type 'rsvp' instead of 'reply'
