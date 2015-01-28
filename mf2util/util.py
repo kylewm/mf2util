@@ -94,7 +94,7 @@ def classify_comment(parsed, target_urls):
     return list(result)
 
 
-def find_author(parsed, source_url=None):
+def find_author(parsed, source_url=None, hentry=None):
     """Use the authorship discovery algorithm
     https://indiewebcamp.com/authorship to determine and h-entry's
     author.
@@ -120,9 +120,10 @@ def find_author(parsed, source_url=None):
             result['name'] = obj
         return result
 
-    hentry = find_first_entry(parsed, ['h-entry'])
     if not hentry:
-        return None
+        hentry = find_first_entry(parsed, ['h-entry'])
+        if not hentry:
+            return None
 
     for obj in hentry['properties'].get('author', []):
         return parse_author(obj)

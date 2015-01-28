@@ -103,7 +103,7 @@ def interpret_entry(parsed, source_url, hentry=None):
     if url_prop:
         result['url'] = url_prop[0]
 
-    author = util.find_author(parsed, source_url)
+    author = util.find_author(parsed, source_url, hentry)
     if author:
         result['author'] = author
 
@@ -146,13 +146,18 @@ def interpret_feed(parsed, source_url, hfeed=None):
         discovery)
     :param dict item: (optional) the item to be parsed. If provided,
         this will be used instead of the first element on the page.
-    :return: a dict containing only one entry, 'feed' with a list of entries.
+    :return: a dict containing 'entries', a list of entries, and possibly other
+        feed properties (like 'name').
     """
+    result = {}
     # find the first feed if it wasn't provided
     if not hfeed:
         hfeed = util.find_first_entry(parsed, ['h-feed'])
 
     if hfeed:
+        names = hfeed['properties'].get('name')
+        if names:
+            result['name'] = names[0]
         children = hfeed.get('children', [])
     # just use the top level 'items' as the feed children
     else:
@@ -163,8 +168,8 @@ def interpret_feed(parsed, source_url, hfeed=None):
         entry = interpret(parsed, source_url, item=child)
         if entry:
             entries.append(entry)
-
-    return {'feed': entries}
+    result['entries'] = entries
+    return result
 
 
 def interpret(parsed, source_url, item=None):
