@@ -10,8 +10,7 @@ utility can be used to interpret a microformatted post or event, for
 display as a [comment][] or [reply-context][].
 
 The library itself has no dependencies, but it won't do you much good
-without an mf2 parser. I use and recommend Kartik Prabhu's branch of
-[mf2py](https://github.com/kartikprabhu/mf2py).
+without an mf2 parser. I use and recommend [mf2py](https://github.com/tommorris/mf2py).
 
 Compatibility: Python 2.6, 2.7, 3.3+
 
