@@ -18,12 +18,15 @@ class PyTest(Command):
         raise SystemExit(errno)
 
 
+def readme():
+    with open('README.rst') as f:
+        return f.read()
+
+
 setup(name='mf2util',
-      version='0.1.4',
-      description='Python Microformats2 utilities',
-      long_description='Companion package for mf2py microformats2 parser. '
-      'Provides utility functions to interpret post permalinks for display '
-      'as comments or reply-context',
+      version='0.1.5',
+      description='Python Microformats2 utilities, a companion to mf2py',
+      long_description=readme(),
       author='Kyle Mahan',
       author_email='kyle@kylewm.com',
       url='http://indiewebcamp.com/mf2util',

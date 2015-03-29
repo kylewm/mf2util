@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 0.1.5 - 2015-02-18
+### Added
+- in-reply-to, like-of, and repost-of properties added to the
+  interpret_entry result.
+
 ## 0.1.4 - 2015-01-27
 ### Changed
 - Authorship algorithm was incorrectly using the first h-entry on a page,

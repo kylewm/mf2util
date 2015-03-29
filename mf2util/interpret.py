@@ -46,7 +46,7 @@ def interpret_event(parsed, source_url, hevent=None):
     if name_prop:
         result['name'] = name_prop[0].strip()
 
-    for prop in ('start', 'end'):
+    for prop in ('start', 'end', 'published', 'updated'):
         date_strs = hevent['properties'].get(prop)
         if date_strs:
             result[prop + '-str'] = date_strs[0]
@@ -80,7 +80,10 @@ def interpret_entry(parsed, source_url, hentry=None):
          'syndication': [
            'syndication url',
            ...
-         ]
+         ],
+         'in-reply-to': [...],
+         'like-of': [...],
+         'repost-of': [...],
         }
 
     :param dict parsed: the result of parsing a document containing mf2 markup
@@ -131,8 +134,18 @@ def interpret_entry(parsed, source_url, hentry=None):
             except ValueError:
                 logging.warn('Failed to parse datetime %s', date_strs[0])
 
-    result['syndication'] = (parsed['rels'].get('syndication', []) +
-                             hentry['properties'].get('syndication', []))
+    for prop in ('in-reply-to', 'like-of', 'repost-of'):
+        for url_prop in hentry['properties'].get(prop, []):
+            result.setdefault(prop, [])
+            if isinstance(url_prop, dict):
+                result.setdefault(prop, []).extend(
+                    url_prop.get('properties', {}).get('url', []))
+            else:
+                result.setdefault(prop, []).append(url_prop)
+
+    result['syndication'] = list(
+        set((parsed['rels'].get('syndication', []) +
+             hentry['properties'].get('syndication', []))))
 
     return result
 

@@ -39,6 +39,7 @@ def test_reply_h_cite():
         == datetime(2014, 5, 10, 14, 48, 33)
     assert result['published'].utcoffset() == timedelta(hours=-7)
     assert result['comment_type'] == ['reply']
+    assert result['in-reply-to'] == ['http://datahiveconsulting.com/2014/04/10/indiewebify-me-and-the-knowledge-gap/']
     assert result['syndication'] == ['https://twitter.com/aaronpk/status/465247041078034432']
 
 
@@ -55,6 +56,7 @@ def test_u_in_reply_to():
     assert result['published'].replace(tzinfo=None)\
         == datetime(2014, 3, 9, 22, 48, 22)
     assert result['published'].utcoffset() == timedelta(hours=-7)
+    assert result['in-reply-to'] == ['https://willnorris.com/2014/03/display-likes-in-a-facepile']
     assert result['comment_type'] == ['reply']
 
 
