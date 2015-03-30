@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from distutils.core import setup, Command
+import os.path
 
 
 class PyTest(Command):
@@ -19,7 +20,7 @@ class PyTest(Command):
 
 
 def readme():
-    with open('README.rst') as f:
+    with os.path.join(os.path.dirname(__file__), open('README.rst')) as f:
         return f.read()
 
 
