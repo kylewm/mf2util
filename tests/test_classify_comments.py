@@ -64,6 +64,22 @@ def test_rsvps():
         == ['rsvp']
 
 
+def test_invites():
+    blob = copy.deepcopy(TEST_BLOB)
+
+    blob['items'][1]['properties'].update({
+        'in-reply-to': ['http://mydomain.com/my-post'],
+        'invitee': [{
+            'name': 'Kyle Mahan',
+            'url': 'https://kylewm.com',
+        }],
+    })
+
+    assert mf2util.classify_comment(
+        blob, ('http://mydoma.in/short', 'http://mydomain.com/my-post')) \
+        == ['invite']
+
+
 def test_likes():
     """make sure we find likes"""
     blob = copy.deepcopy(TEST_BLOB)

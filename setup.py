@@ -26,7 +26,7 @@ def readme():
 
 
 setup(name='mf2util',
-      version='0.1.7',
+      version='0.1.8',
       description='Python Microformats2 utilities, a companion to mf2py',
       long_description=readme(),
       author='Kyle Mahan',

@@ -65,31 +65,37 @@ def classify_comment(parsed, target_urls):
     """
     result = set()
 
-    def process_references(objs, reftype):
+    def process_references(objs, reftypes):
         for obj in objs:
             if isinstance(obj, dict):
                 if any(url in target_urls for url
                        in obj.get('properties', {}).get('url', [])):
-                    result.add(reftype)
+                    result.update(reftypes)
 
             elif obj in target_urls:
-                result.add(reftype)
+                result.update(reftypes)
 
     hentry = find_first_entry(parsed, ['h-entry'])
     if hentry:
+        reply_type = []
+        if 'rsvp' in hentry['properties']:
+            reply_type.append('rsvp')
+        if 'invitee' in hentry['properties']:
+            reply_type.append('invite')
+        reply_type.append('reply')
+
         # TODO handle rel=in-reply-to
         for prop in ('in-reply-to', 'reply-to', 'reply'):
             process_references(
-                hentry['properties'].get(prop, []),
-                'rsvp' if 'rsvp' in hentry['properties'] else 'reply')
+                hentry['properties'].get(prop, []), reply_type)
 
         for prop in ('like-of', 'like'):
             process_references(
-                hentry['properties'].get(prop, []), 'like')
+                hentry['properties'].get(prop, []), ('like',))
 
         for prop in ('repost-of', 'repost'):
             process_references(
-                hentry['properties'].get(prop, []), 'repost')
+                hentry['properties'].get(prop, []), ('repost',))
 
     return list(result)
 
