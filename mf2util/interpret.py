@@ -236,4 +236,9 @@ def interpret_comment(parsed, source_url, target_urls):
             if rsvp:
                 result['rsvp'] = rsvp[0].lower()
 
+            invitees = item['properties'].get('invitee')
+            if invitees:
+                result['invitees'] = [
+                    util.parse_author(inv) for inv in invitees]
+
         return result

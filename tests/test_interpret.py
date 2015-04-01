@@ -72,8 +72,22 @@ def test_reply_rsvp():
     assert result['published'].replace(tzinfo=None)\
         == datetime(2014, 5, 5, 10, 10, 53)
     assert result['published'].utcoffset() == timedelta(hours=-7)
-    assert result['comment_type'] == ['rsvp']
+    assert result['comment_type'] == ['rsvp', 'reply']
     assert result['rsvp'] == 'yes'
+
+
+def test_reply_invite():
+    parsed = load_test('reply_invite')
+    result = mf2util.interpret_comment(
+        parsed, 'https://www.facebook.com/1565113317092307#10155109753190015',
+        ['https://kylewm.com/2015/03/homebrew-website-club-2015-march-25'])
+    assert result['name'] == 'invited'
+    assert result['comment_type'] == ['invite', 'reply']
+    assert result['invitees'] == [{
+        'name': 'Silona Bonewald',
+        'url': 'https://www.facebook.com/10155109753190015',
+        'photo': 'https://graph.facebook.com/v2.2/10155109753190015/picture?type=large',
+    }]
 
 
 def test_article_naive_datetime():

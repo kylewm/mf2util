@@ -63,18 +63,16 @@ def classify_comment(parsed, target_urls):
       target post. this can include alternate or shortened URLs.
     :return: a list of applicable comment types ['like', 'reply', 'repost']
     """
-    result = set()
-
-    def process_references(objs, reftypes):
+    def process_references(objs, reftypes, result):
         for obj in objs:
             if isinstance(obj, dict):
                 if any(url in target_urls for url
                        in obj.get('properties', {}).get('url', [])):
-                    result.update(reftypes)
-
+                    result += (r for r in reftypes if r not in result)
             elif obj in target_urls:
-                result.update(reftypes)
+                result += (r for r in reftypes if r not in result)
 
+    result = []
     hentry = find_first_entry(parsed, ['h-entry'])
     if hentry:
         reply_type = []
@@ -87,17 +85,43 @@ def classify_comment(parsed, target_urls):
         # TODO handle rel=in-reply-to
         for prop in ('in-reply-to', 'reply-to', 'reply'):
             process_references(
-                hentry['properties'].get(prop, []), reply_type)
+                hentry['properties'].get(prop, []), reply_type, result)
 
         for prop in ('like-of', 'like'):
             process_references(
-                hentry['properties'].get(prop, []), ('like',))
+                hentry['properties'].get(prop, []), ('like',), result)
 
         for prop in ('repost-of', 'repost'):
             process_references(
-                hentry['properties'].get(prop, []), ('repost',))
+                hentry['properties'].get(prop, []), ('repost',), result)
 
-    return list(result)
+    return result
+
+
+def parse_author(obj):
+    """Parse the value of a u-author property, can either be a compound
+    h-card or a single name or url.
+
+    :param object obj: the mf2 property value, either a dict or a string
+    :result: a dict containing the author's name, photo, and url
+    """
+    result = {}
+    if isinstance(obj, dict):
+        names = obj['properties'].get('name')
+        photos = obj['properties'].get('photo')
+        urls = obj['properties'].get('url')
+        if names:
+            result['name'] = names[0]
+        if photos:
+            result['photo'] = photos[0]
+        if urls:
+            result['url'] = urls[0]
+    elif obj:
+        if obj.startswith('http://') or obj.startswith('https://'):
+            result['url'] = obj
+        else:
+            result['name'] = obj
+    return result
 
 
 def find_author(parsed, source_url=None, hentry=None):
@@ -109,23 +133,6 @@ def find_author(parsed, source_url=None, hentry=None):
     :param str source_url: the source of the parsed document.
     :return: a dict containing the author's name, photo, and url
     """
-
-    def parse_author(obj):
-        result = {}
-        if isinstance(obj, dict):
-            names = obj['properties'].get('name')
-            photos = obj['properties'].get('photo')
-            urls = obj['properties'].get('url')
-            if names:
-                result['name'] = names[0]
-            if photos:
-                result['photo'] = photos[0]
-            if urls:
-                result['url'] = urls[0]
-        else:
-            result['name'] = obj
-        return result
-
     if not hentry:
         hentry = find_first_entry(parsed, ['h-entry'])
         if not hentry:

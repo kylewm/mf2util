@@ -20,13 +20,13 @@ class PyTest(Command):
 
 
 def readme():
-    with open(os.path.join(os.path.dirname(__file__), 
+    with open(os.path.join(os.path.dirname(__file__),
                            'README.rst')) as f:
         return f.read()
 
 
 setup(name='mf2util',
-      version='0.1.8',
+      version='0.1.9',
       description='Python Microformats2 utilities, a companion to mf2py',
       long_description=readme(),
       author='Kyle Mahan',

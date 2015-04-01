@@ -61,7 +61,7 @@ def test_rsvps():
 
     assert mf2util.classify_comment(
         blob, ('http://mydoma.in/short', 'http://mydomain.com/my-post')) \
-        == ['rsvp']
+        == ['rsvp', 'reply']
 
 
 def test_invites():
@@ -77,7 +77,7 @@ def test_invites():
 
     assert mf2util.classify_comment(
         blob, ('http://mydoma.in/short', 'http://mydomain.com/my-post')) \
-        == ['invite']
+        == ['invite', 'reply']
 
 
 def test_likes():

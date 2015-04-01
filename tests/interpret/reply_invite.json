@@ -1,0 +1,44 @@
+{
+  "items": [
+    {
+      "properties": {
+        "in-reply-to": [
+          "https://indiewebcamp.com/events/2015-03-25-homebrew-website-club",
+          "https://kylewm.com/2015/03/homebrew-website-club-2015-march-25"
+        ],
+        "invitee": [
+          {
+            "properties": {
+              "name": [
+                "Silona Bonewald"
+              ],
+              "photo": [
+                "https://graph.facebook.com/v2.2/10155109753190015/picture?type=large"
+              ],
+              "url": [
+                "https://www.facebook.com/10155109753190015"
+              ]
+            },
+            "type": [
+              "h-card"
+            ],
+            "value": "Silona Bonewald"
+          }
+        ],
+        "name": [
+          "invited"
+        ],
+        "uid": [
+          "tag:facebook.com,2013:1565113317092307_rsvp_10155109753190015"
+        ],
+        "url": [
+          "https://www.facebook.com/1565113317092307#10155109753190015"
+        ]
+      },
+      "type": [
+        "h-entry"
+      ]
+    }
+  ],
+  "rels": {}
+}
