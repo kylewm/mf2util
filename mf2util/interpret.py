@@ -39,8 +39,12 @@ def interpret_event(parsed, source_url, hevent=None):
 
     content_prop = hevent['properties'].get('content')
     if content_prop:
+        if isinstance(content_prop[0], dict):
+            content_html = content_prop[0]['html'].strip()
+        else:
+            content_html = content_prop[0]
         result['content'] = util.convert_relative_paths_to_absolute(
-            source_url, content_prop[0]['html'].strip())
+            source_url, content_html)
 
     name_prop = hevent['properties'].get('name')
     if name_prop:
@@ -118,9 +122,13 @@ def interpret_entry(parsed, source_url, hentry=None):
     content_prop = hentry['properties'].get('content')
     content_value = None
     if content_prop:
+        if isinstance(content_prop[0], dict):
+            content_html = content_prop[0]['html'].strip()
+            content_value = content_prop[0]['value'].strip()
+        else:
+            content_value = content_html = content_prop[0]
         result['content'] = util.convert_relative_paths_to_absolute(
-            source_url, content_prop[0]['html'].strip())
-        content_value = content_prop[0]['value'].strip()
+            source_url, content_html)
 
     name_prop = hentry['properties'].get('name')
     if name_prop:
