@@ -63,7 +63,7 @@ def interpret_event(parsed, source_url, hevent=None):
 
 
 def interpret_entry(parsed, source_url, hentry=None):
-    """Given a document containing an h-entry, return a dictionary::
+    """Given a document containing an h-entry, return a dictionary:
 
         {
          'type': 'entry',
@@ -101,7 +101,12 @@ def interpret_entry(parsed, source_url, hentry=None):
         if not hentry:
             return {}
 
-    result = {'type': 'entry'}
+    result = {}
+    if 'h-cite' in hentry.get('type', []):
+        result['type'] = 'cite'
+    else:
+        result['type'] = 'entry'
+
     url_prop = hentry['properties'].get('url')
     if url_prop:
         result['url'] = url_prop[0]
@@ -134,14 +139,16 @@ def interpret_entry(parsed, source_url, hentry=None):
             except ValueError:
                 logging.warn('Failed to parse datetime %s', date_strs[0])
 
-    for prop in ('in-reply-to', 'like-of', 'repost-of'):
-        for url_prop in hentry['properties'].get(prop, []):
-            result.setdefault(prop, [])
-            if isinstance(url_prop, dict):
-                result.setdefault(prop, []).extend(
-                    url_prop.get('properties', {}).get('url', []))
+    for prop in ('in-reply-to', 'like-of', 'repost-of',
+                 'bookmark-of', 'comment'):
+        for url_val in hentry['properties'].get(prop, []):
+            if isinstance(url_val, dict):
+                result.setdefault(prop, []).append(
+                    interpret_entry(parsed, source_url, url_val))
             else:
-                result.setdefault(prop, []).append(url_prop)
+                result.setdefault(prop, []).append({
+                    'url': url_prop
+                })
 
     result['syndication'] = list(
         set((parsed['rels'].get('syndication', []) +

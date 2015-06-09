@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## 0.2.0 - 2015-06-08
+### Added
+- parse nested h-cite comments as entries under the top-level entry
+- check for bookmark-of
+### Changed
+- in-reply-to, repost-of, like-of all parse into a list of objects now
+  instead of a list of urls
+
 ## 0.1.9 - 2015-04-01
 ### Added
 - Parse event invitations as type ['invite', 'reply'].

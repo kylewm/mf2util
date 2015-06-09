@@ -1,22 +1,8 @@
 #!/usr/bin/env python
-from distutils.core import setup, Command
+from distutils.core import setup
+from setuptools.command.test import test as TestCommand
 import os.path
-
-
-class PyTest(Command):
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        import sys
-        import subprocess
-        errno = subprocess.call([sys.executable, 'runtests.py'])
-        raise SystemExit(errno)
+import sys
 
 
 def readme():
@@ -25,8 +11,27 @@ def readme():
         return f.read()
 
 
+class PyTest(TestCommand):
+    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
+
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+        self.pytest_args = []
+
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        # import here, cause outside the eggs aren't loaded
+        import pytest
+        errno = pytest.main(self.pytest_args)
+        sys.exit(errno)
+
+
 setup(name='mf2util',
-      version='0.1.9',
+      version='0.2.0',
       description='Python Microformats2 utilities, a companion to mf2py',
       long_description=readme(),
       author='Kyle Mahan',
