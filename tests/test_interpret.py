@@ -1,6 +1,7 @@
 """Test the interpret module, the unification of the other utility methods.
 Uses test cases from around the indieweb.
 """
+from __future__ import unicode_literals
 from datetime import datetime, date, timedelta
 import mf2util
 import json
@@ -39,7 +40,17 @@ def test_reply_h_cite():
         == datetime(2014, 5, 10, 14, 48, 33)
     assert result['published'].utcoffset() == timedelta(hours=-7)
     assert result['comment_type'] == ['reply']
-    assert result['in-reply-to'] == ['http://datahiveconsulting.com/2014/04/10/indiewebify-me-and-the-knowledge-gap/']
+    assert result['in-reply-to'] == [{
+        'type': 'cite',
+        'author': {
+            'name': 'Lynne Baer',
+            'photo': 'http://aaronparecki.com/images/nouns/user.svg',
+            'url': 'http://datahiveconsulting.com/author/lynne/',
+        },
+        'content': "Last week, a friend asked me what I thought of IndieWebify.Me, a movement intended to allow people to publish on the web without relying on the tools and storage of the giant corporations that currently control the majority of the social web. I\u2019m the kind of person who gladly supports her local independent bookstores and farmers\u2019 markets and food purveyors, links to IndieBound.org instead of Amazon to buy books, and admires the ideals of Open Source Software. So, I\u2019m biased towards an ...",
+        'url': 'http://datahiveconsulting.com/2014/04/10/indiewebify-me-and-the-knowledge-gap/',
+        'syndication': [],
+    }]
     assert result['syndication'] == ['https://twitter.com/aaronpk/status/465247041078034432']
 
 
@@ -56,7 +67,7 @@ def test_u_in_reply_to():
     assert result['published'].replace(tzinfo=None)\
         == datetime(2014, 3, 9, 22, 48, 22)
     assert result['published'].utcoffset() == timedelta(hours=-7)
-    assert result['in-reply-to'] == ['https://willnorris.com/2014/03/display-likes-in-a-facepile']
+    assert result['in-reply-to'] == [{'url': 'https://willnorris.com/2014/03/display-likes-in-a-facepile'}]
     assert result['comment_type'] == ['reply']
 
 

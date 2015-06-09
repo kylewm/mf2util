@@ -74,10 +74,10 @@
         {
          "properties": {
           "photo": [
-           "/images/nouns/user.svg"
+           "http://aaronparecki.com/images/nouns/user.svg"
           ],
           "logo": [
-           "/images/nouns/user.svg"
+           "http://aaronparecki.com/images/nouns/user.svg"
           ],
           "url": [
            "http://datahiveconsulting.com/author/lynne/"

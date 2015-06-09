@@ -147,7 +147,7 @@ def interpret_entry(parsed, source_url, hentry=None):
                     interpret_entry(parsed, source_url, url_val))
             else:
                 result.setdefault(prop, []).append({
-                    'url': url_prop
+                    'url': url_val,
                 })
 
     result['syndication'] = list(
