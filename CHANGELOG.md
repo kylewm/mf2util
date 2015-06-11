@@ -1,11 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## 0.2.1 - 2015-08-27
+## 0.2.2 - 2015-08-27
 ### Added
 - parse simple location name and url from events and entries
 ### Changed
 - accept complex-valued "url" properties and fallback to their "value"
+
+## 0.2.1 - 2015-06-08
+### Changed
+- more lenient parsing of content as either e-content or p-content
 
 ## 0.2.0 - 2015-06-08
 ### Added
