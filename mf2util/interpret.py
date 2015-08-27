@@ -7,6 +7,51 @@ from . import dt
 import logging
 
 
+def _interpret_common_properties(parsed, source_url, hentry):
+    result = {}
+    for prop in ('url', 'uid'):
+        url_strs = hentry['properties'].get(prop)
+        if url_strs:
+            if isinstance(url_strs[0], dict):
+                result[prop] = url_strs[0].get('value')
+            else:
+                result[prop] = url_strs[0]
+
+    for prop in ('published', 'updated'):
+        date_strs = hentry['properties'].get(prop)
+        if date_strs:
+            result[prop + '-str'] = date_strs[0]
+            try:
+                date = dt.parse(date_strs[0])
+                if date:
+                    result[prop] = date
+            except ValueError:
+                logging.warn('Failed to parse datetime %s', date_strs[0])
+
+    author = util.find_author(parsed, source_url, hentry)
+    if author:
+        result['author'] = author
+
+    # TODO handle h-adr and h-geo variants
+    locations = hentry['properties'].get('location')
+    if locations:
+        if isinstance(locations[0], dict):
+            result['location'] = {
+                'url': locations[0]['properties'].get('url'),
+                'name': locations[0]['properties'].get('name'),
+            }
+        else:
+            result['location'] = {
+                'name': locations[0],
+            }
+
+    result['syndication'] = list(
+        set((parsed['rels'].get('syndication', []) +
+             hentry['properties'].get('syndication', []))))
+
+    return result
+    
+    
 def interpret_event(parsed, source_url, hevent=None):
     """Given a document containing an h-event, return a dictionary::
 
@@ -32,10 +77,8 @@ def interpret_event(parsed, source_url, hevent=None):
         if not hevent:
             return {}
 
-    result = {'type': 'event'}
-    url_prop = hevent['properties'].get('url')
-    if url_prop:
-        result['url'] = url_prop[0]
+    result = _interpret_common_properties(parsed, source_url, hevent)
+    result['type'] = 'event'
 
     content_prop = hevent['properties'].get('content')
     if content_prop:
@@ -61,7 +104,6 @@ def interpret_event(parsed, source_url, hevent=None):
             except ValueError:
                 logging.warn('Failed to parse datetime %s', date_strs[0])
 
-    # TODO parse event location
 
     return result
 
@@ -105,19 +147,11 @@ def interpret_entry(parsed, source_url, hentry=None):
         if not hentry:
             return {}
 
-    result = {}
+    result = _interpret_common_properties(parsed, source_url, hentry)
     if 'h-cite' in hentry.get('type', []):
         result['type'] = 'cite'
     else:
         result['type'] = 'entry'
-
-    url_prop = hentry['properties'].get('url')
-    if url_prop:
-        result['url'] = url_prop[0]
-
-    author = util.find_author(parsed, source_url, hentry)
-    if author:
-        result['author'] = author
 
     content_prop = hentry['properties'].get('content')
     content_value = None
@@ -136,17 +170,6 @@ def interpret_entry(parsed, source_url, hentry=None):
         if util.is_name_a_title(title, content_value):
             result['name'] = title
 
-    for prop in ('published', 'updated'):
-        date_strs = hentry['properties'].get(prop)
-        if date_strs:
-            result[prop + '-str'] = date_strs[0]
-            try:
-                date = dt.parse(date_strs[0])
-                if date:
-                    result[prop] = date
-            except ValueError:
-                logging.warn('Failed to parse datetime %s', date_strs[0])
-
     for prop in ('in-reply-to', 'like-of', 'repost-of',
                  'bookmark-of', 'comment'):
         for url_val in hentry['properties'].get(prop, []):
@@ -157,10 +180,6 @@ def interpret_entry(parsed, source_url, hentry=None):
                 result.setdefault(prop, []).append({
                     'url': url_val,
                 })
-
-    result['syndication'] = list(
-        set((parsed['rels'].get('syndication', []) +
-             hentry['properties'].get('syndication', []))))
 
     return result
 
