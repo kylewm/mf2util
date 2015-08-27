@@ -35,15 +35,14 @@ def _interpret_common_properties(parsed, source_url, hentry):
     # TODO handle h-adr and h-geo variants
     locations = hentry['properties'].get('location')
     if locations:
+        result['location'] = {}
         if isinstance(locations[0], dict):
-            result['location'] = {
-                'url': locations[0]['properties'].get('url'),
-                'name': locations[0]['properties'].get('name'),
-            }
+            for loc_prop in ('url', 'name', 'latitude', 'longitude'):
+                loc_values = locations[0]['properties'].get(loc_prop)
+                if loc_values:
+                    result['location'][loc_prop] = loc_values[0]
         else:
-            result['location'] = {
-                'name': locations[0],
-            }
+            result['location'] = {'name': locations[0]}
 
     result['syndication'] = list(
         set((parsed['rels'].get('syndication', []) +
