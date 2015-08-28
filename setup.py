@@ -3,11 +3,13 @@ from distutils.core import setup
 from setuptools.command.test import test as TestCommand
 import os.path
 import sys
+import codecs
 
 
 def readme():
-    with open(os.path.join(os.path.dirname(__file__),
-                           'README.rst')) as f:
+    with codecs.open(
+            os.path.join(os.path.dirname(__file__), 'README.rst'),
+            encoding='utf-8') as f:
         return f.read()
 
 
@@ -31,7 +33,7 @@ class PyTest(TestCommand):
 
 
 setup(name='mf2util',
-      version='0.2.1',
+      version='0.2.2',
       description='Python Microformats2 utilities, a companion to mf2py',
       long_description=readme(),
       author='Kyle Mahan',

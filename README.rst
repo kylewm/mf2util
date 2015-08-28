@@ -143,7 +143,7 @@ Usage
     import mf2py
     import mf2util
 
-    parsed = mf2py.Parser(url=...)
+    parsed = mf2py.Parser(=…)
     publishedstr = parsed.to_dict()['items'][0]['properties']['published'][0]
     published = mf2util.parse_dt(published)  # --> datetime.datetime
 
