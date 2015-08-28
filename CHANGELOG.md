@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## 0.2.2 - 2015-08-27
+## 0.2.3 - 2015-08-27
 ### Added
 - parse simple location name and url from events and entries
 ### Changed
