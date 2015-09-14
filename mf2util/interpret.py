@@ -7,7 +7,7 @@ from . import dt
 import logging
 
 
-def _interpret_common_properties(parsed, source_url, hentry):
+def _interpret_common_properties(parsed, source_url, hentry, want_json):
     result = {}
     for prop in ('url', 'uid'):
         url_strs = hentry['properties'].get(prop)
@@ -17,16 +17,19 @@ def _interpret_common_properties(parsed, source_url, hentry):
             else:
                 result[prop] = url_strs[0]
 
-    for prop in ('published', 'updated'):
+    for prop in ('start', 'end', 'published', 'updated'):
         date_strs = hentry['properties'].get(prop)
         if date_strs:
-            result[prop + '-str'] = date_strs[0]
-            try:
-                date = dt.parse(date_strs[0])
-                if date:
-                    result[prop] = date
-            except ValueError:
-                logging.warn('Failed to parse datetime %s', date_strs[0])
+            if want_json:
+                result[prop] = date_strs[0]
+            else:
+                result[prop + '-str'] = date_strs[0]
+                try:
+                    date = dt.parse(date_strs[0])
+                    if date:
+                        result[prop] = date
+                except ValueError:
+                    logging.warn('Failed to parse datetime %s', date_strs[0])
 
     author = util.find_author(parsed, source_url, hentry)
     if author:
@@ -49,9 +52,9 @@ def _interpret_common_properties(parsed, source_url, hentry):
              hentry['properties'].get('syndication', []))))
 
     return result
-    
-    
-def interpret_event(parsed, source_url, hevent=None):
+
+
+def interpret_event(parsed, source_url, hevent=None, want_json=False):
     """Given a document containing an h-event, return a dictionary::
 
         {
@@ -68,6 +71,8 @@ def interpret_event(parsed, source_url, hevent=None):
     :param dict hevent: (optional) the item in the above document representing
       the h-event. if provided, we can avoid a redundant call to
       find_first_entry
+    :param boolean want_json: (optional, default false) if true, the result
+      will be pure json with datetimes as strings instead of python objects
     :return: a dict with some or all of the described properties
     """
     # find the h-event if it wasn't provided
@@ -76,7 +81,8 @@ def interpret_event(parsed, source_url, hevent=None):
         if not hevent:
             return {}
 
-    result = _interpret_common_properties(parsed, source_url, hevent)
+    result = _interpret_common_properties(
+        parsed, source_url, hevent, want_json)
     result['type'] = 'event'
 
     content_prop = hevent['properties'].get('content')
@@ -92,22 +98,10 @@ def interpret_event(parsed, source_url, hevent=None):
     if name_prop:
         result['name'] = name_prop[0].strip()
 
-    for prop in ('start', 'end', 'published', 'updated'):
-        date_strs = hevent['properties'].get(prop)
-        if date_strs:
-            result[prop + '-str'] = date_strs[0]
-            try:
-                date = dt.parse(date_strs[0])
-                if date:
-                    result[prop] = date
-            except ValueError:
-                logging.warn('Failed to parse datetime %s', date_strs[0])
-
-
     return result
 
 
-def interpret_entry(parsed, source_url, hentry=None):
+def interpret_entry(parsed, source_url, hentry=None, want_json=False):
     """Given a document containing an h-entry, return a dictionary:
 
         {
@@ -137,6 +131,8 @@ def interpret_entry(parsed, source_url, hentry=None):
     :param dict hentry: (optional) the item in the above document
       representing the h-entry. if provided, we can avoid a redundant
       call to find_first_entry
+    :param boolean want_json: (optional, default False) if true, the result
+      will be pure json with datetimes as strings instead of python objects
     :return: a dict with some or all of the described properties
     """
 
@@ -146,7 +142,8 @@ def interpret_entry(parsed, source_url, hentry=None):
         if not hentry:
             return {}
 
-    result = _interpret_common_properties(parsed, source_url, hentry)
+    result = _interpret_common_properties(
+        parsed, source_url, hentry, want_json)
     if 'h-cite' in hentry.get('type', []):
         result['type'] = 'cite'
     else:
@@ -218,16 +215,18 @@ def interpret_feed(parsed, source_url, hfeed=None):
     return result
 
 
-def interpret(parsed, source_url, item=None):
+def interpret(parsed, source_url, item=None, want_json=False):
     """Interpret a permalink of unknown type. Finds the first interesting
     h-* element, and delegates to :func:`interpret_entry` if it is an
     h-entry or :func:`interpret_event` for an h-event
 
     :param dict parsed: the result of parsing a mf2 document
     :param str source_url: the URL of the source document (used for authorship
-        discovery)
+      discovery)
     :param dict item: (optional) the item to be parsed. If provided,
-        this will be used instead of the first element on the page.
+      this will be used instead of the first element on the page.
+    :param boolean want_json (optional, default False) If true, the result
+      will be pure json with datetimes as strings instead of python objects
     :return: a dict as described by interpret_entry or interpret_event, or None
     """
     if not item:
@@ -235,12 +234,14 @@ def interpret(parsed, source_url, item=None):
 
     if item:
         if 'h-event' in item['type']:
-            return interpret_event(parsed, source_url, hevent=item)
+            return interpret_event(
+                parsed, source_url, hevent=item, want_json=want_json)
         elif 'h-entry' in item['type']:
-            return interpret_entry(parsed, source_url, hentry=item)
+            return interpret_entry(
+                parsed, source_url, hentry=item, want_json=want_json)
 
 
-def interpret_comment(parsed, source_url, target_urls):
+def interpret_comment(parsed, source_url, target_urls, want_json=False):
     """Interpret received webmentions, and classify as like, reply, or
     repost (or a combination thereof). Returns a dict as described
     in :func:`interpret_entry`, with the additional fields::
@@ -256,11 +257,13 @@ def interpret_comment(parsed, source_url, target_urls):
     :param list target_urls: a collection containing the URL of the target\
       document, and any alternate URLs (e.g., shortened links) that should\
       be considered equivalent when looking for references
+    :param boolean want_json (optional, default False) If true, the result
+      will be pure json with datetimes as strings instead of python objects
     :return: a dict as described above, or None
     """
     item = util.find_first_entry(parsed, ['h-entry'])
     if item:
-        result = interpret_entry(parsed, source_url, item)
+        result = interpret_entry(parsed, source_url, item, want_json)
         if result:
             result['comment_type'] = util.classify_comment(
                 parsed, target_urls)
