@@ -79,7 +79,7 @@ document, it will figure out the document's primary h- type and return
 the appropriate fields for display. Currently supports h-entry and
 h-event style documents.
 
-``` {.sourceCode .python}
+```python
 import mf2py
 import mf2util
 
