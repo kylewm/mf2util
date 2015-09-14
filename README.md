@@ -163,7 +163,13 @@ request, or just message me in the \#indiewebcamp channel on freenode.
 Changes
 -------
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project will be documented here.
+
+### 0.2.5 - 2015-09-14
+#### Changed
+
+- minor bugfix: interpret should pass want_json recursively when
+  fetching reply contexts.
 
 ### 0.2.4 - 2015-09-14
 

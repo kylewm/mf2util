@@ -171,7 +171,7 @@ def interpret_entry(parsed, source_url, hentry=None, want_json=False):
         for url_val in hentry['properties'].get(prop, []):
             if isinstance(url_val, dict):
                 result.setdefault(prop, []).append(
-                    interpret_entry(parsed, source_url, url_val))
+                    interpret_entry(parsed, source_url, url_val, want_json))
             else:
                 result.setdefault(prop, []).append({
                     'url': url_val,
@@ -225,7 +225,7 @@ def interpret(parsed, source_url, item=None, want_json=False):
       discovery)
     :param dict item: (optional) the item to be parsed. If provided,
       this will be used instead of the first element on the page.
-    :param boolean want_json (optional, default False) If true, the result
+    :param boolean want_json: (optional, default False) If true, the result
       will be pure json with datetimes as strings instead of python objects
     :return: a dict as described by interpret_entry or interpret_event, or None
     """
@@ -257,7 +257,7 @@ def interpret_comment(parsed, source_url, target_urls, want_json=False):
     :param list target_urls: a collection containing the URL of the target\
       document, and any alternate URLs (e.g., shortened links) that should\
       be considered equivalent when looking for references
-    :param boolean want_json (optional, default False) If true, the result
+    :param boolean want_json: (optional, default False) If true, the result
       will be pure json with datetimes as strings instead of python objects
     :return: a dict as described above, or None
     """
