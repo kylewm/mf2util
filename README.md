@@ -253,4 +253,4 @@ All notable changes to this project will be documented in this file.
 -   Methods for interpreting h-entry, h-event, and received comments (to
     decide whether they are replies, likes, reposts, etc.)
 -   No-dependency method for parsing datetimes described in
-    [http://microformats.org/wiki/value-class-pattern\#Date\\\_and\\\_time\\\_parsing](http://microformats.org/wiki/value-class-pattern#Date\_and\_time\_parsing)
+    [http://microformats.org/wiki/value-class-pattern#Date_and_time_parsing](http://microformats.org/wiki/value-class-pattern#Date_and_time_parsing)
