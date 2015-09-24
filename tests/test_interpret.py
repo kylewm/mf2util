@@ -48,6 +48,7 @@ def test_reply_h_cite():
             'url': 'http://datahiveconsulting.com/author/lynne/',
         },
         'content': "Last week, a friend asked me what I thought of IndieWebify.Me, a movement intended to allow people to publish on the web without relying on the tools and storage of the giant corporations that currently control the majority of the social web. I\u2019m the kind of person who gladly supports her local independent bookstores and farmers\u2019 markets and food purveyors, links to IndieBound.org instead of Amazon to buy books, and admires the ideals of Open Source Software. So, I\u2019m biased towards an ...",
+        'content-plain': "Last week, a friend asked me what I thought of IndieWebify.Me, a movement intended to allow people to publish on the web without relying on the tools and storage of the giant corporations that currently control the majority of the social web. I\u2019m the kind of person who gladly supports her local independent bookstores and farmers\u2019 markets and food purveyors, links to IndieBound.org instead of Amazon to buy books, and admires the ideals of Open Source Software. So, I\u2019m biased towards an ...",
         'url': 'http://datahiveconsulting.com/2014/04/10/indiewebify-me-and-the-knowledge-gap/',
         'syndication': [],
     }]
