@@ -165,6 +165,11 @@ Changes
 
 All notable changes to this project will be documented here.
 
+### 0.2.6 - 2015-09-24
+#### Added
+
+- added property content-plain to preserve the e-content value
+
 ### 0.2.5 - 2015-09-14
 #### Changed
 
