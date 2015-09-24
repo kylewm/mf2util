@@ -35,6 +35,18 @@ def _interpret_common_properties(parsed, source_url, hentry, want_json):
     if author:
         result['author'] = author
 
+    content_prop = hentry['properties'].get('content')
+    content_value = None
+    if content_prop:
+        if isinstance(content_prop[0], dict):
+            content_html = content_prop[0]['html'].strip()
+            content_value = content_prop[0]['value'].strip()
+        else:
+            content_value = content_html = content_prop[0]
+        result['content'] = util.convert_relative_paths_to_absolute(
+            source_url, content_html)
+        result['content-plain'] = content_value
+
     # TODO handle h-adr and h-geo variants
     locations = hentry['properties'].get('location')
     if locations:
@@ -85,15 +97,6 @@ def interpret_event(parsed, source_url, hevent=None, want_json=False):
         parsed, source_url, hevent, want_json)
     result['type'] = 'event'
 
-    content_prop = hevent['properties'].get('content')
-    if content_prop:
-        if isinstance(content_prop[0], dict):
-            content_html = content_prop[0]['html'].strip()
-        else:
-            content_html = content_prop[0]
-        result['content'] = util.convert_relative_paths_to_absolute(
-            source_url, content_html)
-
     name_prop = hevent['properties'].get('name')
     if name_prop:
         result['name'] = name_prop[0].strip()
@@ -102,7 +105,7 @@ def interpret_event(parsed, source_url, hevent=None, want_json=False):
 
 
 def interpret_entry(parsed, source_url, hentry=None, want_json=False):
-    """Given a document containing an h-entry, return a dictionary:
+    """Given a document containing an h-entry, return a dictionary::
 
         {
          'type': 'entry',
@@ -149,21 +152,10 @@ def interpret_entry(parsed, source_url, hentry=None, want_json=False):
     else:
         result['type'] = 'entry'
 
-    content_prop = hentry['properties'].get('content')
-    content_value = None
-    if content_prop:
-        if isinstance(content_prop[0], dict):
-            content_html = content_prop[0]['html'].strip()
-            content_value = content_prop[0]['value'].strip()
-        else:
-            content_value = content_html = content_prop[0]
-        result['content'] = util.convert_relative_paths_to_absolute(
-            source_url, content_html)
-
     name_prop = hentry['properties'].get('name')
     if name_prop:
         title = name_prop[0].strip()
-        if util.is_name_a_title(title, content_value):
+        if util.is_name_a_title(title, result.get('content-plain')):
             result['name'] = title
 
     for prop in ('in-reply-to', 'like-of', 'repost-of',
