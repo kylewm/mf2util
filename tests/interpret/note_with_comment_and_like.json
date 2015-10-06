@@ -1,0 +1,321 @@
+{
+  "items": [
+    {
+      "properties": {
+        "author": [
+          {
+            "properties": {
+              "name": [
+                "Kyle Mahan"
+              ],
+              "photo": [
+                "https://kylewm.com/static/img/users/kyle.jpg"
+              ],
+              "url": [
+                "https://kylewm.com"
+              ]
+            },
+            "type": [
+              "h-card"
+            ],
+            "value": "Kyle Mahan"
+          }
+        ],
+        "category": [
+          "indieweb"
+        ],
+        "comment": [
+          {
+            "properties": {
+              "author": [
+                {
+                  "properties": {
+                    "name": [
+                      "Aaron Parecki"
+                    ],
+                    "photo": [
+                      "https://twitter.com/aaronpk/profile_image?size=original"
+                    ],
+                    "url": [
+                      "http://aaronparecki.com"
+                    ]
+                  },
+                  "type": [
+                    "h-card"
+                  ],
+                  "value": "Aaron Parecki"
+                }
+              ],
+              "content": [
+                {
+                  "html": "\n          <a href=\"https://twitter.com/kylewmahan\">@kylewmahan</a> I usually click through a couple levels up looking to see if any of the URLs up the chain show comments <a href=\"https://twitter.com/search?q=%23indieweb\">#indieweb</a>\n        ",
+                  "value": "\n          @kylewmahan I usually click through a couple levels up looking to see if any of the URLs up the chain show comments #indieweb\n        "
+                }
+              ],
+              "name": [
+                "Aaron Parecki\n    \n\n        \n          @kylewmahan I usually click through a couple levels up looking to see if any of the URLs up the chain show comments #indieweb\n         \n        \n          on twitter.com"
+              ],
+              "published": [
+                "2015-10-05T17:07:20-07:00"
+              ],
+              "url": [
+                "https://twitter.com/aaronpk/status/651186942114050050"
+              ]
+            },
+            "type": [
+              "h-cite"
+            ],
+            "value": "Aaron Parecki\n    \n\n        \n          @kylewmahan I usually click through a couple levels up looking to see if any of the URLs up the chain show comments #indieweb\n         \n        \n          on twitter.com"
+          }
+        ],
+        "content": [
+          {
+            "html": "\n          <p>big thing missing from my <a href=\"/tags/indieweb\">#indieweb</a> experience is being able to see other people\u2019s comments before replying. tough problem to solve.</p>\n          \n        ",
+            "value": "\n          big thing missing from my #indieweb experience is being able to see other people\u2019s comments before replying. tough problem to solve.\n          \n        "
+          }
+        ],
+        "like": [
+          {
+            "properties": {
+              "author": [
+                {
+                  "properties": {
+                    "name": [
+                      ""
+                    ],
+                    "photo": [
+                      "https://kylewm.com/imageproxy?url=https%3A%2F%2Ftwitter.com%2Fbenwerd%2Fprofile_image%3Fsize%3Doriginal&size=48&sig=fde7ce5635f5ea132a2545ff5c7d3d33"
+                    ],
+                    "url": [
+                      "https://twitter.com/benwerd"
+                    ]
+                  },
+                  "type": [
+                    "h-card"
+                  ],
+                  "value": ""
+                }
+              ],
+              "name": [
+                ""
+              ],
+              "url": [
+                "https://twitter.com/kylewmahan/status/651186266701107200"
+              ]
+            },
+            "type": [
+              "h-cite"
+            ],
+            "value": "https://twitter.com/kylewmahan/status/651186266701107200"
+          }
+        ],
+        "name": [
+          "big thing missing from my #indieweb experience is being able to see other people\u2019s comments before replying. tough problem to solve."
+        ],
+        "published": [
+          "2015-10-05T17:04:35-07:00"
+        ],
+        "shortlink": [
+          "https://kylewm.com/n/4d_1"
+        ],
+        "syndication": [
+          "https://twitter.com/kylewmahan/status/651186266701107200"
+        ],
+        "uid": [
+          "https://kylewm.com/2015/10/big-thing-missing-from-my-indieweb-experience-is"
+        ],
+        "url": [
+          "https://kylewm.com/2015/10/big-thing-missing-from-my-indieweb-experience-is",
+          "https://kylewm.com/n/4d_1"
+        ]
+      },
+      "type": [
+        "h-entry"
+      ]
+    }
+  ],
+  "rel-urls": {
+    "https://indieauth.com/auth": {
+      "rels": [
+        "authorization_endpoint"
+      ],
+      "text": ""
+    },
+    "https://indieauth.com/openid": {
+      "rels": [
+        "openid.server"
+      ],
+      "text": ""
+    },
+    "https://keybase.io/kylewm/key.asc": {
+      "rels": [
+        "pgpkey"
+      ],
+      "text": "",
+      "type": "application/pgp-keys"
+    },
+    "https://kylewm.com": {
+      "rels": [
+        "openid.delegate"
+      ],
+      "text": ""
+    },
+    "https://kylewm.com/_themes/boxy/style.css?version=2015-06-25": {
+      "rels": [
+        "stylesheet"
+      ],
+      "text": ""
+    },
+    "https://kylewm.com/everything": {
+      "rels": [
+        "feed"
+      ],
+      "text": "",
+      "type": "text/html"
+    },
+    "https://kylewm.com/foaf.rdf": {
+      "rels": [
+        "meta"
+      ],
+      "text": "",
+      "title": "Contact",
+      "type": "application/rdf+xml"
+    },
+    "https://kylewm.com/imageproxy?url=%2Fstatic%2Fimg%2Fusers%2Fkyle.jpg&size=114&sig=b57d1f32eb45988e4b1e7f5a53afd072": {
+      "rels": [
+        "apple-touch-icon"
+      ],
+      "text": ""
+    },
+    "https://kylewm.com/imageproxy?url=%2Fstatic%2Fimg%2Fusers%2Fkyle.jpg&size=152&sig=cb27d9fb6b285da683bb869ba974ee53": {
+      "rels": [
+        "apple-touch-icon"
+      ],
+      "text": ""
+    },
+    "https://kylewm.com/imageproxy?url=%2Fstatic%2Fimg%2Fusers%2Fkyle.jpg&size=60&sig=deebbb906749f01b98a4291e7b2cff7d": {
+      "rels": [
+        "apple-touch-icon"
+      ],
+      "text": ""
+    },
+    "https://kylewm.com/imageproxy?url=%2Fstatic%2Fimg%2Fusers%2Fkyle.jpg&size=76&sig=7606f9576a5cdbfeac9fe773b19d5bf1": {
+      "rels": [
+        "apple-touch-icon"
+      ],
+      "text": ""
+    },
+    "https://kylewm.com/micropub": {
+      "rels": [
+        "micropub"
+      ],
+      "text": ""
+    },
+    "https://kylewm.com/static/img/users/kyle.jpg": {
+      "rels": [
+        "shortcut",
+        "icon",
+        "apple-touch-icon"
+      ],
+      "text": ""
+    },
+    "https://kylewm.com/static/pygments.css": {
+      "rels": [
+        "stylesheet"
+      ],
+      "text": ""
+    },
+    "https://kylewm.com/token": {
+      "rels": [
+        "token_endpoint"
+      ],
+      "text": ""
+    },
+    "https://kylewm.com/webmention": {
+      "rels": [
+        "webmention"
+      ],
+      "text": ""
+    },
+    "https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css": {
+      "rels": [
+        "stylesheet"
+      ],
+      "text": ""
+    },
+    "https://twitter.com/kylewmahan/status/651186266701107200": {
+      "rels": [
+        "syndication"
+      ],
+      "text": ""
+    },
+    "https://webmention.io/webmention?forward=https://kylewm.com/webmention": {
+      "rels": [
+        "pingback"
+      ],
+      "text": ""
+    },
+    "ni:///sha-256;LXQj307VecrQ7BPxkMhuI-rM14CktmXjy16DjI0MMAE?ct=application/x-x509-user-cert": {
+      "rels": [
+        "me"
+      ],
+      "text": ""
+    }
+  },
+  "rels": {
+    "apple-touch-icon": [
+      "https://kylewm.com/static/img/users/kyle.jpg",
+      "https://kylewm.com/imageproxy?url=%2Fstatic%2Fimg%2Fusers%2Fkyle.jpg&size=60&sig=deebbb906749f01b98a4291e7b2cff7d",
+      "https://kylewm.com/imageproxy?url=%2Fstatic%2Fimg%2Fusers%2Fkyle.jpg&size=76&sig=7606f9576a5cdbfeac9fe773b19d5bf1",
+      "https://kylewm.com/imageproxy?url=%2Fstatic%2Fimg%2Fusers%2Fkyle.jpg&size=114&sig=b57d1f32eb45988e4b1e7f5a53afd072",
+      "https://kylewm.com/imageproxy?url=%2Fstatic%2Fimg%2Fusers%2Fkyle.jpg&size=152&sig=cb27d9fb6b285da683bb869ba974ee53"
+    ],
+    "authorization_endpoint": [
+      "https://indieauth.com/auth"
+    ],
+    "feed": [
+      "https://kylewm.com/everything"
+    ],
+    "icon": [
+      "https://kylewm.com/static/img/users/kyle.jpg"
+    ],
+    "me": [
+      "ni:///sha-256;LXQj307VecrQ7BPxkMhuI-rM14CktmXjy16DjI0MMAE?ct=application/x-x509-user-cert"
+    ],
+    "meta": [
+      "https://kylewm.com/foaf.rdf"
+    ],
+    "micropub": [
+      "https://kylewm.com/micropub"
+    ],
+    "openid.delegate": [
+      "https://kylewm.com"
+    ],
+    "openid.server": [
+      "https://indieauth.com/openid"
+    ],
+    "pgpkey": [
+      "https://keybase.io/kylewm/key.asc"
+    ],
+    "pingback": [
+      "https://webmention.io/webmention?forward=https://kylewm.com/webmention"
+    ],
+    "shortcut": [
+      "https://kylewm.com/static/img/users/kyle.jpg"
+    ],
+    "stylesheet": [
+      "https://kylewm.com/_themes/boxy/style.css?version=2015-06-25",
+      "https://kylewm.com/static/pygments.css",
+      "https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+    ],
+    "syndication": [
+      "https://twitter.com/kylewmahan/status/651186266701107200"
+    ],
+    "token_endpoint": [
+      "https://kylewm.com/token"
+    ],
+    "webmention": [
+      "https://kylewm.com/webmention"
+    ]
+  }
+}

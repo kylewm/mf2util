@@ -158,12 +158,12 @@ def interpret_entry(parsed, source_url, hentry=None, want_json=False):
         if util.is_name_a_title(title, result.get('content-plain')):
             result['name'] = title
 
-    for prop in ('in-reply-to', 'like-of', 'repost-of',
-                 'bookmark-of', 'comment'):
+    for prop in ('in-reply-to', 'like-of', 'repost-of', 'bookmark-of',
+                 'comment', 'like', 'repost'):
         for url_val in hentry['properties'].get(prop, []):
             if isinstance(url_val, dict):
                 result.setdefault(prop, []).append(
-                    interpret_entry(parsed, source_url, url_val, want_json))
+                    interpret(parsed, source_url, url_val, want_json))
             else:
                 result.setdefault(prop, []).append({
                     'url': url_val,
@@ -228,7 +228,7 @@ def interpret(parsed, source_url, item=None, want_json=False):
         if 'h-event' in item['type']:
             return interpret_event(
                 parsed, source_url, hevent=item, want_json=want_json)
-        elif 'h-entry' in item['type']:
+        elif 'h-entry' in item['type'] or 'h-cite' in item['type']:
             return interpret_entry(
                 parsed, source_url, hentry=item, want_json=want_json)
 

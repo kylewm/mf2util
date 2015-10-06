@@ -102,6 +102,31 @@ def test_reply_invite():
     }]
 
 
+def test_comment_and_like():
+    parsed = load_test('note_with_comment_and_like')
+    result = mf2util.interpret(
+        parsed, 'https://kylewm.com/2015/10/big-thing-missing-from-my-indieweb-experience-is')
+    assert result['type'] == 'entry'
+
+    assert len(result['comment']) == 1
+
+    assert result['comment'][0]['type'] == 'cite'
+    assert result['comment'][0]['author'] == {
+        'name': 'Aaron Parecki',
+        'photo': 'https://twitter.com/aaronpk/profile_image?size=original',
+        'url': 'http://aaronparecki.com',
+    }
+    assert result['comment'][0]['content'] == '<a href=\"https://twitter.com/kylewmahan\">@kylewmahan</a> I usually click through a couple levels up looking to see if any of the URLs up the chain show comments <a href=\"https://twitter.com/search?q=%23indieweb\">#indieweb</a>'
+
+    assert len(result['like']) == 1
+    assert result['like'][0]['type'] == 'cite'
+    assert result['like'][0]['author'] == {
+        'name': '',
+        'url': 'https://twitter.com/benwerd',
+        'photo': 'https://kylewm.com/imageproxy?url=https%3A%2F%2Ftwitter.com%2Fbenwerd%2Fprofile_image%3Fsize%3Doriginal&size=48&sig=fde7ce5635f5ea132a2545ff5c7d3d33',
+    }
+
+
 def test_article_naive_datetime():
     parsed = load_test('article_naive_datetime')
     result = mf2util.interpret(

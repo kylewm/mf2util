@@ -165,6 +165,12 @@ Changes
 
 All notable changes to this project will be documented here.
 
+### 0.2.7 - 2015-10-05
+#### Added
+
+- add parsing for comment, like, and repost h-cites nested inside an
+  h-entry
+
 ### 0.2.6 - 2015-09-24
 #### Added
 
