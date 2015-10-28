@@ -284,6 +284,41 @@ def is_name_a_title(name, content):
     return normalize(content) not in normalize(name)
 
 
+def post_type_discovery(hentry):
+    """Implementation of the post-type discovery algorithm
+    defined here https://indiewebcamp.com/post-type-discovery#Algorithm
+
+    :param dict hentry: mf2 item representing the entry to test
+
+    :return: string, one of: 'event', 'rsvp', 'invite', 'reply',
+    'repost', 'like', 'photo', 'article', note'
+    """
+    def get_plain_text(values):
+        return ''.join(v.get('value') if isinstance(v, dict) else v
+                       for v in values)
+
+    if 'h-event' in hentry['type']:
+        return 'event'
+
+    for prop, implied_type in [
+        ('rsvp', 'rsvp'),
+        ('invitee', 'invite'),
+        ('in-reply-to', 'reply'),
+        ('repost-of', 'repost'),
+        ('like-of', 'like'),
+        ('photo', 'photo'),
+    ]:
+        if hentry['properties'].get(prop) is not None:
+            return implied_type
+    name = get_plain_text(hentry['properties'].get('name'))
+    content = get_plain_text(hentry['properties'].get('content'))
+    if not content:
+        content = get_plain_text(hentry['properties'].get('summary'))
+    if content and name and is_name_a_title(name, content):
+        return 'article'
+    return 'note'
+
+
 def parse_datetime(s):
     """The definition for microformats2 dt-* properties are fairly
     lenient.  This method converts an mf2 date string into either a

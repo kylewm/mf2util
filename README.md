@@ -167,6 +167,11 @@ All notable changes to this project will be documented here.
 
 
 ### 0.2.8 - 2015-10-28
+#### Added
+- `post_type_discovery()` implementation that takes an h-event or
+  h-entry and returns a string defining the post type (e.g. "article",
+  "note", "like", etc.)
+
 #### Changed
 
 - Consolidated modules into one flat file for simplicity
@@ -174,7 +179,6 @@ All notable changes to this project will be documented here.
   backcompat)
 - In python 3, use builtin timezone implementation instead of
   mf2util's custom implementation
-
 
 ### 0.2.7 - 2015-10-05
 #### Added
