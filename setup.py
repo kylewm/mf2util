@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from distutils.core import setup
+from setuptools import setup, find_packages
 from setuptools.command.test import test as TestCommand
 import sys
 
@@ -50,7 +50,7 @@ License: `Simplified BSD <http://opensource.org/licenses/BSD-2-Clause>`__
       author='Kyle Mahan',
       author_email='kyle@kylewm.com',
       url='http://indiewebcamp.com/mf2util',
-      packages=['mf2util'],
+      py_modules=['mf2util'],
       tests_require=['pytest'],
       cmdclass={'test': PyTest},
       classifiers=[

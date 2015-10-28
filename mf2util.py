@@ -22,7 +22,7 @@ if PY3:
     from urllib.parse import urljoin
     from datetime import timezone
     utc = timezone.utc
-    timezone_from_offset = timezone.__init__
+    timezone_from_offset = timezone
 else:
     from urlparse import urljoin
 
@@ -63,7 +63,7 @@ else:
             return timedelta(0)
 
     utc = UTC()
-    timezone_from_offset = FixedOffset.__init__
+    timezone_from_offset = FixedOffset
 
 
 URL_ATTRIBUTES = {
@@ -370,7 +370,7 @@ def parse_datetime(s):
                                minutes=int(tzminute))
             if tzsign == '-':
                 offset = -offset
-            dt = dt.replace(tzinfo=FixedOffset(
+            dt = dt.replace(tzinfo=timezone_from_offset(
                 offset, '%s%s:%s' % (tzsign, tzhour, tzminute)))
 
     return dt
