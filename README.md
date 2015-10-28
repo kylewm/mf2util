@@ -124,7 +124,7 @@ mentions = mf2util.classify_comment(parsed, [target_url, alternative_url])
 Datetimes
 ---------
 
-The `mf2util.parse_dt` function is useful for parsing microformats2
+The `mf2util.parse_datetime` function is useful for parsing microformats2
 dates and datetimes. It can be used as a microformats-specific
 alternative to larger, more general libraries like python-dateutil.
 
@@ -143,7 +143,7 @@ import mf2util
 
 parsed = mf2py.Parser(=…)
 publishedstr = parsed.to_dict()['items'][0]['properties']['published'][0]
-published = mf2util.parse_dt(published)  # --> datetime.datetime
+published = mf2util.parse_datetime(published)  # --> datetime.datetime
 ```
 
 Authorship
@@ -164,6 +164,17 @@ Changes
 -------
 
 All notable changes to this project will be documented here.
+
+
+### 0.2.8 - 2015-10-28
+#### Changed
+
+- Consolidated modules into one flat file for simplicity
+- Renamed `parse_dt` to `parse_datetime` (old name still works for
+  backcompat)
+- In python 3, use builtin timezone implementation instead of
+  mf2util's custom implementation
+
 
 ### 0.2.7 - 2015-10-05
 #### Added
