@@ -180,3 +180,20 @@ def test_no_p_name():
         parsed, 'http://example.com')
     assert 'Give me crayons and I will draw a rocketship.' in result['content']
     assert 'name' not in result
+
+
+def test_p_content():
+    """make sure p-content (instead of the usual e-content) doesn't cause
+    us to throw an exception
+    """
+    parsed = {"items": [{"properties": {"author": [{"properties": {"name": ["Kyle"],
+                                                                   "url": ["https://kylewm.com"]},
+                                                    "type": ["h-card"], "value": "Kyle"}],
+                                        "content": ["Thanks for hosting!"],
+                                        "in-reply-to": ["https://snarfed.org/2014-06-16_homebrew-website-club-at-quip"],
+                                        "name": ["I'm attending\n Homebrew Website Club at Quip\n Thanks for hosting!\n Kyle"],
+                                        "rsvp": ["yes"]},
+                         "type": ["h-entry"]}],
+              "rel-urls": {}, "rels": {}}
+    result = mf2util.interpret(parsed, 'http://kylewm.com/test/rsvp.html')
+    assert 'Thanks for hosting!' == result.get('content')
