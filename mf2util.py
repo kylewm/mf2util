@@ -83,7 +83,7 @@ def find_first_entry(parsed, types):
     queue = deque(item for item in parsed['items'])
     while queue:
         item = queue.popleft()
-        if any(h_class in item['type'] for h_class in types):
+        if any(h_class in item.get('type', []) for h_class in types):
             return item
         queue.extend(item.get('children', []))
 
@@ -192,13 +192,13 @@ def find_author(parsed, source_url=None, hentry=None):
 
     # try to find an author of the top-level h-feed
     for hfeed in (card for card in parsed['items']
-                  if 'h-feed' in card['type']):
+                  if 'h-feed' in card.get('type', [])):
         for obj in hfeed['properties'].get('author', []):
             return parse_author(obj)
 
     # top-level h-cards
     hcards = [card for card in parsed['items']
-              if 'h-card' in card['type']]
+              if 'h-card' in card.get('type', [])]
 
     if source_url:
         for item in hcards:
@@ -294,10 +294,11 @@ def post_type_discovery(hentry):
     'repost', 'like', 'photo', 'article', note'
     """
     def get_plain_text(values):
-        return ''.join(v.get('value') if isinstance(v, dict) else v
-                       for v in values)
+        if values:
+            return ''.join(v.get('value') if isinstance(v, dict) else v
+                           for v in values)
 
-    if 'h-event' in hentry['type']:
+    if 'h-event' in hentry.get('type', []):
         return 'event'
 
     for prop, implied_type in [
@@ -597,10 +598,10 @@ def interpret(parsed, source_url, item=None, want_json=False):
         item = find_first_entry(parsed, ['h-entry', 'h-event'])
 
     if item:
-        if 'h-event' in item['type']:
+        if 'h-event' in item.get('type', []):
             return interpret_event(
                 parsed, source_url, hevent=item, want_json=want_json)
-        elif 'h-entry' in item['type'] or 'h-cite' in item['type']:
+        elif 'h-entry' in item.get('type', []) or 'h-cite' in item.get('type', []):
             return interpret_entry(
                 parsed, source_url, hentry=item, want_json=want_json)
 

@@ -165,6 +165,10 @@ Changes
 
 All notable changes to this project will be documented here.
 
+### 0.2.9 - 2015-10-28
+#### Changed
+- Guard against mf2 required fields being None to make it a little
+  easier for third parties (in this case Bridgy) to write unit tests.
 
 ### 0.2.8 - 2015-10-28
 #### Added
