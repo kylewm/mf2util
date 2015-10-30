@@ -290,13 +290,23 @@ def post_type_discovery(hentry):
 
     :param dict hentry: mf2 item representing the entry to test
 
-    :return: string, one of: 'event', 'rsvp', 'invite', 'reply',
-    'repost', 'like', 'photo', 'article', note'
+    :return: string, one of: 'org', 'person', 'event', 'rsvp',
+                     'invite', 'reply', 'repost', 'like', 'photo',
+                     'article', note'
+
     """
     def get_plain_text(values):
         if values:
             return ''.join(v.get('value') if isinstance(v, dict) else v
                            for v in values)
+
+    props = hentry.get('properties', {})
+    if 'h-card' in hentry.get('type', []):
+        name = get_plain_text(props.get('name'))
+        org = get_plain_text(props.get('org'))
+        if name == org:
+            return 'org'
+        return 'person'
 
     if 'h-event' in hentry.get('type', []):
         return 'event'
@@ -309,12 +319,13 @@ def post_type_discovery(hentry):
         ('like-of', 'like'),
         ('photo', 'photo'),
     ]:
-        if hentry['properties'].get(prop) is not None:
+        if props.get(prop) is not None:
             return implied_type
-    name = get_plain_text(hentry['properties'].get('name'))
-    content = get_plain_text(hentry['properties'].get('content'))
+    # check name ~= content
+    name = get_plain_text(props.get('name'))
+    content = get_plain_text(props.get('content'))
     if not content:
-        content = get_plain_text(hentry['properties'].get('summary'))
+        content = get_plain_text(props.get('summary'))
     if content and name and is_name_a_title(name, content):
         return 'article'
     return 'note'

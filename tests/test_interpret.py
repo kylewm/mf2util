@@ -11,21 +11,6 @@ def load_test(testname):
     return json.load(open('tests/interpret/%s.json' % testname))
 
 
-def test_post_type_discovery():
-    for test, implied_type in [
-            ('hwc-event', 'event'),
-            ('reply_h-cite', 'reply'),
-            ('reply_u-in-reply-to', 'reply'),
-            ('reply_rsvp', 'rsvp'),
-            ('note_with_comment_and_like', 'note'),
-            ('article_naive_datetime', 'article'),
-            # TODO add more tests
-    ]:
-        parsed = load_test(test)
-        entry = mf2util.find_first_entry(parsed, ['h-entry', 'h-event'])
-        assert implied_type == mf2util.post_type_discovery(entry)
-
-
 def test_event():
     # HWC event from werd.io
     parsed = load_test('hwc-event')
