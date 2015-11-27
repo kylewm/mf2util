@@ -80,11 +80,28 @@ def find_first_entry(parsed, types):
     :param list types: target types, e.g. ['h-entry', 'h-event']
     :return: an mf2py item that is one of `types`, or None
     """
+    return next(_find_all_entries(parsed, types), None)
+
+
+def find_all_entries(parsed, types):
+    """Find all h-* objects of a given type in BFS-order. Traverses the
+    top-level items and their children and descendents. Does not
+    include property values (e.g. finding all h-cards would not find
+    values of "p-author h-card")
+
+    :param dict parsed: a mf2py parsed dict
+    :param list types: target types, e.g. ['h-entry', 'h-event']
+    :return: all entries with any of the the target types
+    """
+    return list(_find_all_entries(parsed, types))
+
+
+def _find_all_entries(parsed, types):
     queue = deque(item for item in parsed['items'])
     while queue:
         item = queue.popleft()
         if any(h_class in item.get('type', []) for h_class in types):
-            return item
+            yield item
         queue.extend(item.get('children', []))
 
 
@@ -220,6 +237,37 @@ def find_author(parsed, source_url=None, hentry=None):
     # just return the first h-card
     if hcards:
         return parse_author(hcards[0])
+
+
+def representative_hcard(parsed, source_url):
+    """Find the representative h-card for a URL
+
+    http://microformats.org/wiki/representative-h-card-parsing
+
+    :param dict parsed: an mf2 parsed dict
+    :param str source_url: the source of the parsed document.
+    :return: the representative h-card if one is found
+    """
+    hcards = find_all_entries(parsed, ['h-card'])
+    # uid and url both match source_url
+    for hcard in hcards:
+        if (source_url in hcard['properties'].get('uid', [])
+                and source_url in hcard['properties'].get('url', [])):
+            return hcard
+    # url that is also a rel=me
+    for hcard in hcards:
+        if any(url in parsed['rels'].get('me', [])
+               for url in hcard['properties'].get('url', [])):
+            return hcard
+    # single hcard with matching url
+    found = None
+    count = 0
+    for hcard in hcards:
+        if source_url in hcard['properties'].get('url', []):
+            found = hcard
+            count += 1
+    if count == 1:
+        return found
 
 
 def convert_relative_paths_to_absolute(source_url, html):

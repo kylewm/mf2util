@@ -165,6 +165,13 @@ Changes
 
 All notable changes to this project will be documented here.
 
+### 0.2.10 - 2015-11-27
+#### Added
+- `representative_hcard()` implementation of
+  http://microformats.org/wiki/representative-h-card-parsing. Search
+  all h-cards on a page and find the one that represents the page's
+  author/owner.
+
 ### 0.2.9 - 2015-10-28
 #### Changed
 - Guard against mf2 required fields being None to make it a little
