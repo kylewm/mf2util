@@ -23,8 +23,10 @@ if PY3:
     from datetime import timezone
     utc = timezone.utc
     timezone_from_offset = timezone
+    string_type = str
 else:
     from urlparse import urljoin
+    string_type = unicode
 
     # timezone shims for py2
 
@@ -321,6 +323,8 @@ def is_name_a_title(name, content):
     :return: True if the name likely represents a separate, explicit title
     """
     def normalize(s):
+        if not isinstance(s, string_type):
+            s = s.decode('utf-8')
         s = unicodedata.normalize('NFKD', s)
         s = s.lower()
         s = re.sub('[^a-z0-9]', '', s)

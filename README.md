@@ -165,8 +165,15 @@ Changes
 
 All notable changes to this project will be documented here.
 
+### 0.2.11 - 2016-01-02
+### Changed
+
+- `is_name_a_title` accepts bytestrings now, no longer throws an error
+  if the input is not unicode.
+
 ### 0.2.10 - 2015-11-27
 #### Added
+
 - `representative_hcard()` implementation of
   http://microformats.org/wiki/representative-h-card-parsing. Search
   all h-cards on a page and find the one that represents the page's
@@ -174,11 +181,13 @@ All notable changes to this project will be documented here.
 
 ### 0.2.9 - 2015-10-28
 #### Changed
+
 - Guard against mf2 required fields being None to make it a little
   easier for third parties (in this case Bridgy) to write unit tests.
 
 ### 0.2.8 - 2015-10-28
 #### Added
+
 - `post_type_discovery()` implementation that takes an h-event or
   h-entry and returns a string defining the post type (e.g. "article",
   "note", "like", etc.)
