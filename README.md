@@ -165,8 +165,14 @@ Changes
 
 All notable changes to this project will be documented here.
 
+
+### 0.2.12 - 2016-02-15
+#### Added
+
+- Added "photo" to common URL properties.
+
 ### 0.2.11 - 2016-01-02
-### Changed
+#### Changed
 
 - `is_name_a_title` accepts bytestrings now, no longer throws an error
   if the input is not unicode.

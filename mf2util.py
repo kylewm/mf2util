@@ -445,7 +445,7 @@ parse_dt = parse_datetime  # backcompat
 
 def _interpret_common_properties(parsed, source_url, hentry, want_json):
     result = {}
-    for prop in ('url', 'uid'):
+    for prop in ('url', 'uid', 'photo'):
         url_strs = hentry['properties'].get(prop)
         if url_strs:
             if isinstance(url_strs[0], dict):
