@@ -73,7 +73,7 @@ URL_ATTRIBUTES = {
     'link': ['href'],
     'img': ['src'],
     'audio': ['src'],
-    'video': ['src'],
+    'video': ['src', 'poster'],
     'source': ['src'],
 }
 
