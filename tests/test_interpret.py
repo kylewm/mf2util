@@ -155,7 +155,7 @@ def test_article_two_published_dates():
 def test_convert_relative_paths():
     parsed = load_test('relative_paths')
     result = mf2util.interpret(
-        parsed, 'http://example.com')
+        parsed, 'http://example.com/blog/', base_href='../')
     assert result['content'] == 'This is an <img alt="alt text" title="the title" src="http://example.com/static/img.jpg"/> example document with <a href="http://example.com/relative_paths.html">relative paths</a>.'
 
 

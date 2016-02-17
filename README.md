@@ -166,6 +166,15 @@ Changes
 All notable changes to this project will be documented here.
 
 
+### 0.3.0 - 2016-02-17
+#### Changed
+
+- Added `base_href` parameter to all interpret methods. Now when
+  content is normalized, it will take into account the base tag if
+  it's given.
+- Added `audio`, `video`, and `source` tags to the list of tags that
+  might contain URL attributes.
+
 ### 0.2.12 - 2016-02-15
 #### Added
 
