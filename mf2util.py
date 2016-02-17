@@ -72,6 +72,9 @@ URL_ATTRIBUTES = {
     'a': ['href'],
     'link': ['href'],
     'img': ['src'],
+    'audio': ['src'],
+    'video': ['src'],
+    'source': ['src'],
 }
 
 
@@ -272,7 +275,7 @@ def representative_hcard(parsed, source_url):
         return found
 
 
-def convert_relative_paths_to_absolute(source_url, html):
+def convert_relative_paths_to_absolute(source_url, base_href, html):
     """Attempt to convert relative paths in foreign content
     to absolute based on the source url of the document. Useful for
     displaying images or links in reply contexts and comments.
@@ -286,8 +289,12 @@ def convert_relative_paths_to_absolute(source_url, html):
     :return: the document with relative urls replaced with absolute ones
     """
     def do_convert(match):
+        base_url = urljoin(source_url, base_href) if base_href else source_url
+
+        print("converting", match.group(1), "to use base url", base_url)
+
         return (match.string[match.start(0):match.start(1)] +
-                urljoin(source_url, match.group(1)) +
+                urljoin(base_url, match.group(1)) +
                 match.string[match.end(1):match.end(0)])
 
     if source_url:
@@ -443,7 +450,7 @@ def parse_datetime(s):
 parse_dt = parse_datetime  # backcompat
 
 
-def _interpret_common_properties(parsed, source_url, hentry, want_json):
+def _interpret_common_properties(parsed, source_url, base_href, hentry, want_json):
     result = {}
     for prop in ('url', 'uid', 'photo'):
         url_strs = hentry['properties'].get(prop)
@@ -480,7 +487,7 @@ def _interpret_common_properties(parsed, source_url, hentry, want_json):
         else:
             content_value = content_html = content_prop[0]
         result['content'] = convert_relative_paths_to_absolute(
-            source_url, content_html)
+            source_url, base_href, content_html)
         result['content-plain'] = content_value
 
     # TODO handle h-adr and h-geo variants
@@ -502,7 +509,7 @@ def _interpret_common_properties(parsed, source_url, hentry, want_json):
     return result
 
 
-def interpret_event(parsed, source_url, hevent=None, want_json=False):
+def interpret_event(parsed, source_url, base_href=None, hevent=None, want_json=False):
     """Given a document containing an h-event, return a dictionary::
 
         {
@@ -516,6 +523,7 @@ def interpret_event(parsed, source_url, hevent=None, want_json=False):
 
     :param dict parsed: the result of parsing a document containing mf2 markup
     :param str source_url: the URL of the parsed document, not currently used
+    :param str base_href: (optional) the href value of the base tag
     :param dict hevent: (optional) the item in the above document representing
       the h-event. if provided, we can avoid a redundant call to
       find_first_entry
@@ -530,7 +538,7 @@ def interpret_event(parsed, source_url, hevent=None, want_json=False):
             return {}
 
     result = _interpret_common_properties(
-        parsed, source_url, hevent, want_json)
+        parsed, source_url, base_href, hevent, want_json)
     result['type'] = 'event'
 
     name_prop = hevent['properties'].get('name')
@@ -540,7 +548,7 @@ def interpret_event(parsed, source_url, hevent=None, want_json=False):
     return result
 
 
-def interpret_entry(parsed, source_url, hentry=None, want_json=False):
+def interpret_entry(parsed, source_url, base_href=None, hentry=None, want_json=False):
     """Given a document containing an h-entry, return a dictionary::
 
         {
@@ -567,6 +575,7 @@ def interpret_entry(parsed, source_url, hentry=None, want_json=False):
     :param dict parsed: the result of parsing a document containing mf2 markup
     :param str source_url: the URL of the parsed document, used by the
       authorship algorithm
+    :param str base_href: (optional) the href value of the base tag
     :param dict hentry: (optional) the item in the above document
       representing the h-entry. if provided, we can avoid a redundant
       call to find_first_entry
@@ -582,7 +591,7 @@ def interpret_entry(parsed, source_url, hentry=None, want_json=False):
             return {}
 
     result = _interpret_common_properties(
-        parsed, source_url, hentry, want_json)
+        parsed, source_url, base_href, hentry, want_json)
     if 'h-cite' in hentry.get('type', []):
         result['type'] = 'cite'
     else:
@@ -599,7 +608,7 @@ def interpret_entry(parsed, source_url, hentry=None, want_json=False):
         for url_val in hentry['properties'].get(prop, []):
             if isinstance(url_val, dict):
                 result.setdefault(prop, []).append(
-                    interpret(parsed, source_url, url_val, want_json))
+                    interpret(parsed, source_url, base_href, url_val, want_json))
             else:
                 result.setdefault(prop, []).append({
                     'url': url_val,
@@ -608,13 +617,14 @@ def interpret_entry(parsed, source_url, hentry=None, want_json=False):
     return result
 
 
-def interpret_feed(parsed, source_url, hfeed=None):
+def interpret_feed(parsed, source_url, base_href=None, hfeed=None):
     """Interpret a source page as an h-feed or as an top-level collection
     of h-entries.
 
     :param dict parsed: the result of parsing a mf2 document
     :param str source_url: the URL of the source document (used for authorship
         discovery)
+    :param str base_href: (optional) the href value of the base tag
     :param dict item: (optional) the item to be parsed. If provided,
         this will be used instead of the first element on the page.
     :return: a dict containing 'entries', a list of entries, and possibly other
@@ -636,14 +646,14 @@ def interpret_feed(parsed, source_url, hfeed=None):
 
     entries = []
     for child in children:
-        entry = interpret(parsed, source_url, item=child)
+        entry = interpret(parsed, source_url, base_href, item=child)
         if entry:
             entries.append(entry)
     result['entries'] = entries
     return result
 
 
-def interpret(parsed, source_url, item=None, want_json=False):
+def interpret(parsed, source_url, base_href=None, item=None, want_json=False):
     """Interpret a permalink of unknown type. Finds the first interesting
     h-* element, and delegates to :func:`interpret_entry` if it is an
     h-entry or :func:`interpret_event` for an h-event
@@ -651,6 +661,7 @@ def interpret(parsed, source_url, item=None, want_json=False):
     :param dict parsed: the result of parsing a mf2 document
     :param str source_url: the URL of the source document (used for authorship
       discovery)
+    :param str base_href: (optional) the href value of the base tag
     :param dict item: (optional) the item to be parsed. If provided,
       this will be used instead of the first element on the page.
     :param boolean want_json: (optional, default False) If true, the result
@@ -663,13 +674,13 @@ def interpret(parsed, source_url, item=None, want_json=False):
     if item:
         if 'h-event' in item.get('type', []):
             return interpret_event(
-                parsed, source_url, hevent=item, want_json=want_json)
+                parsed, source_url, base_href=base_href, hevent=item, want_json=want_json)
         elif 'h-entry' in item.get('type', []) or 'h-cite' in item.get('type', []):
             return interpret_entry(
-                parsed, source_url, hentry=item, want_json=want_json)
+                parsed, source_url, base_href=base_href, hentry=item, want_json=want_json)
 
 
-def interpret_comment(parsed, source_url, target_urls, want_json=False):
+def interpret_comment(parsed, source_url, target_urls, base_href=None, want_json=False):
     """Interpret received webmentions, and classify as like, reply, or
     repost (or a combination thereof). Returns a dict as described
     in :func:`interpret_entry`, with the additional fields::
@@ -685,13 +696,14 @@ def interpret_comment(parsed, source_url, target_urls, want_json=False):
     :param list target_urls: a collection containing the URL of the target\
       document, and any alternate URLs (e.g., shortened links) that should\
       be considered equivalent when looking for references
+    :param str base_href: (optional) the href value of the base tag
     :param boolean want_json: (optional, default False) If true, the result
       will be pure json with datetimes as strings instead of python objects
     :return: a dict as described above, or None
     """
     item = find_first_entry(parsed, ['h-entry'])
     if item:
-        result = interpret_entry(parsed, source_url, item, want_json)
+        result = interpret_entry(parsed, source_url, base_href=base_href, hentry=item, want_json=want_json)
         if result:
             result['comment_type'] = classify_comment(
                 parsed, target_urls)
