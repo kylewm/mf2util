@@ -165,6 +165,10 @@ Changes
 
 All notable changes to this project will be documented here.
 
+### 0.3.1 - 2016-02-17
+#### Changed
+
+- Added "poster" to the recognized URL properties of a video tag.
 
 ### 0.3.0 - 2016-02-17
 #### Changed
