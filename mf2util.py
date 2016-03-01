@@ -450,7 +450,7 @@ def parse_datetime(s):
 parse_dt = parse_datetime  # backcompat
 
 
-def _interpret_common_properties(parsed, source_url, base_href, hentry, want_json):
+def _interpret_common_properties(parsed, source_url, base_href, hentry, use_rel_syndication, want_json):
     result = {}
     for prop in ('url', 'uid', 'photo'):
         url_strs = hentry['properties'].get(prop)
@@ -502,14 +502,17 @@ def _interpret_common_properties(parsed, source_url, base_href, hentry, want_jso
         else:
             result['location'] = {'name': locations[0]}
 
-    result['syndication'] = list(
-        set((parsed['rels'].get('syndication', []) +
-             hentry['properties'].get('syndication', []))))
+    if use_rel_syndication:
+        result['syndication'] = list(set(
+            parsed['rels'].get('syndication', []) +
+            hentry['properties'].get('syndication', [])))
+    else:
+        result['syndication'] = hentry['properties'].get('syndication', [])
 
     return result
 
 
-def interpret_event(parsed, source_url, base_href=None, hevent=None, want_json=False):
+def interpret_event(parsed, source_url, base_href=None, hevent=None, use_rel_syndication=True, want_json=False):
     """Given a document containing an h-event, return a dictionary::
 
         {
@@ -527,6 +530,10 @@ def interpret_event(parsed, source_url, base_href=None, hevent=None, want_json=F
     :param dict hevent: (optional) the item in the above document representing
       the h-event. if provided, we can avoid a redundant call to
       find_first_entry
+    :param boolean use_rel_syndication: (optional, default True) Whether
+      to include rel=syndication in the list of syndication sources. Sometimes
+      useful to set this to False when parsing h-feeds that erroneously include
+      rel=syndication on each entry.
     :param boolean want_json: (optional, default false) if true, the result
       will be pure json with datetimes as strings instead of python objects
     :return: a dict with some or all of the described properties
@@ -538,7 +545,7 @@ def interpret_event(parsed, source_url, base_href=None, hevent=None, want_json=F
             return {}
 
     result = _interpret_common_properties(
-        parsed, source_url, base_href, hevent, want_json)
+        parsed, source_url, base_href, hevent, use_rel_syndication, want_json)
     result['type'] = 'event'
 
     name_prop = hevent['properties'].get('name')
@@ -548,7 +555,7 @@ def interpret_event(parsed, source_url, base_href=None, hevent=None, want_json=F
     return result
 
 
-def interpret_entry(parsed, source_url, base_href=None, hentry=None, want_json=False):
+def interpret_entry(parsed, source_url, base_href=None, hentry=None, use_rel_syndication=True, want_json=False):
     """Given a document containing an h-entry, return a dictionary::
 
         {
@@ -579,6 +586,10 @@ def interpret_entry(parsed, source_url, base_href=None, hentry=None, want_json=F
     :param dict hentry: (optional) the item in the above document
       representing the h-entry. if provided, we can avoid a redundant
       call to find_first_entry
+    :param boolean use_rel_syndication: (optional, default True) Whether
+      to include rel=syndication in the list of syndication sources. Sometimes
+      useful to set this to False when parsing h-feeds that erroneously include
+      rel=syndication on each entry.
     :param boolean want_json: (optional, default False) if true, the result
       will be pure json with datetimes as strings instead of python objects
     :return: a dict with some or all of the described properties
@@ -591,7 +602,7 @@ def interpret_entry(parsed, source_url, base_href=None, hentry=None, want_json=F
             return {}
 
     result = _interpret_common_properties(
-        parsed, source_url, base_href, hentry, want_json)
+        parsed, source_url, base_href, hentry, use_rel_syndication, want_json)
     if 'h-cite' in hentry.get('type', []):
         result['type'] = 'cite'
     else:
@@ -646,14 +657,17 @@ def interpret_feed(parsed, source_url, base_href=None, hfeed=None):
 
     entries = []
     for child in children:
-        entry = interpret(parsed, source_url, base_href, item=child)
+        entry = interpret(
+            parsed, source_url, base_href, item=child,
+            use_rel_syndication=False)
         if entry:
             entries.append(entry)
     result['entries'] = entries
     return result
 
 
-def interpret(parsed, source_url, base_href=None, item=None, want_json=False):
+def interpret(parsed, source_url, base_href=None, item=None,
+              use_rel_syndication=True, want_json=False):
     """Interpret a permalink of unknown type. Finds the first interesting
     h-* element, and delegates to :func:`interpret_entry` if it is an
     h-entry or :func:`interpret_event` for an h-event
@@ -664,6 +678,10 @@ def interpret(parsed, source_url, base_href=None, item=None, want_json=False):
     :param str base_href: (optional) the href value of the base tag
     :param dict item: (optional) the item to be parsed. If provided,
       this will be used instead of the first element on the page.
+    :param boolean use_rel_syndication: (optional, default True) Whether
+      to include rel=syndication in the list of syndication sources. Sometimes
+      useful to set this to False when parsing h-feeds that erroneously include
+      rel=syndication on each entry.
     :param boolean want_json: (optional, default False) If true, the result
       will be pure json with datetimes as strings instead of python objects
     :return: a dict as described by interpret_entry or interpret_event, or None
@@ -674,10 +692,10 @@ def interpret(parsed, source_url, base_href=None, item=None, want_json=False):
     if item:
         if 'h-event' in item.get('type', []):
             return interpret_event(
-                parsed, source_url, base_href=base_href, hevent=item, want_json=want_json)
+                parsed, source_url, base_href=base_href, hevent=item, use_rel_syndication=use_rel_syndication, want_json=want_json)
         elif 'h-entry' in item.get('type', []) or 'h-cite' in item.get('type', []):
             return interpret_entry(
-                parsed, source_url, base_href=base_href, hentry=item, want_json=want_json)
+                parsed, source_url, base_href=base_href, hentry=item, use_rel_syndication=use_rel_syndication, want_json=want_json)
 
 
 def interpret_comment(parsed, source_url, target_urls, base_href=None, want_json=False):

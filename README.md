@@ -165,6 +165,13 @@ Changes
 
 All notable changes to this project will be documented here.
 
+### 0.3.2 - 2016-03-01
+#### Changed
+
+- `interpret_feed` now skips rel=syndication when parsing syndication
+  values for individual entries. This value should be empty for feeds,
+  but if it isn't, it will almost always be wrong.
+
 ### 0.3.1 - 2016-02-17
 #### Changed
 

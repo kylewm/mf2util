@@ -182,3 +182,48 @@ def test_p_content():
               "rel-urls": {}, "rels": {}}
     result = mf2util.interpret(parsed, 'http://kylewm.com/test/rsvp.html')
     assert 'Thanks for hosting!' == result.get('content')
+
+def test_h_feed_excludes_rel_syndication():
+    """Represents a feed that (incorrectly) includes page-scoped
+    rel=syndication values in the feed itself. If we're not careful,
+    these values will be slurped into every entry in the feed.
+    """
+    parsed = {
+        "items":[{
+            "type": ["h-entry"], "properties": {
+                "name": ["First Post"],
+                "url": ["http://example.com/first-post"],
+                "content": [{
+                    "html": "This is the body of the first post",
+                    "value": "This is the body of the first post",
+                }],
+                "syndication": [
+                    "https://twitter.com/example_com/123456",
+                    "https://www.facebook.com/example.com/123456",
+                ],
+            },
+        }, {
+            "type": ["h-event"], "properties": {
+                "name": ["Second Post"],
+                "url": ["http://example.com/second-post"],
+                "content": [{
+                    "html": "This is the body of the second post",
+                    "value": "This is the body of the second post",
+                }],
+                "syndication": [
+                    "https://twitter.com/example_com/7891011",
+                    "https://www.facebook.com/example.com/7891011",
+                ],
+            },
+        }], "rels": {
+            "syndication": [
+                "https://twitter.com/example_com/123456",
+                "https://twitter.com/example_com/7891011",
+                "https://www.facebook.com/example.com/123456",
+                "https://www.facebook.com/example.com/7891011"
+            ],
+        }
+    }
+    result = mf2util.interpret_feed(parsed, 'http://example.com')
+    assert result['entries'][0]['syndication'] == ["https://twitter.com/example_com/123456", "https://www.facebook.com/example.com/123456"]
+    assert result['entries'][1]['syndication'] == ["https://twitter.com/example_com/7891011", "https://www.facebook.com/example.com/7891011"]
