@@ -290,9 +290,6 @@ def convert_relative_paths_to_absolute(source_url, base_href, html):
     """
     def do_convert(match):
         base_url = urljoin(source_url, base_href) if base_href else source_url
-
-        print("converting", match.group(1), "to use base url", base_url)
-
         return (match.string[match.start(0):match.start(1)] +
                 urljoin(base_url, match.group(1)) +
                 match.string[match.end(1):match.end(0)])
