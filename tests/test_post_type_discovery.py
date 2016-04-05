@@ -14,6 +14,7 @@ def test_post_type_discovery():
             ('interpret/note_with_comment_and_like', 'note'),
             ('interpret/article_naive_datetime', 'article'),
             ('posttype/tantek_photo', 'photo'),
+            ('posttype/only_html_content', 'note'),
             # TODO add more tests
     ]:
         parsed = json.load(open('tests/' + test + '.json'))
