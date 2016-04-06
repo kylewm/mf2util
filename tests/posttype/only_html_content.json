@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "properties": {
+        "content": [
+          {
+            "html": "some <br> html"
+          }
+        ]
+      },
+      "type": [
+        "h-entry"
+      ]
+    }
+  ]
+}

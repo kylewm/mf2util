@@ -353,7 +353,7 @@ def post_type_discovery(hentry):
     """
     def get_plain_text(values):
         if values:
-            return ''.join(v.get('value') if isinstance(v, dict) else v
+            return ''.join(v.get('value', '') if isinstance(v, dict) else v
                            for v in values)
 
     props = hentry.get('properties', {})
