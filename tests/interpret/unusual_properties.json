@@ -1,0 +1,32 @@
+{
+    "items": [
+        {
+            "properties": {
+                "name": [
+                    {
+                        "properties": {
+                            "name": ["This is wrong"]
+                        },
+                        "value": "Rocky Raccoon",
+                        "type": ["h-card"]
+                    },
+                    "This is also wrong"
+                ],
+                "url": [
+                    {
+                        "properties": {
+                            "url": ["This is probably wrong"]
+                        },
+                        "value": "https://foo.bar/",
+                        "type": ["h-event"]
+                    },
+                    "This is wrong too"
+                ],
+                "uid": ["https://foo.bar/"]
+            },
+            "type": [
+                "h-entry"
+            ]
+        }
+    ]
+}

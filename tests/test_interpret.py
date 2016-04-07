@@ -183,6 +183,15 @@ def test_p_content():
     result = mf2util.interpret(parsed, 'http://kylewm.com/test/rsvp.html')
     assert 'Thanks for hosting!' == result.get('content')
 
+
+def test_unusual_properties():
+    parsed = load_test('unusual_properties')
+    result = mf2util.interpret(parsed, 'https://example.com/')
+    assert 'Rocky Raccoon' == result.get('name')
+    assert 'https://foo.bar/' == result.get('url')
+    assert 'https://foo.bar/' == result.get('uid')
+
+
 def test_h_feed_excludes_rel_syndication():
     """Represents a feed that (incorrectly) includes page-scoped
     rel=syndication values in the feed itself. If we're not careful,

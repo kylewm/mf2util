@@ -125,6 +125,23 @@ def find_datetimes(parsed):
             result[prop] = parse_datetime(' '.join(date_strs))
 
 
+def get_plain_text(values, strip=True):
+    """Get the first value in a list of values that we expect to be plain-text.
+    If it is a dict, then return the value of "value".
+
+    :param list values: a list of values
+    :param boolean strip: true if we should strip the plaintext value
+    :return: a string or None
+    """
+    if values:
+        v = values[0]
+        if isinstance(v, dict):
+            v = v.get('value', '')
+        if strip:
+            v = v.strip()
+        return v
+
+
 def classify_comment(parsed, target_urls):
     """Find and categorize comments that reference any of a collection of
     target URLs. Looks for references of type reply, like, and repost.
@@ -227,13 +244,13 @@ def find_author(parsed, source_url=None, hentry=None):
             if source_url in item['properties'].get('url', []):
                 return parse_author(item)
 
-    rel_mes = parsed["rels"].get("me", [])
+    rel_mes = parsed.get('rels', {}).get("me", [])
     for item in hcards:
         urls = item['properties'].get('url', [])
         if any(url in rel_mes for url in urls):
             return parse_author(item)
 
-    rel_authors = parsed["rels"].get("author", [])
+    rel_authors = parsed.get('rels', {}).get("author", [])
     for item in hcards:
         urls = item['properties'].get('url', [])
         if any(url in rel_authors for url in urls):
@@ -261,7 +278,7 @@ def representative_hcard(parsed, source_url):
             return hcard
     # url that is also a rel=me
     for hcard in hcards:
-        if any(url in parsed['rels'].get('me', [])
+        if any(url in parsed.get('rels', {}).get('me', [])
                for url in hcard['properties'].get('url', [])):
             return hcard
     # single hcard with matching url
@@ -351,11 +368,6 @@ def post_type_discovery(hentry):
                      'article', note'
 
     """
-    def get_plain_text(values):
-        if values:
-            return ''.join(v.get('value', '') if isinstance(v, dict) else v
-                           for v in values)
-
     props = hentry.get('properties', {})
     if 'h-card' in hentry.get('type', []):
         name = get_plain_text(props.get('name'))
@@ -450,26 +462,23 @@ parse_dt = parse_datetime  # backcompat
 def _interpret_common_properties(parsed, source_url, base_href, hentry, use_rel_syndication, want_json):
     result = {}
     for prop in ('url', 'uid', 'photo'):
-        url_strs = hentry['properties'].get(prop)
-        if url_strs:
-            if isinstance(url_strs[0], dict):
-                result[prop] = url_strs[0].get('value')
-            else:
-                result[prop] = url_strs[0]
+        value = get_plain_text(hentry['properties'].get(prop))
+        if value:
+            result[prop] = value
 
     for prop in ('start', 'end', 'published', 'updated'):
-        date_strs = hentry['properties'].get(prop)
-        if date_strs:
+        date_str = get_plain_text(hentry['properties'].get(prop))
+        if date_str:
             if want_json:
-                result[prop] = date_strs[0]
+                result[prop] = date_str
             else:
-                result[prop + '-str'] = date_strs[0]
+                result[prop + '-str'] = date_str
                 try:
-                    date = parse_datetime(date_strs[0])
+                    date = parse_datetime(date_str)
                     if date:
                         result[prop] = date
                 except ValueError:
-                    logging.warn('Failed to parse datetime %s', date_strs[0])
+                    logging.warn('Failed to parse datetime %s', date_str)
 
     author = find_author(parsed, source_url, hentry)
     if author:
@@ -501,7 +510,7 @@ def _interpret_common_properties(parsed, source_url, base_href, hentry, use_rel_
 
     if use_rel_syndication:
         result['syndication'] = list(set(
-            parsed['rels'].get('syndication', []) +
+            parsed.get('rels', {}).get('syndication', []) +
             hentry['properties'].get('syndication', [])))
     else:
         result['syndication'] = hentry['properties'].get('syndication', [])
@@ -544,11 +553,9 @@ def interpret_event(parsed, source_url, base_href=None, hevent=None, use_rel_syn
     result = _interpret_common_properties(
         parsed, source_url, base_href, hevent, use_rel_syndication, want_json)
     result['type'] = 'event'
-
-    name_prop = hevent['properties'].get('name')
-    if name_prop:
-        result['name'] = name_prop[0].strip()
-
+    name_value = get_plain_text(hevent['properties'].get('name'))
+    if name_value:
+        result['name'] = name_value
     return result
 
 
@@ -605,11 +612,9 @@ def interpret_entry(parsed, source_url, base_href=None, hentry=None, use_rel_syn
     else:
         result['type'] = 'entry'
 
-    name_prop = hentry['properties'].get('name')
-    if name_prop:
-        title = name_prop[0].strip()
-        if is_name_a_title(title, result.get('content-plain')):
-            result['name'] = title
+    title = get_plain_text(hentry['properties'].get('name'))
+    if title and is_name_a_title(title, result.get('content-plain')):
+        result['name'] = title
 
     for prop in ('in-reply-to', 'like-of', 'repost-of', 'bookmark-of',
                  'comment', 'like', 'repost'):
@@ -718,14 +723,13 @@ def interpret_comment(parsed, source_url, target_urls, base_href=None, want_json
     """
     item = find_first_entry(parsed, ['h-entry'])
     if item:
-        result = interpret_entry(parsed, source_url, base_href=base_href, hentry=item, want_json=want_json)
+        result = interpret_entry(parsed, source_url, base_href=base_href,
+                                 hentry=item, want_json=want_json)
         if result:
-            result['comment_type'] = classify_comment(
-                parsed, target_urls)
-
-            rsvp = item['properties'].get('rsvp')
+            result['comment_type'] = classify_comment(parsed, target_urls)
+            rsvp = get_plain_text(item['properties'].get('rsvp'))
             if rsvp:
-                result['rsvp'] = rsvp[0].lower()
+                result['rsvp'] = rsvp.lower()
 
             invitees = item['properties'].get('invitee')
             if invitees:

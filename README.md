@@ -165,6 +165,15 @@ Changes
 
 All notable changes to this project will be documented here.
 
+
+### 0.3.3 - 2016-04-07
+#### Changed
+
+- minor bugfixes to prevent throwing errors on bad mf2 input
+- when a value (e.g. "name") is expected to be simple and we get a
+  dict instead
+- when a e-* value has "html" but not "value"
+
 ### 0.3.2 - 2016-03-01
 #### Changed
 
