@@ -496,6 +496,13 @@ def _interpret_common_properties(parsed, source_url, base_href, hentry, use_rel_
             source_url, base_href, content_html)
         result['content-plain'] = content_value
 
+    summary_prop = hentry['properties'].get('summary')
+    if summary_prop:
+        if isinstance(summary_prop[0], dict):
+            result['summary'] = summary_prop[0]['value']
+        else:
+            result['summary'] = summary_prop[0]
+
     # TODO handle h-adr and h-geo variants
     locations = hentry['properties'].get('location')
     if locations:
