@@ -508,8 +508,9 @@ def parse_datetime(s):
 parse_dt = parse_datetime  # backcompat
 
 
-def _interpret_common_properties(parsed, source_url, base_href, hentry,
-                                 use_rel_syndication, want_json):
+def _interpret_common_properties(
+        parsed, source_url, base_href, hentry, use_rel_syndication,
+        want_json, fetch_mf2_func):
     result = {}
     for prop in ('url', 'uid', 'photo'):
         value = get_plain_text(hentry['properties'].get(prop))
@@ -530,7 +531,7 @@ def _interpret_common_properties(parsed, source_url, base_href, hentry,
                 except ValueError:
                     logging.warn('Failed to parse datetime %s', date_str)
 
-    author = find_author(parsed, source_url, hentry)
+    author = find_author(parsed, source_url, hentry, fetch_mf2_func)
     if author:
         result['author'] = author
 
@@ -575,7 +576,9 @@ def _interpret_common_properties(parsed, source_url, base_href, hentry,
     return result
 
 
-def interpret_event(parsed, source_url, base_href=None, hevent=None, use_rel_syndication=True, want_json=False):
+def interpret_event(
+        parsed, source_url, base_href=None, hevent=None,
+        use_rel_syndication=True, want_json=False, fetch_mf2_func=None):
     """Given a document containing an h-event, return a dictionary::
 
         {
@@ -599,6 +602,8 @@ def interpret_event(parsed, source_url, base_href=None, hevent=None, use_rel_syn
       rel=syndication on each entry.
     :param boolean want_json: (optional, default false) if true, the result
       will be pure json with datetimes as strings instead of python objects
+    :param callable fetch_mf2_func: (optional) function to fetch mf2 parsed
+      output for a given URL.
     :return: a dict with some or all of the described properties
     """
     # find the h-event if it wasn't provided
@@ -608,7 +613,8 @@ def interpret_event(parsed, source_url, base_href=None, hevent=None, use_rel_syn
             return {}
 
     result = _interpret_common_properties(
-        parsed, source_url, base_href, hevent, use_rel_syndication, want_json)
+        parsed, source_url, base_href, hevent, use_rel_syndication, want_json,
+        fetch_mf2_func)
     result['type'] = 'event'
     name_value = get_plain_text(hevent['properties'].get('name'))
     if name_value:
@@ -616,7 +622,9 @@ def interpret_event(parsed, source_url, base_href=None, hevent=None, use_rel_syn
     return result
 
 
-def interpret_entry(parsed, source_url, base_href=None, hentry=None, use_rel_syndication=True, want_json=False):
+def interpret_entry(
+        parsed, source_url, base_href=None, hentry=None,
+        use_rel_syndication=True, want_json=False, fetch_mf2_func=None):
     """Given a document containing an h-entry, return a dictionary::
 
         {
@@ -653,6 +661,8 @@ def interpret_entry(parsed, source_url, base_href=None, hentry=None, use_rel_syn
       rel=syndication on each entry.
     :param boolean want_json: (optional, default False) if true, the result
       will be pure json with datetimes as strings instead of python objects
+    :param callable fetch_mf2_func: (optional) function to fetch mf2 parsed
+      output for a given URL.
     :return: a dict with some or all of the described properties
     """
 
@@ -663,7 +673,8 @@ def interpret_entry(parsed, source_url, base_href=None, hentry=None, use_rel_syn
             return {}
 
     result = _interpret_common_properties(
-        parsed, source_url, base_href, hentry, use_rel_syndication, want_json)
+        parsed, source_url, base_href, hentry, use_rel_syndication, want_json,
+        fetch_mf2_func)
     if 'h-cite' in hentry.get('type', []):
         result['type'] = 'cite'
     else:
@@ -678,7 +689,8 @@ def interpret_entry(parsed, source_url, base_href=None, hentry=None, use_rel_syn
         for url_val in hentry['properties'].get(prop, []):
             if isinstance(url_val, dict):
                 result.setdefault(prop, []).append(
-                    interpret(parsed, source_url, base_href, url_val, want_json))
+                    interpret(parsed, source_url, base_href, url_val,
+                              want_json, fetch_mf2_func))
             else:
                 result.setdefault(prop, []).append({
                     'url': url_val,
@@ -687,7 +699,8 @@ def interpret_entry(parsed, source_url, base_href=None, hentry=None, use_rel_syn
     return result
 
 
-def interpret_feed(parsed, source_url, base_href=None, hfeed=None):
+def interpret_feed(parsed, source_url, base_href=None, hfeed=None,
+                   fetch_mf2_func=None):
     """Interpret a source page as an h-feed or as an top-level collection
     of h-entries.
 
@@ -695,8 +708,10 @@ def interpret_feed(parsed, source_url, base_href=None, hfeed=None):
     :param str source_url: the URL of the source document (used for authorship
         discovery)
     :param str base_href: (optional) the href value of the base tag
-    :param dict item: (optional) the item to be parsed. If provided,
-        this will be used instead of the first element on the page.
+    :param dict hfedd: (optional) the h-feed to be parsed. If provided,
+        this will be used instead of the first h-feed on the page.
+    :param callable fetch_mf2_func: (optional) function to fetch mf2 parsed
+      output for a given URL.
     :return: a dict containing 'entries', a list of entries, and possibly other
         feed properties (like 'name').
     """
@@ -718,7 +733,7 @@ def interpret_feed(parsed, source_url, base_href=None, hfeed=None):
     for child in children:
         entry = interpret(
             parsed, source_url, base_href, item=child,
-            use_rel_syndication=False)
+            use_rel_syndication=False, fetch_mf2_func=fetch_mf2_func)
         if entry:
             entries.append(entry)
     result['entries'] = entries
@@ -726,7 +741,7 @@ def interpret_feed(parsed, source_url, base_href=None, hfeed=None):
 
 
 def interpret(parsed, source_url, base_href=None, item=None,
-              use_rel_syndication=True, want_json=False):
+              use_rel_syndication=True, want_json=False, fetch_mf2_func=None):
     """Interpret a permalink of unknown type. Finds the first interesting
     h-* element, and delegates to :func:`interpret_entry` if it is an
     h-entry or :func:`interpret_event` for an h-event
@@ -743,21 +758,29 @@ def interpret(parsed, source_url, base_href=None, item=None,
       rel=syndication on each entry.
     :param boolean want_json: (optional, default False) If true, the result
       will be pure json with datetimes as strings instead of python objects
+    :param callable fetch_mf2_func: (optional) function to fetch mf2 parsed
+      output for a given URL.
     :return: a dict as described by interpret_entry or interpret_event, or None
     """
     if not item:
         item = find_first_entry(parsed, ['h-entry', 'h-event'])
 
     if item:
-        if 'h-event' in item.get('type', []):
+        types = item.get('type', [])
+        if 'h-event' in types:
             return interpret_event(
-                parsed, source_url, base_href=base_href, hevent=item, use_rel_syndication=use_rel_syndication, want_json=want_json)
-        elif 'h-entry' in item.get('type', []) or 'h-cite' in item.get('type', []):
+                parsed, source_url, base_href=base_href, hevent=item,
+                use_rel_syndication=use_rel_syndication, want_json=want_json,
+                fetch_mf2_func=fetch_mf2_func)
+        elif 'h-entry' in types or 'h-cite' in types:
             return interpret_entry(
-                parsed, source_url, base_href=base_href, hentry=item, use_rel_syndication=use_rel_syndication, want_json=want_json)
+                parsed, source_url, base_href=base_href, hentry=item,
+                use_rel_syndication=use_rel_syndication, want_json=want_json,
+                fetch_mf2_func=fetch_mf2_func)
 
 
-def interpret_comment(parsed, source_url, target_urls, base_href=None, want_json=False):
+def interpret_comment(parsed, source_url, target_urls, base_href=None,
+                      want_json=False, fetch_mf2_func=None):
     """Interpret received webmentions, and classify as like, reply, or
     repost (or a combination thereof). Returns a dict as described
     in :func:`interpret_entry`, with the additional fields::
@@ -776,12 +799,15 @@ def interpret_comment(parsed, source_url, target_urls, base_href=None, want_json
     :param str base_href: (optional) the href value of the base tag
     :param boolean want_json: (optional, default False) If true, the result
       will be pure json with datetimes as strings instead of python objects
+    :param callable fetch_mf2_func: (optional) function to fetch mf2 parsed
+      output for a given URL.
     :return: a dict as described above, or None
     """
     item = find_first_entry(parsed, ['h-entry'])
     if item:
         result = interpret_entry(parsed, source_url, base_href=base_href,
-                                 hentry=item, want_json=want_json)
+                                 hentry=item, want_json=want_json,
+                                 fetch_mf2_func=fetch_mf2_func)
         if result:
             result['comment_type'] = classify_comment(parsed, target_urls)
             rsvp = get_plain_text(item['properties'].get('rsvp'))
