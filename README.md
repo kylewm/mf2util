@@ -166,6 +166,14 @@ Changes
 All notable changes to this project will be documented here.
 
 
+### 0.4.0 - 2016-04-23
+### Added
+
+- Update authorship implementation (`find_author`) to support fetching
+  a separate page to find the author's h-card.
+- Added a new optional parameter to all `interpret_*` methods called
+  `fetch_mf2_func`. A good value for this is `lambda url: mf2py.parse(url=url)`
+
 ### 0.3.3 - 2016-04-07
 #### Changed
 
