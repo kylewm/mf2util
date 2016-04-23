@@ -51,7 +51,7 @@ License: `Simplified BSD <http://opensource.org/licenses/BSD-2-Clause>`__
       author_email='kyle@kylewm.com',
       url='http://indiewebcamp.com/mf2util',
       py_modules=['mf2util'],
-      tests_require=['pytest'],
+      tests_require=['pytest', 'mf2py'],
       cmdclass={'test': PyTest},
       classifiers=[
           'Development Status :: 3 - Alpha',

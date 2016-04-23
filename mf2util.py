@@ -212,53 +212,102 @@ def parse_author(obj):
     return result
 
 
-def find_author(parsed, source_url=None, hentry=None):
+def find_author(parsed, source_url=None, hentry=None, fetch_mf2_func=None):
     """Use the authorship discovery algorithm
     https://indiewebcamp.com/authorship to determine an h-entry's
     author.
 
     :param dict parsed: an mf2py parsed dict.
     :param str source_url: the source of the parsed document.
+    :param hentry dict: optional, the h-entry we're examining, if omitted,
+        we'll just use the first one
+    :param fetch_mf2_func callable: optional function that takes a URL
+        and returns parsed mf2
     :return: a dict containing the author's name, photo, and url
     """
+    def find_hentry_author(hentry):
+        for obj in hentry['properties'].get('author', []):
+            return parse_author(obj)
+
+    def find_parent_hfeed_author(hentry):
+        for hfeed in _find_all_entries(parsed, ['h-feed']):
+            # find the h-entry's parent h-feed
+            if hentry in hfeed.get('children', []):
+                for obj in hfeed['properties'].get('author', []):
+                    return parse_author(obj)
+
     if not hentry:
         hentry = find_first_entry(parsed, ['h-entry'])
         if not hentry:
             return None
 
-    for obj in hentry['properties'].get('author', []):
-        return parse_author(obj)
+    author_page = None
 
-    # try to find an author of the top-level h-feed
-    for hfeed in (card for card in parsed['items']
-                  if 'h-feed' in card.get('type', [])):
-        for obj in hfeed['properties'].get('author', []):
-            return parse_author(obj)
+    # 3. if the h-entry has an author property, use that
+    author = find_hentry_author(hentry)
 
-    # top-level h-cards
-    hcards = [card for card in parsed['items']
-              if 'h-card' in card.get('type', [])]
+    # 4. otherwise if the h-entry has a parent h-feed with author property,
+    #    use that
+    if not author:
+        author = find_parent_hfeed_author(hentry)
 
-    if source_url:
-        for item in hcards:
-            if source_url in item['properties'].get('url', []):
-                return parse_author(item)
+    # 5. if an author property was found
+    if author:
+        # 5.2 otherwise if author property is an http(s) URL, let the
+        #     author-page have that URL
+        if list(author.keys()) == ['url']:
+            author_page = author['url']
+        # 5.1 if it has an h-card, use it, exit.
+        # 5.3 otherwise use the author property as the author name,
+        #     exit.
+        else:
+            return author
 
-    rel_mes = parsed.get('rels', {}).get("me", [])
-    for item in hcards:
-        urls = item['properties'].get('url', [])
-        if any(url in rel_mes for url in urls):
-            return parse_author(item)
+    # 6. if there is no author-page and the h-entry's page is a permalink page
+    if not author_page:
+        # 6.1 if the page has a rel-author link, let the author-page's
+        #     URL be the href of the rel-author link
+        rel_authors = parsed.get('rels', {}).get('author', [])
+        if rel_authors:
+            author_page = rel_authors[0]
 
-    rel_authors = parsed.get('rels', {}).get("author", [])
-    for item in hcards:
-        urls = item['properties'].get('url', [])
-        if any(url in rel_authors for url in urls):
-            return parse_author(item)
+    # 7. if there is an author-page URL
+    if author_page:
+        if not fetch_mf2_func:
+            return {'url': author_page}
 
-    # just return the first h-card
-    if hcards:
-        return parse_author(hcards[0])
+        # 7.1 get the author-page from that URL and parse it for microformats2
+        parsed = fetch_mf2_func(author_page)
+        hcards = find_all_entries(parsed, ['h-card'])
+
+        # 7.2 if author-page has 1+ h-card with url == uid ==
+        #     author-page's URL, then use first such h-card, exit.
+        for hcard in hcards:
+            hcard_url = get_plain_text(hcard['properties'].get('url'))
+            hcard_uid = get_plain_text(hcard['properties'].get('uid'))
+            if (hcard_url and hcard_uid and hcard_url == hcard_uid
+                    and hcard_url == author_page):
+                return parse_author(hcard)
+
+        # 7.3 else if author-page has 1+ h-card with url property
+        #     which matches the href of a rel-me link on the author-page
+        #     (perhaps the same hyperlink element as the u-url, though not
+        #     required to be), use first such h-card, exit.
+        rel_mes = parsed.get('rels', {}).get('me', [])
+        for hcard in hcards:
+            hcard_url = get_plain_text(hcard['properties'].get('url'))
+            if hcard_url and hcard_url in rel_mes:
+                return parse_author(hcard)
+
+        # 7.4 if the h-entry's page has 1+ h-card with url ==
+        #     author-page URL, use first such h-card, exit.
+        for hcard in hcards:
+            hcard_url = get_plain_text(hcard['properties'].get('url'))
+            if hcard_url and hcard_url == author_page:
+                return parse_author(hcard)
+
+        # 8. otherwise no deterministic author can be found.
+        return None
 
 
 def representative_hcard(parsed, source_url):
@@ -459,7 +508,8 @@ def parse_datetime(s):
 parse_dt = parse_datetime  # backcompat
 
 
-def _interpret_common_properties(parsed, source_url, base_href, hentry, use_rel_syndication, want_json):
+def _interpret_common_properties(parsed, source_url, base_href, hentry,
+                                 use_rel_syndication, want_json):
     result = {}
     for prop in ('url', 'uid', 'photo'):
         value = get_plain_text(hentry['properties'].get(prop))
