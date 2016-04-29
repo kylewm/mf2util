@@ -700,7 +700,7 @@ def interpret_entry(
 
 
 def interpret_feed(parsed, source_url, base_href=None, hfeed=None,
-                   fetch_mf2_func=None):
+                   want_json=False, fetch_mf2_func=None):
     """Interpret a source page as an h-feed or as an top-level collection
     of h-entries.
 
@@ -733,7 +733,8 @@ def interpret_feed(parsed, source_url, base_href=None, hfeed=None,
     for child in children:
         entry = interpret(
             parsed, source_url, base_href, item=child,
-            use_rel_syndication=False, fetch_mf2_func=fetch_mf2_func)
+            use_rel_syndication=False, want_json=want_json,
+            fetch_mf2_func=fetch_mf2_func)
         if entry:
             entries.append(entry)
     result['entries'] = entries
