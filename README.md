@@ -165,9 +165,15 @@ Changes
 
 All notable changes to this project will be documented here.
 
+### 0.4.1 - 2016-05-04
+
+- Minor bugfix: interpret was passing parameters in the wrong order
+  when parsing nested reply contexts and comments, which meant (in
+  practice) `want_json` was always false, and dates were included as
+  strings rather than datetimes.
 
 ### 0.4.0 - 2016-04-23
-### Added
+#### Added
 
 - Update authorship implementation (`find_author`) to support fetching
   a separate page to find the author's h-card.
