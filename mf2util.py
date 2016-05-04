@@ -690,7 +690,9 @@ def interpret_entry(
             if isinstance(url_val, dict):
                 result.setdefault(prop, []).append(
                     interpret(parsed, source_url, base_href, url_val,
-                              want_json, fetch_mf2_func))
+                              use_rel_syndication=False,
+                              want_json=want_json,
+                              fetch_mf2_func=fetch_mf2_func))
             else:
                 result.setdefault(prop, []).append({
                     'url': url_val,
