@@ -165,6 +165,10 @@ Changes
 
 All notable changes to this project will be documented here.
 
+### 0.4.2 - 2016-05-09
+
+- Added properties "dt-deleted", "u-logo", "u-featured"
+
 ### 0.4.1 - 2016-05-04
 
 - Minor bugfix: interpret was passing parameters in the wrong order
