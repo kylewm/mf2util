@@ -512,12 +512,12 @@ def _interpret_common_properties(
         parsed, source_url, base_href, hentry, use_rel_syndication,
         want_json, fetch_mf2_func):
     result = {}
-    for prop in ('url', 'uid', 'photo'):
+    for prop in ('url', 'uid', 'photo', 'featured' 'logo'):
         value = get_plain_text(hentry['properties'].get(prop))
         if value:
             result[prop] = value
 
-    for prop in ('start', 'end', 'published', 'updated'):
+    for prop in ('start', 'end', 'published', 'updated', 'deleted'):
         date_str = get_plain_text(hentry['properties'].get(prop))
         if date_str:
             if want_json:
