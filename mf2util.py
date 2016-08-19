@@ -85,29 +85,33 @@ def find_first_entry(parsed, types):
     :param list types: target types, e.g. ['h-entry', 'h-event']
     :return: an mf2py item that is one of `types`, or None
     """
-    return next(_find_all_entries(parsed, types), None)
+    return next(_find_all_entries(parsed, types, False), None)
 
 
-def find_all_entries(parsed, types):
+def find_all_entries(parsed, types, include_properties=False):
     """Find all h-* objects of a given type in BFS-order. Traverses the
-    top-level items and their children and descendents. Does not
-    include property values (e.g. finding all h-cards would not find
-    values of "p-author h-card")
+    top-level items and their children and descendents. Includes property
+    values (e.g. finding all h-cards would not find values of
+    "p-author h-card") only if `include_properties` is True.
 
     :param dict parsed: a mf2py parsed dict
     :param list types: target types, e.g. ['h-entry', 'h-event']
+    :param boolean include_properties: include properties in search of entries
     :return: all entries with any of the the target types
     """
-    return list(_find_all_entries(parsed, types))
+    return list(_find_all_entries(parsed, types, include_properties))
 
 
-def _find_all_entries(parsed, types):
+def _find_all_entries(parsed, types, include_properties):
     queue = deque(item for item in parsed['items'])
     while queue:
         item = queue.popleft()
         if any(h_class in item.get('type', []) for h_class in types):
             yield item
         queue.extend(item.get('children', []))
+        if include_properties:
+            queue.extend(prop for props in item.get('properties', {}).values()
+                         for prop in props if isinstance(prop, dict))
 
 
 def find_datetimes(parsed):
@@ -230,7 +234,7 @@ def find_author(parsed, source_url=None, hentry=None, fetch_mf2_func=None):
             return parse_author(obj)
 
     def find_parent_hfeed_author(hentry):
-        for hfeed in _find_all_entries(parsed, ['h-feed']):
+        for hfeed in _find_all_entries(parsed, ['h-feed'], False):
             # find the h-entry's parent h-feed
             if hentry in hfeed.get('children', []):
                 for obj in hfeed['properties'].get('author', []):
@@ -319,7 +323,7 @@ def representative_hcard(parsed, source_url):
     :param str source_url: the source of the parsed document.
     :return: the representative h-card if one is found
     """
-    hcards = find_all_entries(parsed, ['h-card'])
+    hcards = find_all_entries(parsed, ['h-card'], include_properties=True)
     # uid and url both match source_url
     for hcard in hcards:
         if (source_url in hcard['properties'].get('uid', [])
