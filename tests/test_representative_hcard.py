@@ -123,3 +123,29 @@ def test_one_matching_url():
     })
     hcard = mf2util.representative_hcard(p, 'http://foo.com/bar')
     assert not hcard
+
+def test_hcard_as_a_property():
+    """h-card is the p-author of the primary h-feed
+    """
+    p = {
+        'rels': {},
+        'items': [
+            {
+                'type': ['h-feed'],
+                'properties': {
+                    'author': [
+                        {
+                            'type': ['h-card'],
+                            'properties': {
+                                'name': ['Elliot Alderson'],
+                                'url': ['http://foo.com/bar']
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+    hcard = mf2util.representative_hcard(p, 'http://foo.com/bar')
+    assert hcard
+    assert hcard['properties']['name'][0] == 'Elliot Alderson'
