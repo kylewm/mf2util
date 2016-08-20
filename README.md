@@ -165,6 +165,11 @@ Changes
 
 All notable changes to this project will be documented here.
 
+### 0.4.3 - 2016-08-20
+
+- representative_hcard now includes h-cards that are properties of
+  other h-* entities, thanks to @angelogladding
+
 ### 0.4.2 - 2016-05-09
 
 - Added properties "dt-deleted", "u-logo", "u-featured"
