@@ -77,6 +77,22 @@ URL_ATTRIBUTES = {
     'source': ['src'],
 }
 
+# From https://indieweb.org/location#How_to_determine_the_location_of_a_microformat
+LOCATION_PROPERTIES = frozenset((
+    'street-address',
+    'extended-address',
+    'post-office-box',
+    'locality',
+    'region',
+    'postal-code',
+    'country-name',
+    'label',
+    'latitude',
+    'longitude',
+    'altitude',
+    'name',
+))
+
 
 def find_first_entry(parsed, types):
     """Find the first interesting h-* object in BFS-order
@@ -516,13 +532,15 @@ def _interpret_common_properties(
         parsed, source_url, base_href, hentry, use_rel_syndication,
         want_json, fetch_mf2_func):
     result = {}
+    props = hentry['properties']
+
     for prop in ('url', 'uid', 'photo', 'featured' 'logo'):
-        value = get_plain_text(hentry['properties'].get(prop))
+        value = get_plain_text(props.get(prop))
         if value:
             result[prop] = value
 
     for prop in ('start', 'end', 'published', 'updated', 'deleted'):
-        date_str = get_plain_text(hentry['properties'].get(prop))
+        date_str = get_plain_text(props.get(prop))
         if date_str:
             if want_json:
                 result[prop] = date_str
@@ -539,36 +557,58 @@ def _interpret_common_properties(
     if author:
         result['author'] = author
 
-    content_prop = hentry['properties'].get('content')
+    content_prop = props.get('content')
     content_value = None
     if content_prop:
         if isinstance(content_prop[0], dict):
-            content_html = content_prop[0]['html'].strip()
-            content_value = content_prop[0]['value'].strip()
+            content_html = content_prop[0].get('html', '').strip()
+            content_value = content_prop[0].get('value', '').strip()
         else:
             content_value = content_html = content_prop[0]
         result['content'] = convert_relative_paths_to_absolute(
             source_url, base_href, content_html)
         result['content-plain'] = content_value
 
-    summary_prop = hentry['properties'].get('summary')
+    summary_prop = props.get('summary')
     if summary_prop:
         if isinstance(summary_prop[0], dict):
             result['summary'] = summary_prop[0]['value']
         else:
             result['summary'] = summary_prop[0]
 
-    # TODO handle h-adr and h-geo variants
-    locations = hentry['properties'].get('location')
-    if locations:
-        result['location'] = {}
-        if isinstance(locations[0], dict):
-            for loc_prop in ('url', 'name', 'latitude', 'longitude'):
-                loc_values = locations[0]['properties'].get(loc_prop)
-                if loc_values:
-                    result['location'][loc_prop] = loc_values[0]
+
+    # Collect location objects, then follow this algorithm to consolidate their
+    # properties:
+    # https://indieweb.org/location#How_to_determine_the_location_of_a_microformat
+    location_stack = [props]
+
+    for prop in 'location', 'adr':
+        vals = props.get(prop)
+        if vals:
+            if isinstance(vals[0], string_type):
+                location_stack.append({'name': vals})
+            else:
+                location_stack.append(vals[0].get('properties', {}))
+
+    geo = props.get('geo')
+    if geo:
+        if isinstance(geo[0], dict):
+            location_stack.append(geo[0].get('properties', {}))
         else:
-            result['location'] = {'name': locations[0]}
+            if geo[0].startswith('geo:'):
+                # a geo: URL. try to parse it. https://tools.ietf.org/html/rfc5870
+                parts = geo[0][len('geo:'):].split(';')[0].split(',')
+                if len(parts) >= 2:
+                    location_stack.append({
+                        'latitude': [parts[0]],
+                        'longitude': [parts[1]],
+                        'altitude': [parts[2]] if len(parts) >= 3 else [],
+                    })
+
+    for prop in LOCATION_PROPERTIES:
+        for obj in location_stack:
+            if obj and obj.get(prop) and not (obj == props and prop == 'name'):
+                result.setdefault('location', {})[prop] = obj[prop][0]
 
     if use_rel_syndication:
         result['syndication'] = list(set(

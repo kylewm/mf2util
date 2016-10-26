@@ -1,1 +1,4 @@
 *.pyc
+.cache
+mf2util.egg-info
+TAGS
