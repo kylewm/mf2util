@@ -24,7 +24,7 @@ class PyTest(TestCommand):
 
 
 setup(name='mf2util',
-      version='0.4.3',
+      version='0.5.0',
       description='Python Microformats2 utilities, a companion to mf2py',
       long_description="""
 Microformats2 Utilities

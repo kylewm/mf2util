@@ -165,6 +165,11 @@ Changes
 
 All notable changes to this project will be documented here.
 
+### 0.5.0 - 2016-10-27
+
+- Fully implement location parsing based on https://indieweb.org/location#How_to_determine_the_location_of_a_microformat
+  thanks to @snarfed
+
 ### 0.4.3 - 2016-08-20
 
 - representative_hcard now includes h-cards that are properties of
