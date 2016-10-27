@@ -1,0 +1,13 @@
+{
+  "items": [
+    {
+      "type": [
+        "h-entry"
+      ],
+      "properties": {
+        "latitude": ["37.83"],
+        "longitude": ["-122.25"]
+      }
+    }
+  ]
+}

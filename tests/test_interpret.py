@@ -1,3 +1,4 @@
+# coding=utf-8
 """Test the interpret module, the unification of the other utility methods.
 Uses test cases from around the indieweb.
 """
@@ -24,6 +25,9 @@ def test_event():
     assert result['start'].utcoffset() == timedelta(hours=0)
     assert result['end'].replace(tzinfo=None) == datetime(2014, 5, 7, 19, 30)
     assert result['end'].utcoffset() == timedelta(hours=0)
+    assert result['location'] == {
+        'name': 'Mozilla SF, 1st floor, 2 Harrison st. (at Embarcadero), San Francisco, CA ',
+    }
 
 
 def test_reply_h_cite():
@@ -236,3 +240,78 @@ def test_h_feed_excludes_rel_syndication():
     result = mf2util.interpret_feed(parsed, 'http://example.com')
     assert result['entries'][0]['syndication'] == ["https://twitter.com/example_com/123456", "https://www.facebook.com/example.com/123456"]
     assert result['entries'][1]['syndication'] == ["https://twitter.com/example_com/7891011", "https://www.facebook.com/example.com/7891011"]
+
+
+def test_location_hcard():
+    """Test the location algorithm with an h-card.
+
+    https://indieweb.org/location#How_to_determine_the_location_of_a_microformat
+    """
+    parsed = load_test('location_h-card')
+    result = mf2util.interpret(parsed, 'http://example.com/')
+    assert result['location'] == {
+        'name': 'Timeless Coffee Roasters',
+        'latitude': '37.83',
+        'longitude': '-122.25',
+    }
+
+
+def test_location_geo():
+    """Test the location algorithm with an h-geo."""
+    parsed = load_test('location_h-geo')
+    result = mf2util.interpret(parsed, 'http://example.com/')
+    assert result['location'] == {
+        'altitude': '123.0',
+        'latitude': '37.83',
+        'longitude': '-122.25',
+    }
+
+
+def test_location_geo_url():
+    """Test the location algorithm with a u-geo geo: URL.
+
+    http://microformats.org/wiki/microformats2#h-card
+    https://tools.ietf.org/html/rfc5870
+    """
+    parsed = {
+        'items': [{
+            'type': ['h-entry'],
+            'properties': {
+                'geo': [u'geo:48.2010,16.3695,183;crs=wgs84;u=40'],
+            },
+        }]}
+    result = mf2util.interpret(parsed, 'http://example.com/')
+    assert result['location'] == {
+        'altitude': '183',
+        'latitude': '48.2010',
+        'longitude': '16.3695',
+    }
+
+    parsed['items'][0]['properties']['geo'] = ['geo:48.2010,16.3695']
+    result = mf2util.interpret(parsed, 'http://example.com/')
+    assert result['location'] == {
+        'latitude': '48.2010',
+        'longitude': '16.3695',
+    }
+
+def test_location_adr():
+    """Test the location algorithm with an h-adr."""
+    parsed = load_test('location_h-adr')
+    result = mf2util.interpret(parsed, 'http://example.com/')
+    assert result['location'] == {
+        'street-address': '17 Austerstræti',
+        'locality': 'Reykjavík',
+        'country-name': 'Iceland',
+        'postal-code': '107',
+        'name': '17 Austerstræti Reykjavík Iceland 107',
+    }
+
+
+def test_location_top_level():
+    """Test the location algorithm with top level properties."""
+    parsed = load_test('location_top_level')
+    result = mf2util.interpret(parsed, 'http://example.com/')
+    assert result['location'] == {
+        'latitude': '37.83',
+        'longitude': '-122.25',
+    }

@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "type": [
+        "h-entry"
+      ],
+      "properties": {
+        "adr": [
+          {
+            "type": [
+              "h-adr"
+            ],
+            "properties": {
+              "street-address": ["17 Austerstræti"],
+              "locality": ["Reykjavík"],
+              "country-name": ["Iceland"],
+              "postal-code": ["107"],
+              "name": ["17 Austerstræti Reykjavík Iceland 107"]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

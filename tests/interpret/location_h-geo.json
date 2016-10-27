@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "type": [
+        "h-entry"
+      ],
+      "properties": {
+        "geo": [
+          {
+            "type": [
+              "h-geo"
+            ],
+            "properties": {
+              "altitude": ["123.0"],
+              "latitude": ["37.83"],
+              "longitude": ["-122.25"]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
