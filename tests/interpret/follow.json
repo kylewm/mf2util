@@ -1,0 +1,48 @@
+{
+ "items": [
+  {
+   "properties": {
+    "name": [
+     "I follow thee"
+    ],
+    "published": [
+     "2014-05-05T10:10:53-07:00"
+    ],
+    "author": [
+     {
+      "value": "Ryan Barrett",
+      "properties": {
+       "name": [
+        "Ryan Barrett"
+       ],
+       "photo": [
+        "https://secure.gravatar.com/avatar/947b5f3f323da0ef785b6f02d9c265d6?s=96&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D96&r=G"
+       ],
+       "url": [
+        "http://snarfed.org/"
+       ]
+      },
+      "type": [
+       "h-card"
+      ]
+     }
+    ],
+    "follow-of": [
+     "http://other/person"
+    ],
+    "url": [
+     "https://snarfed.org/2014-05-05_follow"
+    ],
+    "content": [
+     {
+      "html": "I follow thee",
+      "value": "I follow thee"
+     }
+    ]
+   },
+   "type": [
+    "h-entry"
+   ]
+  }
+ ]
+}

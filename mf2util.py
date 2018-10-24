@@ -434,7 +434,7 @@ def post_type_discovery(hentry):
 
     :return: string, one of: 'org', 'person', 'event', 'rsvp',
                      'invite', 'reply', 'repost', 'like', 'photo',
-                     'article', note'
+                     'article', 'note', 'follow'
 
     """
     props = hentry.get('properties', {})
@@ -454,6 +454,7 @@ def post_type_discovery(hentry):
         ('in-reply-to', 'reply'),
         ('repost-of', 'repost'),
         ('like-of', 'like'),
+        ('follow-of', 'follow'),
         ('photo', 'photo'),
     ]:
         if props.get(prop) is not None:
