@@ -1,4 +1,5 @@
 *.pyc
 .cache
+local
 mf2util.egg-info
 TAGS
