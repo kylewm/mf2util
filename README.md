@@ -165,6 +165,10 @@ Changes
 
 All notable changes to this project will be documented here.
 
+### 0.5.1 - unreleased
+
+- Add `follow` to `post_type_discovery()`.
+
 ### 0.5.0 - 2016-10-27
 
 - Fully implement location parsing based on https://indieweb.org/location#How_to_determine_the_location_of_a_microformat
