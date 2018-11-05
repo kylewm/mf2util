@@ -3,3 +3,7 @@
 local
 mf2util.egg-info
 TAGS
+.eggs
+build
+dist
+.vscode
