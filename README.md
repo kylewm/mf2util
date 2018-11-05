@@ -165,7 +165,7 @@ Changes
 
 All notable changes to this project will be documented here.
 
-### 0.5.1 - unreleased
+### 0.5.1 - 2018-11-04
 
 - Add `follow` to `post_type_discovery()`.
 
