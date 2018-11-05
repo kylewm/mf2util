@@ -10,7 +10,7 @@ install:
   - pip install coveralls
   - pip install mf2py
 script:
-  coverage run --source=mf2util runtests.py
+  coverage run --source=mf2util pytest tests
 after_success:
   coveralls
 sudo: false
