@@ -7,10 +7,7 @@ python:
 install:
   - pip install --upgrade setuptools
   - pip install pytest
-  - pip install coveralls
   - pip install mf2py
 script:
-  coverage run --source=mf2util pytest tests
-after_success:
-  coveralls
+  pytest tests
 sudo: false
