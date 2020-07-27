@@ -11,6 +11,7 @@ from collections import deque
 from datetime import tzinfo, timedelta, datetime, date
 import logging
 import re
+import string
 
 import unicodedata
 import sys
@@ -417,7 +418,7 @@ def is_name_a_title(name, content):
             s = s.decode('utf-8')
         s = unicodedata.normalize('NFKD', s)
         s = s.lower()
-        s = re.sub('[^a-z0-9]', '', s)
+        s = re.sub('[' + string.whitespace + string.punctuation + ']', '', s)
         return s
     if not content:
         return True

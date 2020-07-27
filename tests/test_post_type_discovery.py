@@ -13,6 +13,7 @@ def test_post_type_discovery():
             ('interpret/reply_rsvp', 'rsvp'),
             ('interpret/note_with_comment_and_like', 'note'),
             ('interpret/article_naive_datetime', 'article'),
+            ('interpret/article_non_ascii_content', 'article'),
             ('interpret/follow', 'follow'),
             ('posttype/tantek_photo', 'photo'),
             ('posttype/only_html_content', 'note'),

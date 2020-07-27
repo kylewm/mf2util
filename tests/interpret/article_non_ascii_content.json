@@ -1,0 +1,17 @@
+{
+  "items": [
+    {
+      "type": [
+        "h-entry"
+      ],
+      "properties": {
+        "name": [
+          "foo"
+        ],
+        "content": [
+          "Поч"
+        ]
+      }
+    }
+  ]
+}
