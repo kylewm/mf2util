@@ -442,7 +442,7 @@ def post_type_discovery(hentry):
     if 'h-card' in hentry.get('type', []):
         name = get_plain_text(props.get('name'))
         org = get_plain_text(props.get('org'))
-        if name == org:
+        if name and org and name == org:
             return 'org'
         return 'person'
 
