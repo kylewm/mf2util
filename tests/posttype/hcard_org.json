@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "type": [
+        "h-card"
+      ],
+      "properties": {
+        "url": [
+          "https://tmichellemoore.com/"
+        ],
+        "uid": [
+          "https://tmichellemoore.com/"
+        ],
+        "name": [
+          "Foo Foundation"
+        ],
+        "org": [
+          "Foo Foundation"
+        ]
+      }
+    }
+  ]
+}

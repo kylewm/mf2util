@@ -17,8 +17,12 @@ def test_post_type_discovery():
             ('interpret/follow', 'follow'),
             ('posttype/tantek_photo', 'photo'),
             ('posttype/only_html_content', 'note'),
+            ('posttype/hcard_no_name', 'person'),
+            ('posttype/hcard_org', 'org'),
             # TODO add more tests
     ]:
         parsed = json.load(open('tests/' + test + '.json'))
-        entry = mf2util.find_first_entry(parsed, ['h-entry', 'h-event'])
+        types = (['h-card'] if implied_type in ('person', 'org')
+                 else ['h-entry', 'h-event'])
+        entry = mf2util.find_first_entry(parsed, types)
         assert implied_type == mf2util.post_type_discovery(entry)

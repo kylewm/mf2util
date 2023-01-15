@@ -1,0 +1,20 @@
+{
+  "items": [
+    {
+      "type": [
+        "h-card"
+      ],
+      "properties": {
+        "url": [
+          "https://tmichellemoore.com/"
+        ],
+        "uid": [
+          "https://tmichellemoore.com/"
+        ],
+        "photo": [
+          "https://tmichellemoore.com/pic.jpg"
+        ]
+      }
+    }
+  ]
+}
