@@ -163,6 +163,10 @@ Changes
 
 All notable changes to this project will be documented here.
 
+### 0.5.2 - 2023-01-15
+
+- Bugfix: post-type-discovery should only return org if name and org properties are present. Thanks @snarfed!
+
 ### 0.5.1 - 2018-11-04
 
 - Add `follow` to `post_type_discovery()`.

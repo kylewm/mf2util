@@ -24,7 +24,7 @@ class PyTest(TestCommand):
 
 
 setup(name='mf2util',
-      version='0.5.1',
+      version='0.5.2',
       description='Python Microformats2 utilities, a companion to mf2py',
       long_description="""
 Microformats2 Utilities
@@ -48,7 +48,7 @@ Compatibility: Python 2.6, 2.7, 3.3+
 License: `Simplified BSD <http://opensource.org/licenses/BSD-2-Clause>`__
 """,
       author='Kyle Mahan',
-      author_email='kyle@kylewm.com',
+      author_email='kyle.mahan@gmail.com',
       url='http://indiewebcamp.com/mf2util',
       py_modules=['mf2util'],
       tests_require=['pytest', 'mf2py'],
