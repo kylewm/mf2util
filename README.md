@@ -38,6 +38,10 @@ automatically by Travis-CI)
     pip install pytest
     python -m pytest
 
+To run the full matrix of Python versions locally using Docker:
+
+    docker run --rm -v .:/src -w /src makukha/multipython:unsafe tox run -m old
+
 Quick Start
 -----------
 
