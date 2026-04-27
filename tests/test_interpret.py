@@ -4,12 +4,13 @@ Uses test cases from around the indieweb.
 """
 from __future__ import unicode_literals
 from datetime import datetime, date, timedelta
+import io
 import mf2util
 import json
 
 
 def load_test(testname):
-    return json.load(open('tests/interpret/%s.json' % testname))
+    return json.load(io.open('tests/interpret/%s.json' % testname, encoding='utf-8'))
 
 
 def test_event():
