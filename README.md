@@ -38,9 +38,13 @@ automatically by Travis-CI)
     pip install pytest
     python -m pytest
 
-To run the full matrix of Python versions locally using Docker:
+To run the full matrix of Python versions locally, use two commands:
 
+    # old Python versions (via Docker)
     docker run --rm -v .:/src -w /src makukha/multipython:unsafe tox run -m old
+
+    # modern Python versions (via uv)
+    uvx --with tox-uv tox run -m new
 
 Quick Start
 -----------
