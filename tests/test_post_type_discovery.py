@@ -1,6 +1,7 @@
 """Tests for post_type_discovery
 """
 
+import io
 import json
 import mf2util
 
@@ -21,7 +22,7 @@ def test_post_type_discovery():
             ('posttype/hcard_org', 'org'),
             # TODO add more tests
     ]:
-        parsed = json.load(open('tests/' + test + '.json'))
+        parsed = json.load(io.open('tests/' + test + '.json', encoding='utf-8'))
         types = (['h-card'] if implied_type in ('person', 'org')
                  else ['h-entry', 'h-event'])
         entry = mf2util.find_first_entry(parsed, types)
